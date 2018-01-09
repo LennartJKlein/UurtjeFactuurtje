@@ -4,8 +4,11 @@ Android app voor boekhouding van ZZP'ers.
 ## Author
 Een Android App project van [Lennart Klein](http://www.lennartklein.nl), in opdracht van de Universiteit van Amsterdam.
 
+___________________________
+
 ## Problem statement
-Nederland telt ruim 1 miljoen zelfstandigen zonder personeel (zzp’ers) en dat worden er steeds meer. <sup>1</sup> De werkzaamheden van deze groep lopen uiteen evenals de administratieve vaardigheden. Het bijhouden van een boekhouding is dan al snel ingewikkeld, moet worden ingelezen en belemmert het werken. De app's en diensten die momenteel op de markt zijn gaan uit van een bepaalde basiskennis die niet bij elke ZZP'er aanwezig is. <sup>2</sup> <sup>3</sup> <sup>4</sup>
+> Nederland telt ruim 1 miljoen zelfstandigen zonder personeel (zzp’ers) en dat worden er steeds meer. <sup>1</sup>
+De werkzaamheden van deze groep lopen uiteen evenals de administratieve vaardigheden. Het bijhouden van een boekhouding is dan al snel ingewikkeld, moet worden ingelezen en belemmert het werken. De app's en diensten die momenteel op de markt zijn gaan uit van een bepaalde basiskennis die niet bij elke ZZP'er aanwezig is. <sup>2</sup> <sup>3</sup> <sup>4</sup>
 * <sup>1</sup> CBS, "Dossier ZZP". https://www.cbs.nl/nl-nl/dossier/dossier-zzp
 * <sup>2</sup> Thinq, "Boekhouding App". https://www.thinq.nl/hoe-werkt-het/boekhouding-app
 * <sup>3</sup> Offective, "Online Boekhouden". https://www.offective.nl/online-administratie-software/online-boekhouden

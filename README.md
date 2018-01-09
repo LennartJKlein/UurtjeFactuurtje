@@ -1,6 +1,9 @@
 # UurtjeFactuurtje
 Android app voor boekhouding van ZZP'ers.
 
+## Author
+Een Android App project van [Lennart Klein](http://www.lennartklein.nl), in opdracht van de Universiteit van Amsterdam.
+
 ## Project Proposal
 
 ### Problem statement

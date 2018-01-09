@@ -40,7 +40,7 @@ De oplossing is een enorm simpele app met een moderne vormgeving die boekhouding
 De onderstaande requirements voor de app zijn volgens de MoSCoW-methode opgedeeld.
 De requirements zijn zo opgesteld, dat in de 4 weken van dit project in ieder geval de 'must have' en eventueel 'should have' gemaakt kunnen worden. De rest van de requirements zijn todo's voor de toekomst.
 
-#### Must have
+#### Must have (MVP)
 * App moet te gebruiken zijn op smartphone & tablet
 * Inloggen / registreren (via Firebase)
 * Bedrijfsgegevens invoeren (gekoppeld aan Firebase-account)
@@ -51,7 +51,7 @@ De requirements zijn zo opgesteld, dat in de 4 weken van dit project in ieder ge
 * Gemaakte kosten toevoegen aan project
 * Factuur voor een project genereren
 * Bedrijfskosten invoeren (m.b.v. boekstuknummer ook fysiek te bewaren)
-* Voor BTW-aangifte komt een output van boekhouding met juiste info
+* Een output van boekhouding met juiste info voor BTW-aangifte
 
 #### Should have
 * Invoeren van betalingen (inkomsten en uitgaven op bankrekening)

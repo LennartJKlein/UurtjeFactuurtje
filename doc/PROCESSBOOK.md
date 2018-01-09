@@ -15,3 +15,6 @@ Een prettige toevoeging voor de app, is de belasting automatisch kunnen aangeven
 ##### Activities
 * Project proposal schrijven voor de boekhouding app
 * Schetsen maken van de verschillende schermen
+
+##### Issues
+De boekhouding app komt niet overeen met de wensen van de schoolopdracht: weinig invoer voor de gebruiker. **Actie:** er moet ter compensatie een sterke focus liggen op usability van het invoeren van de gegevens.

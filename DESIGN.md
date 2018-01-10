@@ -65,7 +65,7 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 
 ## Classes
 
-#### Login / register
+### Login / register
 | AccountActivity |
 | ---- |
 | setFragment() |
@@ -78,12 +78,12 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 | ---- |
 | checkAuth() register() |
 
-#### Main
+### Main
 | MainActivity |
 | ---- |
 | setFragment() |
 
-#### Overview
+### Overview
 | OverviewFragment |
 | ---- |
 | getProjects() getCosts() showProject() openFloatingMenu() addWork() addCost() addProject() |
@@ -100,12 +100,12 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 | ---- |
 | getProjects() addWork() |
 
-#### BTW
+### BTW
 | BTWFragment |
 | ---- |
 | checkDates() getInvoices() calculateGive() calculateRevenue() calculateGet() |
 
-#### Relaties
+### Relaties
 | RelationsFragment |
 | ---- |
 | getRelations() addRelation() |
@@ -114,7 +114,7 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 | ---- |
 | addRelation() |
 
-#### Project
+### Project
 | ProjectActivity |
 | ---- |
 | setFragment() navigateBack() |
@@ -135,7 +135,7 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 | ---- |
 | getInvoice() |
 
-#### Settings
+### Settings
 | SettingsActivity |
 | ---- |
 | setFragment() |

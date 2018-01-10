@@ -18,3 +18,10 @@ Een prettige toevoeging voor de app, is de belasting automatisch kunnen aangeven
 
 ##### Issues
 De boekhouding app komt niet overeen met de wensen van de schoolopdracht: weinig invoer voor de gebruiker. **Actie:** er moet ter compensatie een sterke focus liggen op usability van het invoeren van de gegevens.
+
+### 10 januari
+##### Activities
+* Mockups maken
+
+##### Issues
+Veel te veel functies. Flink korten op de functionaliteiten in de app. (zelfs de MVPs)

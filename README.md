@@ -86,7 +86,6 @@ De grootste uitdaging opgesomd: databeheer (opslaan van grotere files), datums v
 * Firebase (https://firebase.google.com/)
 * iText PDF generator (https://github.com/itext)
 * Postcode API (https://www.postcodeapi.nu/)
-* Google Calendar API (https://developers.google.com/google-apps/calendar/)
 
 ### Sketches
 ![](doc/sketch-0.jpg)

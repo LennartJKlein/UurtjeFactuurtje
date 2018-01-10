@@ -3,16 +3,16 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 
 ## Database structure
 
-**Users**
+#### Users
 * ID
   * name
   * e-mail
   * phone
   * payment_days
 
-**Companies**
+#### Companies
 * ID
-  * **user ID**
+  * `user ID`
   * name
   * postal_code
   * street
@@ -25,20 +25,20 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
   * email
   * person
 
-**Projects**
+#### Projects
 * ID
-  * **user ID**
-  * **company ID**
+  * `user ID`
+  * `company ID`
   * name
   * start_date
   * last_invoice
   * hour_price
 
-**Invoices**
+#### Invoices
 * ID
-  * **user ID**
-  * **project ID**
-  * **company ID**
+  * `user ID`
+  * `project ID`
+  * `company ID`
   * sender
   * invoice_nr
   * date
@@ -46,20 +46,20 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
   * btw
   * total
 
-**Work**
+#### Work
 * ID
-  * **user ID**
-  * **project ID**
-  * **invoice ID**
+  * `user ID`
+  * `project ID`
+  * `invoice ID`
   * date
   * activities
   * hours
   * price
   * paid
 
-**Memorial**
+#### Memorial
 * ID
-  * **user ID**
+  * `user ID`
   * bank_balance
   * invoice_nr
 

@@ -1,10 +1,7 @@
-# UurtjeFactuurtje
-Android app voor boekhouding van ZZP'ers.
+# Design document
+Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 
-## Design document
-
-
-### Database structure
+## Database structure
 
 **Users**
 * ID
@@ -66,7 +63,7 @@ Android app voor boekhouding van ZZP'ers.
   * bank_balance
   * invoice_nr
 
-### Classes
+## Classes
 
 #### Login / register
 | AccountActivity |
@@ -163,12 +160,12 @@ Android app voor boekhouding van ZZP'ers.
 | ---- |
 | setUserSettings() launchNextTab() |
 
-### External components / libraries
+## External components / libraries
 * Firebase (https://firebase.google.com/)
 * iText PDF generator (https://github.com/itext)
 
-### API's
+## API's
 * Postcode API (https://www.postcodeapi.nu/)
 
-### Screens and flow chart
+## Screens and flow chart
 ![](doc/flowchart-1.0.jpg)

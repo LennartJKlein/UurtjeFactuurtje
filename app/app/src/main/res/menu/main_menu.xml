@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main_menu_overview"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_overview" />
+
+    <item
+        android:id="@+id/main_menu_btw"
+        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:title="@string/title_tax" />
+    <item
+        android:id="@+id/main_menu_relations"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:title="@string/title_relations" />
+
+    <item
+        android:id="@+id/main_menu_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:title="@string/title_settings" />
+
+</menu>

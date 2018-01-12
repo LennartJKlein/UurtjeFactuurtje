@@ -1,9 +1,9 @@
 # UurtjeFactuurtje
+[![BCH compliance](https://bettercodehub.com/edge/badge/LennartJKlein/UurtjeFactuurtje?branch=master)](https://bettercodehub.com/)
 Android app voor boekhouding van ZZP'ers.
 
 ## Author
 Een Android App project van [Lennart Klein](http://www.lennartklein.nl), in opdracht van de Universiteit van Amsterdam.
-
 ___________________________
 
 ## Problem statement
@@ -80,7 +80,7 @@ De requirements zijn zo opgesteld, dat in de 4 weken van dit project in ieder ge
 ### Hardest parts
 Het koppelen van gemaakte uren aan een project, de datum daarvan onthouden en op basis daarvan een factuur genereren. Het maken van die factuur is op zichzelf ook nog een uitdaging. Er moet namelijk een PDF op A4-formaat worden gegenereerd, welke wordt opgeslagen en per mail moet worden verstuurd.
 
-De grootste uitdaging opgesomd: databeheer (opslaan van grotere files), datums vergelijken, data koppelen aan andere data en bovenal: begrijpelijke en eenvoudige interface.
+De grootste uitdaging opgesomd: PDF genereren, datums vergelijken, data koppelen aan andere data en bovenal: begrijpelijke en eenvoudige interface.
 
 ### External components / data sources
 * Firebase (https://firebase.google.com/)

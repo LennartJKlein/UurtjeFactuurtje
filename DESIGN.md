@@ -52,7 +52,7 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
   * `project ID`
   * `invoice ID`
   * date
-  * activities
+  * description
   * hours
   * price
   * paid
@@ -86,7 +86,7 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 ### Overview
 | OverviewFragment |
 | ---- |
-| getProjects() getCosts() showProject() openFloatingMenu() addWork() addCost() addProject() |
+| initiateProjects() getCosts() showProject() initiateActionButton() addWork() addCost() addProject() |
 
 | AddProjectFragment |
 | ---- |
@@ -162,7 +162,9 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 
 ## External components / libraries
 * Firebase (https://firebase.google.com/)
+* Firebase UI
 * iText PDF generator (https://github.com/itext)
+* Clans - FloatingActionButton (https://github.com/Clans/FloatingActionButton)
 
 ## API's
 * Postcode API (https://www.postcodeapi.nu/)

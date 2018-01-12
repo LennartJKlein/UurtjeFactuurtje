@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium"
+        android:paddingStart="@dimen/margin_medium"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/action_show_project"
+            android:src="@drawable/ic_chevron_right_24dp"
+            android:layout_width="@dimen/list_button"
+            android:layout_height="@dimen/list_button"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/button_circle"
+            android:clickable="false"/>
+
+        <TextView
+            android:id="@+id/project_name"
+            android:text="@string/placeholder_project_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/action_show_project"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/project_company"
+            android:text="@string/placeholder_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/project_name"
+            android:layout_toStartOf="@id/action_show_project"
+            android:paddingTop="@dimen/margin_small"
+            android:textColor="@color/greyDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/project_last_invoice"
+            android:text="@string/placeholder_date_invoice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/project_company"
+            android:layout_toStartOf="@id/action_show_project"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/grey"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

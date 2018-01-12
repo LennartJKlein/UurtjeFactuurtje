@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Uurtje Factuurtje</string>
+    <string name="placeholder_project_name">Naam van dit project</string>
+    <string name="placeholder_company">MijnBedrijf B.V.</string>
+    <string name="title_tax">BTW</string>
+    <string name="title_relations">Relaties</string>
+    <string name="title_settings">Instellingen</string>
+    <string name="title_overview">Overzicht</string>
+    <string name="heading_projects">Projecten</string>
+    <string name="title_activity_settings">Instellingen</string>
+    <string name="tab_settings_tutorial">Uitleg</string>
+    <string name="tab_settings_company">Bedrijf</string>
+    <string name="tab_settings_program">App</string>
+    <string name="tab_settings_user">Account</string>
+    <string name="action_logout">Uitloggen</string>
+    <string name="placeholder_date_invoice">Laatste factuur: %1$s</string>
+    <string name="heading_unpaid_work">Nog niet uitbetaald</string>
+    <string name="heading_invoices">Gemaakte facturen</string>
+</resources>

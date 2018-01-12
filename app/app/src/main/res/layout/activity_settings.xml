@@ -30,8 +30,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabSelectedTextColor="@color/colorWhite"
-            app:tabIndicatorColor="@color/colorWhite">
+            app:tabSelectedTextColor="@color/white"
+            app:tabIndicatorColor="@color/white">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_settings_tutorial"

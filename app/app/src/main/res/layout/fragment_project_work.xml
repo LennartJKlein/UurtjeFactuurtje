@@ -1,13 +1,115 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.lennartklein.uurtjefactuurtje.ProjectWorkFragment">
+    tools:context="nl.lennartklein.uurtjefactuurtje.ProjectWorkFragment"
+    android:padding="@dimen/margin_medium">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/heading_unpaid_work"
+            android:paddingBottom="@dimen/margin_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/greyDark" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium">
+
+            <TextView
+                android:id="@+id/work_date2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="06 jan" />
+
+            <TextView
+                android:id="@+id/work_description2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/work_date2"
+                android:layout_toStartOf="@id/work_price2"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="Zink afkitten en opnieuw laten drogen" />
+
+            <TextView
+                android:id="@+id/work_hours2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/work_date2"
+                android:layout_toStartOf="@id/work_price2"
+                android:layout_below="@id/work_description2"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="3,0 uur" />
+
+            <TextView
+                android:id="@+id/work_price2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="€ 45,00" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium">
+
+            <TextView
+                android:id="@+id/work_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="03 jan" />
+
+            <TextView
+                android:id="@+id/work_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/work_date"
+                android:layout_toStartOf="@id/work_price"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="Verwijderen oude dakpannen" />
+
+            <TextView
+                android:id="@+id/work_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/work_date"
+                android:layout_toStartOf="@id/work_price"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_below="@id/work_description"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="2,1 uur" />
+
+            <TextView
+                android:id="@+id/work_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="€ 31,50" />
+
+        </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>

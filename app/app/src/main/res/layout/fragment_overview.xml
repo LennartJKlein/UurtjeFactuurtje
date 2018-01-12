@@ -2,12 +2,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="nl.lennartklein.uurtjefactuurtje.OverviewFragment">
 
-    <Button
-        android:id="@+id/button_project"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Project" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heading_projects"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:paddingTop="@dimen/margin_medium"
+                    android:paddingBottom="@dimen/margin_small"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/greyDark"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_projects"
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:elevation="2dp"
+                    android:background="@drawable/list_card"/>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/action_add_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_small"
+            app:menu_showShadow="true"
+            app:menu_shadowXOffset="0dp"
+            app:menu_openDirection="up"
+            app:menu_colorNormal="@color/secondary">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/action_add_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_work_white_24dp"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:fab_colorNormal="@color/secondary"
+                app:fab_size="mini"
+                app:fab_label="Werk" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/action_add_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_receipt_white_24dp"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:fab_colorNormal="@color/secondary"
+                app:fab_size="mini"
+                app:fab_label="Kosten" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/action_add_project"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_folder_white_24dp"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:fab_colorNormal="@color/secondary"
+                app:fab_size="mini"
+                app:fab_label="Project" />
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+    </RelativeLayout>
 
 </FrameLayout>

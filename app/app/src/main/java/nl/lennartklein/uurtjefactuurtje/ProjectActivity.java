@@ -10,17 +10,34 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class ProjectActivity extends AppCompatActivity {
+
+    // Authentication
+    private FirebaseAuth auth;
+    private FirebaseUser current_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setAuth();
 
+        setBackButton();
+
+        initiatePager();
+
+    }
+
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        current_user = auth.getCurrentUser();
+    }
+
+    private void initiatePager() {
         // Create the adapter that will return a fragment for each of the sections of the activity.
         ProjectActivity.SectionsPagerAdapter mSectionsPagerAdapter = new ProjectActivity.SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -32,7 +49,6 @@ public class ProjectActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
     /**
@@ -63,6 +79,12 @@ public class ProjectActivity extends AppCompatActivity {
             // Show 3 total pages.
             return 3;
         }
+    }
+
+    private void setBackButton() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**

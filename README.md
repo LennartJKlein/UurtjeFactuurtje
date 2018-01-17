@@ -82,9 +82,13 @@ Het koppelen van gemaakte uren aan een project, de datum daarvan onthouden en op
 
 De grootste uitdaging opgesomd: PDF genereren, datums vergelijken, data koppelen aan andere data en bovenal: begrijpelijke en eenvoudige interface.
 
-### External components / data sources
+## External components / libraries
 * Firebase (https://firebase.google.com/)
+* Firebase UI
 * iText PDF generator (https://github.com/itext)
+* Clans - FloatingActionButton (https://github.com/Clans/FloatingActionButton)
+
+## API's
 * Postcode API (https://www.postcodeapi.nu/)
 
 ### Sketches

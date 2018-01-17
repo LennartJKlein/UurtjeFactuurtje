@@ -10,7 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
+
+    // Authentication
+    private FirebaseAuth auth;
+    private FirebaseUser current_user;
 
     // Global references
     private Fragment activeFragment;
@@ -21,10 +28,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setAuth();
+
         initiateBottomNavigation();
 
-        // Hide action bar
         getSupportActionBar().hide();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        verifyUser(current_user);
     }
 
     @Override
@@ -48,6 +63,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
         showFragment(getSupportFragmentManager().getFragment(inState, "activeFragment"));
+    }
+
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        current_user = auth.getCurrentUser();
     }
 
     /**
@@ -126,5 +146,15 @@ public class MainActivity extends AppCompatActivity {
         activeFragment = fragment;
     }
 
+    public void verifyUser(FirebaseUser user) {
+        if (user == null) {
+            signOut();
+        }
+    }
+
+    public void signOut() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
 
 }

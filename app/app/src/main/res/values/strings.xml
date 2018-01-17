@@ -14,6 +14,19 @@
     <string name="title_activity_project">Raamkozijnen eerste verdieping vernieuwen</string> <!--%1$s-->
     <string name="heading_unpaid_work">Unpaid work</string>
     <string name="heading_invoices">Invoices</string>
+    <string name="generating_invoice">Generating invoice...</string>
+
+    <!-- Invoice document -->
+    <string name="invoice">Factuur</string>
+    <string name="description">Omschrijving</string>
+    <string name="hours">Uren</string>
+    <string name="price">Bedrag</string>
+    <string name="label_date">Factuurdatum</string>
+    <string name="label_invoice_number">Factuurnummer</string>
+    <string name="label_subtotal">Subtotaal</string>
+    <string name="label_btw">BTW (21%)</string>
+    <string name="label_total_price">Totaal</string>
+    <string name="disclaimer">Gelieve het totaalbedrag binnen %1$d dagen te voldoen op rekeningnummer %2$s t.n.v. %3$s onder vermelding van het factuurnummer.</string>
 
     <!-- SettingsActivity -->
     <string name="title_activity_settings">Settings</string>
@@ -23,6 +36,9 @@
     <string name="tab_settings_user">Account</string>
 
     <!-- Actions -->
+    <string name="title_chooser">Open file</string>
+    <string name="action_pay">settle</string>
+    <string name="action_create_invoice">new invoice</string>
     <string name="action_logout">Log out</string>
 
     <!-- Placeholders -->
@@ -30,6 +46,11 @@
     <string name="placeholder_company">MyCompany Inc.</string>
     <string name="placeholder_date">01-01-1900</string>
     <string name="placeholder_date_invoice">Last invoice: %1$s</string>
+
+    <!-- Errors -->
+    <string name="error_database_invoice">No connection to your data could be made. Try again</string>
+    <string name="error_no_reader">Please install a reader for PDF-files</string>
+    <string name="error_no_login">Failed to log in. Try again</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

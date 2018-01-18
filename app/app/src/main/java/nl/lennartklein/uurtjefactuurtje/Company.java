@@ -4,6 +4,7 @@ package nl.lennartklein.uurtjefactuurtje;
  * A company
  */
 public class Company {
+    private String id;
     private String bank;
     private String btw;
     private String city;
@@ -14,16 +15,16 @@ public class Company {
     private String postal;
     private int primary;
     private String street;
-    private String street_nr;
-    private String user_id;
+    private String streetNr;
+    private String userId;
     private String website;
 
     // Empty constructor for FireBase
     public Company() {}
 
     public Company(String bank, String btw, String city, String contact, String kvk, String mail,
-                   String name, String postal, int primary, String street, String street_nr,
-                   String user_id, String website) {
+                   String name, String postal, int primary, String street, String streetNr,
+                   String userId, String website) {
         this.bank = bank;
         this.btw = btw;
         this.city = city;
@@ -34,9 +35,17 @@ public class Company {
         this.postal = postal;
         this.primary = primary;
         this.street = street;
-        this.street_nr = street_nr;
-        this.user_id = user_id;
+        this.streetNr = streetNr;
+        this.userId = userId;
         this.website = website;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBank() {
@@ -119,20 +128,20 @@ public class Company {
         this.street = street;
     }
 
-    public String getStreet_nr() {
-        return street_nr;
+    public String getStreetNr() {
+        return streetNr;
     }
 
-    public void setStreet_nr(String street_nr) {
-        this.street_nr = street_nr;
+    public void setStreetNr(String streetNr) {
+        this.streetNr = streetNr;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getWebsite() {

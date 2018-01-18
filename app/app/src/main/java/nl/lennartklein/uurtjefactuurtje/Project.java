@@ -4,34 +4,34 @@ package nl.lennartklein.uurtjefactuurtje;
  * A project
  */
 public class Project {
-    private String user_id;
+    private String userId;
     private String name;
-    private String company_id;
-    private String company_name;
+    private String companyId;
+    private String companyName;
     private String date;
-    private String last_invoice;
-    private double hour_price;
+    private String lastInvoice;
+    private double hourPrice;
 
     // Empty constructor for FireBase
     public Project() {}
 
-    public Project(String user_id, String name, String company_id, String company_name,
-                   String date, String last_invoice, double hour_price) {
-        this.user_id = user_id;
+    public Project(String userId, String name, String companyId, String companyName,
+                   String date, String lastInvoice, double hourPrice) {
+        this.userId = userId;
         this.name = name;
-        this.company_id = company_id;
-        this.company_name = company_name;
+        this.companyId = companyId;
+        this.companyName = companyName;
         this.date = date;
-        this.last_invoice = last_invoice;
-        this.hour_price = hour_price;
+        this.lastInvoice = lastInvoice;
+        this.hourPrice = hourPrice;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -42,20 +42,20 @@ public class Project {
         this.name = name;
     }
 
-    public String getCompany_id() {
-        return company_id;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany_id(String company_id) {
-        this.company_id = company_id;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
-    public String getCompany_name() {
-        return company_name;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getDate() {
@@ -66,19 +66,19 @@ public class Project {
         this.date = date;
     }
 
-    public String getLast_invoice() {
-        return last_invoice;
+    public String getLastInvoice() {
+        return lastInvoice;
     }
 
-    public void setLast_invoice(String last_invoice) {
-        this.last_invoice = last_invoice;
+    public void setLastInvoice(String lastInvoice) {
+        this.lastInvoice = lastInvoice;
     }
 
-    public double getHour_price() {
-        return hour_price;
+    public double getHourPrice() {
+        return hourPrice;
     }
 
-    public void setHour_price(double hour_price) {
-        this.hour_price = hour_price;
+    public void setHourPrice(double hourPrice) {
+        this.hourPrice = hourPrice;
     }
 }

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * Settings page with explanation about the app
  */
-public class ProjectInfoFragment extends Fragment {
+public class ProjectInfoFragment extends Fragment implements View.OnClickListener {
 
     // Global references
     private Context mContext;
@@ -22,7 +22,26 @@ public class ProjectInfoFragment extends Fragment {
         // Set global references
         mContext = getActivity();
 
+        // TODO: load information on project
+
         return view;
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.action_delete:
+                verifyDelete();
+                break;
+        }
+    }
+
+    public void verifyDelete() {
+        //TODO: verify
+        deleteProject();
+    }
+
+    public void deleteProject() {
+        // TODO: delete from database
+    }
 }

@@ -13,12 +13,12 @@ import android.widget.Toast;
 /**
  * A page of all the unpaid work of a project
  */
-public class ProjectWorkFragment extends Fragment {
+public class ProjectWorkFragment extends Fragment implements View.OnClickListener {
 
     // Global references
     private Context mContext;
     private Resources res;
-
+    private Button newInvoice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,19 +28,18 @@ public class ProjectWorkFragment extends Fragment {
         mContext = getActivity();
         res = mContext.getResources();
 
-        Button NewInvoice = view.findViewById(R.id.action_create_invoice);
-        NewInvoice.setOnClickListener(new ListenerNewInvoice());
+        newInvoice = view.findViewById(R.id.action_create_invoice);
+        newInvoice.setOnClickListener(this);
 
         return view;
     }
 
-    /**
-     * Listener for 'pay'-button
-     */
-    private class ListenerNewInvoice implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            createNewInvoice();
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.action_create_invoice:
+                createNewInvoice();
+                break;
         }
     }
 
@@ -59,14 +58,14 @@ public class ProjectWorkFragment extends Fragment {
 
         Invoice invoice = new Invoice();
         invoice.setBtw(178.17);
-        invoice.setCompany_id("SLggEREWROWEHERWHWET");
+        invoice.setCompanyId("SLggEREWROWEHERWHWET");
         invoice.setDate("2017-09-10");
-        invoice.setEnd_date("2017-10-10");
+        invoice.setEndDate("2017-10-10"); // c.add(Calendar.DATE, 5);
         invoice.setInvoice_number("20170034");
-        invoice.setProject_id("KpHHIHIHIHIHIHIHIH");
-        invoice.setSender_id("Ghsdgshkwerwerw");
-        invoice.setTotal_price(848.44);
-        invoice.setUser_id("sdflkjsskdjbdfg");
+        invoice.setProjectId("KpHHIHIHIHIHIHIHIH");
+        invoice.setSenderId("Ghsdgshkwerwerw");
+        invoice.setTotalPrice(848.44);
+        invoice.setUserId("sdflkjsskdjbdfg");
 
         invoice.createFile(mContext);
 

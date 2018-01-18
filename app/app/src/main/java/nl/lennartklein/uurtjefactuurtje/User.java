@@ -1,33 +1,33 @@
 package nl.lennartklein.uurtjefactuurtje;
 
+import java.util.Calendar;
+
 /**
  * A user
  */
 
 public class User {
-    private String invoice_number;
+    private String invoiceNumber;
     private String mail;
     private String name;
-    private int pay_due;
+    private String payDue;
     private String phone;
 
     // Empty constructor for FireBase
     public User() {}
 
-    public User(String invoice_number, String mail, String name, int pay_due, String phone) {
-        this.invoice_number = invoice_number;
+    public User(String mail) {
+        this.invoiceNumber = Calendar.getInstance().get(Calendar.YEAR) + "0001";
         this.mail = mail;
-        this.name = name;
-        this.pay_due = pay_due;
-        this.phone = phone;
+        this.payDue = "14";
     }
 
-    public String getInvoice_number() {
-        return invoice_number;
+    public String getInvoiceNumber() {
+        return invoiceNumber;
     }
 
-    public void setInvoice_number(String invoice_number) {
-        this.invoice_number = invoice_number;
+    public void setInvoiceNumber(String invoiceNumber) {
+        this.invoiceNumber = invoiceNumber;
     }
 
     public String getMail() {
@@ -46,12 +46,12 @@ public class User {
         this.name = name;
     }
 
-    public int getPay_due() {
-        return pay_due;
+    public String getPayDue() {
+        return payDue;
     }
 
-    public void setPay_due(int pay_due) {
-        this.pay_due = pay_due;
+    public void setPayDue(String payDue) {
+        this.payDue = payDue;
     }
 
     public String getPhone() {

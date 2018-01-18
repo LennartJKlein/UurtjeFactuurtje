@@ -11,7 +11,7 @@ Stijlafspraken voor een Android app.
 ## Capitals
 * De naam van een class is geschreven in `PascalCase`
 * De naam van een method of functie is geschreven in `camelCase`
-* De naam van een variabel is geschreven in `snake_case`
+* De naam van een variabel is geschreven in `camelCase`
 * De naam van een constant is geschreven met hoofdletters in `SNAKE_CASE`
 * Acronymen (zoals BTW, KVK, PDF) worden als woord geschreven. Dus: Btw, Kvk,PDF
 

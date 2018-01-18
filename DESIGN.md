@@ -165,6 +165,7 @@ Ontwerp van UurtjeFactuurtje, een android app voor boekhouding van ZZP'ers.
 * Firebase UI
 * iText PDF generator (https://github.com/itext)
 * Clans - FloatingActionButton (https://github.com/Clans/FloatingActionButton)
+* Lesilva - BetterSpinner (https://github.com/Lesilva/BetterSpinner)
 
 ## API's
 * Postcode API (https://www.postcodeapi.nu/)

@@ -1,73 +1,92 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/margin_medium"
     tools:context="nl.lennartklein.uurtjefactuurtje.ProjectInfoFragment">
 
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/label_company"
+        <RelativeLayout
+            android:id="@+id/info_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/label_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
+                android:text="Bedrijfsnaam"/>
+
+            <TextView
+                android:id="@+id/label_hour_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
+                android:layout_below="@id/project_company"
+                android:text="Uurprijs (excl. BTW)"/>
+
+            <TextView
+                android:id="@+id/label_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
+                android:layout_below="@id/project_hour_price"
+                android:text="Startdatum"/>
+
+            <TextView
+                android:id="@+id/project_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
+                android:layout_alignParentEnd="true"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="Haze Timmerwerken"/>
+
+            <TextView
+                android:id="@+id/project_hour_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
+                android:layout_below="@id/project_company"
+                android:layout_alignStart="@id/project_company"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="€ 15,00" />
+
+            <TextView
+                android:id="@+id/project_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_small"
+                android:layout_below="@id/project_hour_price"
+                android:layout_alignStart="@id/project_company"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:text="2017-05-04"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/action_delete"
+            android:text="@string/action_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:text="Bedrijfsnaam"/>
+            android:drawableStart="@drawable/ic_delete_black_24dp"
+            android:drawablePadding="@dimen/margin_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_table"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/label_hour_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:layout_below="@id/project_company"
-            android:text="Uurprijs (excl. BTW)"/>
-
-        <TextView
-            android:id="@+id/label_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:layout_below="@id/project_hour_price"
-            android:text="Startdatum"/>
-
-        <TextView
-            android:id="@+id/project_company"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:layout_alignParentEnd="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="Haze Timmerwerken"/>
-
-        <TextView
-            android:id="@+id/project_hour_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:layout_below="@id/project_company"
-            android:layout_alignStart="@id/project_company"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="€ 15,00" />
-
-        <TextView
-            android:id="@+id/project_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:layout_below="@id/project_hour_price"
-            android:layout_alignStart="@id/project_company"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:text="2017-05-04"/>
-
-    </RelativeLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

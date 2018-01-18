@@ -37,14 +37,14 @@ import static android.content.ContentValues.TAG;
  */
 public class Invoice {
     private double btw;
-    private String company_id;
+    private String companyId;
     private String date;
-    private String end_date;
+    private String endDate;
     private String invoice_number;
-    private String project_id;
-    private String sender_id;
-    private double total_price;
-    private String user_id;
+    private String projectId;
+    private String senderId;
+    private double totalPrice;
+    private String userId;
     private User user;
     private Company sender;
     private Company receiver;
@@ -55,18 +55,18 @@ public class Invoice {
     // Empty constructor for FireBase
     public Invoice() {}
 
-    public Invoice(double btw, String company_id, String date, String end_date,
-                   String invoice_number, String project_id, String sender_id,
-                   double total_price, String user_id) {
+    public Invoice(double btw, String companyId, String date, String endDate,
+                   String invoice_number, String projectId, String senderId,
+                   double totalPrice, String userId) {
         this.btw = btw;
-        this.company_id = company_id;
+        this.companyId = companyId;
         this.date = date;
-        this.end_date = end_date;
+        this.endDate = endDate;
         this.invoice_number = invoice_number;
-        this.project_id = project_id;
-        this.sender_id = sender_id;
-        this.total_price = total_price;
-        this.user_id = user_id;
+        this.projectId = projectId;
+        this.senderId = senderId;
+        this.totalPrice = totalPrice;
+        this.userId = userId;
     }
 
     public double getBtw() {
@@ -77,12 +77,12 @@ public class Invoice {
         this.btw = btw;
     }
 
-    public String getCompany_id() {
-        return company_id;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany_id(String company_id) {
-        this.company_id = company_id;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getDate() {
@@ -93,12 +93,12 @@ public class Invoice {
         this.date = date;
     }
 
-    public String getEnd_date() {
-        return end_date;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setEnd_date(String end_date) {
-        this.end_date = end_date;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getInvoice_number() {
@@ -109,36 +109,36 @@ public class Invoice {
         this.invoice_number = invoice_number;
     }
 
-    public String getProject_id() {
-        return project_id;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setProject_id(String project_id) {
-        this.project_id = project_id;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
-    public String getSender_id() {
-        return sender_id;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setSender_id(String sender_id) {
-        this.sender_id = sender_id;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
-    public double getTotal_price() {
-        return total_price;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTotal_price(double total_price) {
-        this.total_price = total_price;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public User getUser() {
@@ -201,10 +201,10 @@ public class Invoice {
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setUser(dataSnapshot.child("users").child(user_id).getValue(User.class));
-                setSender(dataSnapshot.child("companies").child(sender_id).getValue(Company.class));
-                setReceiver(dataSnapshot.child("companies").child(company_id).getValue(Company.class));
-                setProject(dataSnapshot.child("projects").child(project_id).getValue(Project.class));
+                setUser(dataSnapshot.child("users").child(userId).getValue(User.class));
+                setSender(dataSnapshot.child("companies").child(senderId).getValue(Company.class));
+                setReceiver(dataSnapshot.child("companies").child(companyId).getValue(Company.class));
+                setProject(dataSnapshot.child("projects").child(projectId).getValue(Project.class));
 
                 buildDocument();
             }
@@ -229,16 +229,16 @@ public class Invoice {
 
         // Template labels and texts
         String title = res.getString(R.string.invoice);
-        String label_date = res.getString(R.string.label_date);
-        String label_invoice_number = res.getString(R.string.label_invoice_number);
-        String label_description = res.getString(R.string.description);
-        String label_hours = res.getString(R.string.hours);
-        String label_price = res.getString(R.string.price);
-        String label_subtotal = res.getString(R.string.label_subtotal);
-        String label_btw = res.getString(R.string.label_btw);
-        String label_total_price = res.getString(R.string.label_total_price);
+        String labelDate = res.getString(R.string.label_date);
+        String labelInvoice_number = res.getString(R.string.label_invoice_number);
+        String labelDescription = res.getString(R.string.description);
+        String labelHours = res.getString(R.string.hours);
+        String labelPrice = res.getString(R.string.price);
+        String labelSubtotal = res.getString(R.string.label_subtotal);
+        String labelBtw = res.getString(R.string.label_btw);
+        String labelTotalPrice = res.getString(R.string.label_total_price);
         String disclaimer = res.getString(R.string.disclaimer,
-                user.getPay_due(), sender.getBank(), sender.getContact());
+                user.getPayDue(), sender.getBank(), sender.getContact());
 
         // Generate the document
         Document doc = new Document();
@@ -249,29 +249,29 @@ public class Invoice {
             // To
             doc.add(new Paragraph(receiver.getName()));
             doc.add(new Paragraph("T.a.v. " + receiver.getContact()));
-            doc.add(new Paragraph(receiver.getStreet() + " " + receiver.getStreet_nr()));
+            doc.add(new Paragraph(receiver.getStreet() + " " + receiver.getStreetNr()));
             doc.add(new Paragraph(receiver.getPostal() + "  " + receiver.getCity()));
 
             // From
             doc.add(createParagraph(sender.getName(), 2));
-            doc.add(createParagraph(sender.getStreet() + " " + sender.getStreet_nr(), 2));
+            doc.add(createParagraph(sender.getStreet() + " " + sender.getStreetNr(), 2));
             doc.add(createParagraph(sender.getPostal() + "  " + sender.getCity(), 2));
             doc.add(createParagraph("KvK: " + sender.getKvk(), 2));
             doc.add(createParagraph("BTW: " + sender.getBtw(), 2));
 
             // Details
             doc.add(createTitle(title));
-            doc.add(new Paragraph(label_date + ": " + getDate()));
-            doc.add(new Paragraph(label_invoice_number + ": #" + getInvoice_number()));
+            doc.add(new Paragraph(labelDate + ": " + getDate()));
+            doc.add(new Paragraph(labelInvoice_number + ": #" + getInvoice_number()));
             doc.add(Chunk.NEWLINE);
             doc.add(new Paragraph(project.getName()));
             doc.add(Chunk.NEWLINE);
 
             // Table - head
             PdfPTable table = new PdfPTable(3);
-            table.addCell(createCellHeader(label_description, 0));
-            table.addCell(createCellHeader(label_hours, 1));
-            table.addCell(createCellHeader(label_price, 2));
+            table.addCell(createCellHeader(labelDescription, 0));
+            table.addCell(createCellHeader(labelHours, 1));
+            table.addCell(createCellHeader(labelPrice, 2));
 
             // Table - work
             // TODO: for loop through work entries
@@ -283,15 +283,15 @@ public class Invoice {
             table.addCell(createCell("€  37,50", 2, 400));
 
             table.addCell(createCell("", 0, 0));
-            table.addCell(createCell(label_subtotal, 2, 700));
-            String subtotal = String.format("%.2f", getTotal_price() - getBtw());
+            table.addCell(createCell(labelSubtotal, 2, 700));
+            String subtotal = String.format("%.2f", getTotalPrice() - getBtw());
             table.addCell(createCell("€  " + subtotal, 2, 400));
             table.addCell(createCell("", 0, 0));
-            table.addCell(createCell(label_btw, 2, 700));
+            table.addCell(createCell(labelBtw, 2, 700));
             table.addCell(createCell("€  " + getBtw(), 2, 400));
             table.addCell(createCell("", 0, 0));
-            table.addCell(createCell(label_total_price, 2, 700));
-            table.addCell(createCell("€  " + getTotal_price(), 2, 700));
+            table.addCell(createCell(labelTotalPrice, 2, 700));
+            table.addCell(createCell("€  " + getTotalPrice(), 2, 700));
             doc.add(table);
 
             // Foot

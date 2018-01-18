@@ -87,6 +87,7 @@ De grootste uitdaging opgesomd: PDF genereren, datums vergelijken, data koppelen
 * Firebase UI
 * iText PDF generator (https://github.com/itext)
 * Clans - FloatingActionButton (https://github.com/Clans/FloatingActionButton)
+* Lesilva - BetterSpinner (https://github.com/Lesilva/BetterSpinner)
 
 ## API's
 * Postcode API (https://www.postcodeapi.nu/)

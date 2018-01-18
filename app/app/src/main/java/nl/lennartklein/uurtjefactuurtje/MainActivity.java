@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Authentication
     private FirebaseAuth auth;
-    private FirebaseUser current_user;
+    private FirebaseUser currentUser;
 
     // Global references
     private Fragment activeFragment;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        verifyUser(current_user);
+        verifyUser(currentUser);
     }
 
     @Override
@@ -63,11 +64,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
         showFragment(getSupportFragmentManager().getFragment(inState, "activeFragment"));
-    }
-
-    private void setAuth() {
-        auth = FirebaseAuth.getInstance();
-        current_user = auth.getCurrentUser();
     }
 
     /**
@@ -144,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
         activeFragment = fragment;
+    }
+
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
     }
 
     public void verifyUser(FirebaseUser user) {

@@ -8,7 +8,7 @@
     tools:context="nl.lennartklein.uurtjefactuurtje.LoginActivity">
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+        android:id="@+id/action_login_google"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"

@@ -10,16 +10,25 @@ public class User {
     private String invoiceNumber;
     private String mail;
     private String name;
+    private String companyName;
     private String payDue;
     private String phone;
+    private String kvk;
+    private String bank;
+    private String btw;
+    private String postal;
+    private String street;
+    private String streetNr;
+    private String city;
+    private String website;
 
     // Empty constructor for FireBase
     public User() {}
 
-    public User(String mail) {
-        this.invoiceNumber = Calendar.getInstance().get(Calendar.YEAR) + "0001";
+    public User(String mail, String invoiceNumber, String payDue) {
         this.mail = mail;
-        this.payDue = "14";
+        this.invoiceNumber = invoiceNumber;
+        this.payDue = payDue;
     }
 
     public String getInvoiceNumber() {
@@ -60,5 +69,77 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getKvk() {
+        return kvk;
+    }
+
+    public void setKvk(String kvk) {
+        this.kvk = kvk;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getBtw() {
+        return btw;
+    }
+
+    public void setBtw(String btw) {
+        this.btw = btw;
+    }
+
+    public String getPostal() {
+        return postal;
+    }
+
+    public void setPostal(String postal) {
+        this.postal = postal;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getStreetNr() {
+        return streetNr;
+    }
+
+    public void setStreetNr(String streetNr) {
+        this.streetNr = streetNr;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
     }
 }

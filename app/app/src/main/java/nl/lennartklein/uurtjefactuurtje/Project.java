@@ -1,9 +1,14 @@
 package nl.lennartklein.uurtjefactuurtje;
 
+import java.io.Serializable;
+
 /**
  * A project
  */
-public class Project {
+public class Project implements Serializable {
+
+    private static final long serialVersionUID = -7060210544600464481L;
+    private String id;
     private String userId;
     private String name;
     private String companyId;
@@ -24,6 +29,14 @@ public class Project {
         this.date = date;
         this.lastInvoice = lastInvoice;
         this.hourPrice = hourPrice;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -81,4 +94,5 @@ public class Project {
     public void setHourPrice(double hourPrice) {
         this.hourPrice = hourPrice;
     }
+
 }

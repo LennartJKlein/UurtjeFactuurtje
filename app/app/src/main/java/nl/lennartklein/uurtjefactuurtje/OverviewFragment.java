@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -26,6 +28,10 @@ import com.google.firebase.database.FirebaseDatabase;
  * An overview of projects and recent costs
  */
 public class OverviewFragment extends Fragment implements View.OnClickListener {
+
+    // Authentication
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
 
     // UI references
     private Context mContext;
@@ -36,15 +42,17 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
     // Database references
     private DatabaseReference db;
-    private DatabaseReference dbProjects;
+    private DatabaseReference dbProjectsMe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
+        setAuth();
+
         // Set database references
         db = FirebaseDatabase.getInstance().getReference();
-        dbProjects = db.child("projects");
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
 
         // Set global references
         mContext = getActivity().getApplicationContext();
@@ -70,6 +78,14 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         super.onStart();
 
         // Initialise the list of projects
+        populateProjectsList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Refresh the list of projects
         populateProjectsList();
     }
 
@@ -135,6 +151,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         // Add divider line
         DividerItemDecoration divider = new DividerItemDecoration(projectsList.getContext(),1);
         projectsList.addItemDecoration(divider);
+
+        inProgress(true);
     }
 
     /**
@@ -149,10 +167,12 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                 Project.class,
                 R.layout.list_item_project,
                 ProjectRow.class,
-                dbProjects
+                dbProjectsMe
         ) {
             @Override
-            protected void populateViewHolder(ProjectRow row, Project project, int position) {
+            protected void populateViewHolder(final ProjectRow row, Project project, int position) {
+                inProgress(true);
+
                 // Fill the row
                 row.setName(project.getName());
                 row.setCompany(project.getCompanyName());
@@ -162,30 +182,32 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                 row.setInvoice(invoiceDate, format);
                 row.setId(getRef(position).getKey());
 
-                // Update amount in list
-                checkAmount(projectsList.getAdapter().getItemCount());
-
                 // Set click listener
                 row.view.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View view) {
-                        startActivity(new Intent(mContext, ProjectActivity.class));
+                        Intent projectIntent = new Intent(mContext, ProjectActivity.class);
+                        projectIntent.putExtra("PROJECT_KEY", row.getId());
+                        startActivity(projectIntent);
                     }
                 });
 
-                inProgress(false);
+                // Update amount in list
+                checkAmount(projectsList.getAdapter().getItemCount());
             }
         };
 
         // Set the adapter
         projectsList.setAdapter(adapter);
+
+        // Update amount in list
+        checkAmount(projectsList.getAdapter().getItemCount());
     }
 
     /**
      * View holder for a project row
      */
     public static class ProjectRow extends RecyclerView.ViewHolder {
-
         View view;
         String id;
 
@@ -196,6 +218,10 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getId() {
+            return id;
         }
 
         public void setName(String name) {
@@ -216,6 +242,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkAmount(int amount) {
+        inProgress(false);
+
         if (amount == 0) {
             emptyProjectsList.setVisibility(View.VISIBLE);
             projectsList.setVisibility(View.INVISIBLE);
@@ -229,10 +257,16 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
             projectsList.setVisibility(View.INVISIBLE);
+            emptyProjectsList.setVisibility(View.INVISIBLE);
         } else {
             progressWheel.setVisibility(View.INVISIBLE);
             projectsList.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
     }
 
 }

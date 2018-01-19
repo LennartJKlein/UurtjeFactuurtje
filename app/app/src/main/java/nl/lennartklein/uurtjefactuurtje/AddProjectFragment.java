@@ -40,8 +40,8 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
     // Database references
     private DatabaseReference db;
-    private DatabaseReference dbCompanies;
-    private DatabaseReference dbProjects;
+    private DatabaseReference dbCompaniesMe;
+    private DatabaseReference dbProjectsMe;
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
 
@@ -59,8 +59,8 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
         // Database references
         db = FirebaseDatabase.getInstance().getReference();
-        dbCompanies = db.child("companies");
-        dbProjects = db.child("projects");
+        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
     }
 
     @Override
@@ -96,7 +96,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         fieldRelations.setAdapter(relationsAdapter);
 
         // TODO: only fetch MY relations
-        dbCompanies.addListenerForSingleValueEvent(new ValueEventListener() {
+        dbCompaniesMe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -188,7 +188,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         project.setDate(getDateToday());
         project.setCompanyId(company.getId());
 
-        dbProjects.push().setValue(project);
+        dbProjectsMe.push().setValue(project);
 
         closeFragment();
     }

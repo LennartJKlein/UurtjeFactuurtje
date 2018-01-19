@@ -57,3 +57,7 @@ Eigenlijk geen feedback gehad op het project na afloop van mijn presentatie. Daa
 ##### Activities
 * Plan uitzetten voor alpha-versie van de app. Eerste focus moet liggen op het genereren van een PDF vanuit Java. "Do the hardest things first".
 
+### 18 januari
+##### Issues
+* Nu de eerste schermen werken, blijkt het met de huidige opzet van de database moeilijk om alleen de bedrijven van déze gebruiker te laten zien. De [web lesson van Jeff Daleney](https://angularfirebase.com/lessons/managing-firebase-user-relationships-to-database-records/) gaf een goed voorbeeld. **Actie:** sla bedrijven, projecten, facturen op in een 'submap' met het UserID als titel.
+* Bedrijf van de gebruiker was eerst een 'company' met een labeltje dat het van de gebruiker was. Dit bleek totaal onpraktisch voor het zoeken van de gegevens van 'mijn bedrijf'. Daarom zijn de bedrijfsgegevens toegevoegd aan het user-object.

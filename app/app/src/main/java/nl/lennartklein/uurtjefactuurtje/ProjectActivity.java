@@ -1,5 +1,6 @@
 package nl.lennartklein.uurtjefactuurtje;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,16 +9,35 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.Serializable;
 
 public class ProjectActivity extends AppCompatActivity {
 
     // Authentication
     private FirebaseAuth auth;
-    private FirebaseUser current_user;
+    private FirebaseUser currentUser;
+
+    // Database references
+    private DatabaseReference db;
+    private DatabaseReference dbProjectsMe;
+
+    // Data
+    Project project;
+
+    // UI references
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,27 +46,53 @@ public class ProjectActivity extends AppCompatActivity {
 
         setAuth();
 
-        setBackButton();
+        // Set UI references
+        toolbar = findViewById(R.id.toolbar);
 
-        initiatePager();
+        // Set database references
+        db = FirebaseDatabase.getInstance().getReference();
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
+
+        // Get data
+        String projectKey = getIntent().getExtras().getString("PROJECT_KEY");
+        fetchProject(projectKey);
+
+        setBackButton();
 
     }
 
-    private void setAuth() {
-        auth = FirebaseAuth.getInstance();
-        current_user = auth.getCurrentUser();
+    private void fetchProject(String key) {
+        dbProjectsMe.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                project = dataSnapshot.getValue(Project.class);
+                project.setId(dataSnapshot.getKey());
+
+                toolbar.setTitle(project.getName());
+
+                initiatePager();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(ProjectActivity.this,
+                        getResources().getString(R.string.error_no_projects), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 
     private void initiatePager() {
-        // Create the adapter that will return a fragment for each of the sections of the activity.
-        ProjectActivity.SectionsPagerAdapter mSectionsPagerAdapter = new ProjectActivity.SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
+        // UI references
         ViewPager mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
         TabLayout tabLayout = findViewById(R.id.tabs);
 
+        // Create the adapter that will return a fragment for each of the sections of the activity.
+        ProjectActivity.SectionsPagerAdapter mSectionsPagerAdapter =
+                new ProjectActivity.SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
@@ -62,16 +108,24 @@ public class ProjectActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("PROJECT", project);
+
             switch (position) {
                 case 0:
-                    return new ProjectWorkFragment();
+                    ProjectWorkFragment fragmentWork = new ProjectWorkFragment();
+                    fragmentWork.setArguments(bundle);
+                    return fragmentWork;
                 case 1:
-                    return new ProjectInvoicesFragment();
+                    ProjectInvoicesFragment fragmentInvoice = new ProjectInvoicesFragment();
+                    fragmentInvoice.setArguments(bundle);
+                    return fragmentInvoice;
                 case 2:
-                    return new ProjectInfoFragment();
+                    ProjectInfoFragment fragmentInfo = new ProjectInfoFragment();
+                    fragmentInfo.setArguments(bundle);
+                    return fragmentInfo;
             }
-            return new ProjectInfoFragment();
+            return null;
         }
 
         @Override
@@ -81,6 +135,14 @@ public class ProjectActivity extends AppCompatActivity {
         }
     }
 
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
+    }
+
+    /**
+     * Set back button in toolbar
+     */
     private void setBackButton() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

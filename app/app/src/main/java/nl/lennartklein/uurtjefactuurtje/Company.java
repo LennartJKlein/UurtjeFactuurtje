@@ -13,7 +13,6 @@ public class Company {
     private String mail;
     private String name;
     private String postal;
-    private int primary;
     private String street;
     private String streetNr;
     private String userId;
@@ -23,7 +22,7 @@ public class Company {
     public Company() {}
 
     public Company(String bank, String btw, String city, String contact, String kvk, String mail,
-                   String name, String postal, int primary, String street, String streetNr,
+                   String name, String postal, String street, String streetNr,
                    String userId, String website) {
         this.bank = bank;
         this.btw = btw;
@@ -33,7 +32,6 @@ public class Company {
         this.mail = mail;
         this.name = name;
         this.postal = postal;
-        this.primary = primary;
         this.street = street;
         this.streetNr = streetNr;
         this.userId = userId;
@@ -110,14 +108,6 @@ public class Company {
 
     public void setPostal(String postal) {
         this.postal = postal;
-    }
-
-    public int getPrimary() {
-        return primary;
-    }
-
-    public void setPrimary(int primary) {
-        this.primary = primary;
     }
 
     public String getStreet() {

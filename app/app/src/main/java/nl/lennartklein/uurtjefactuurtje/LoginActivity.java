@@ -1,5 +1,6 @@
 package nl.lennartklein.uurtjefactuurtje;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -24,8 +25,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,GoogleApiClient.OnConnectionFailedListener {
 
@@ -35,9 +41,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private GoogleSignInOptions mGoogleSignInOptions;
     private FirebaseAuth mAuth;
     private DatabaseReference db;
-    private FirebaseUser currentUser;
+    private DatabaseReference dbUsers;
 
     // Global references
+    Context mContext;
     private SignInButton googleButton;
 
     @Override
@@ -47,11 +54,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Global references
         googleButton = findViewById(R.id.action_login_google);
+        mContext = this;
+
+        // Authentication
+        mAuth = FirebaseAuth.getInstance();
+
+        // Get database references
+        db = FirebaseDatabase.getInstance().getReference();
+        dbUsers = db.child("users");
 
         googleButton.setOnClickListener(this);
-
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference();
 
         mGoogleSignInOptions = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -63,7 +75,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, mGoogleSignInOptions)
                 .build();
-
     }
 
     @Override
@@ -124,13 +135,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void saveUserData() {
-        String userId = mAuth.getCurrentUser().getUid();
-        String userMail = mAuth.getCurrentUser().getEmail();
-        Log.d("Sign up", "createUserWithEmail:success - " + userId);
+        final String userId = mAuth.getCurrentUser().getUid();
+        final String userMail = mAuth.getCurrentUser().getEmail();
 
-        // Save the user ID in the database
-        User newUser = new User(userMail);
-        db.child("users").child(userId).setValue(newUser);
+        // If new, save the user ID in the database
+        dbUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild(userId)) {
+                    User newUser = new User(
+                            userMail,
+                            Calendar.getInstance().get(Calendar.YEAR) + "0001",
+                            "14");
+                    db.child("users").child(userId).setValue(newUser);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(mContext,
+                        getResources().getString(R.string.error_no_projects), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void enterApp(boolean isLogged) {

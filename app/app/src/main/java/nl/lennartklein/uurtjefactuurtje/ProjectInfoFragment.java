@@ -3,28 +3,73 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toolbar;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 /**
  * Settings page with explanation about the app
  */
 public class ProjectInfoFragment extends Fragment implements View.OnClickListener {
 
-    // Global references
+    // Authentication
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+
+    // UI references
     private Context mContext;
+    private TextView tvCompany;
+    private TextView tvHourPrice;
+    private TextView tvDate;
+
+    // Database references
+    private DatabaseReference db;
+    private DatabaseReference dbProjectsMe;
+
+    // Data
+    Project project;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_project_info, container, false);
 
-        // Set global references
-        mContext = getActivity();
+        setAuth();
 
-        // TODO: load information on project
+        // Set UI references
+        mContext = getActivity();
+        tvCompany = view.findViewById(R.id.project_company);
+        tvHourPrice = view.findViewById(R.id.project_hour_price);
+        tvDate = view.findViewById(R.id.project_date);
+
+        // Set database references
+        db = FirebaseDatabase.getInstance().getReference();
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
+
+        // Get data
+        project = (Project) getArguments().getSerializable("PROJECT");
+
+        // Set data
+        tvCompany.setText(project.getCompanyName());
+        String hourPrice = String.format("%.2f", project.getHourPrice());
+        tvHourPrice.setText(getResources().getString(R.string.placeholder_currency, hourPrice));
+        tvDate.setText(project.getDate());
 
         return view;
+    }
+
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
     }
 
     @Override
@@ -42,6 +87,6 @@ public class ProjectInfoFragment extends Fragment implements View.OnClickListene
     }
 
     public void deleteProject() {
-        // TODO: delete from database
+        dbProjectsMe.child(project.getId()).setValue(null);
     }
 }

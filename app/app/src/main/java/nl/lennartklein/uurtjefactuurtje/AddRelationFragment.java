@@ -179,7 +179,7 @@ public class AddRelationFragment extends DialogFragment implements View.OnClickL
         company.setStreet(street);
         company.setStreetNr(streetNr);
 
-        dbCompanies.push().setValue(company);
+        dbCompanies.child(currentUser.getUid()).push().setValue(company);
 
         closeFragment();
     }

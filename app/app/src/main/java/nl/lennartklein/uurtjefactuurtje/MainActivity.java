@@ -20,9 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
 
-    // Global references
+    // UI references
     private Fragment activeFragment;
-    private MenuItem activeItem;
+    private int activeItem;
+    private BottomNavigationView mainMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setAuth();
+        verifyUser(currentUser);
 
         initiateBottomNavigation();
 
@@ -37,33 +39,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-
-        verifyUser(currentUser);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 
         // Resume at previous fragment
-        if (activeFragment != null) {
-            activeItem.setChecked(true);
-            showFragment(activeFragment);
-        }
+        resumeLastFragment();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, "activeFragment", activeFragment);
+        outState.putInt("activeTab", activeItem);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
         showFragment(getSupportFragmentManager().getFragment(inState, "activeFragment"));
+        activeItem = inState.getInt("activeTab");
+        resumeLastFragment();
     }
 
     /**
@@ -71,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initiateBottomNavigation() {
         // Set UI references
-        BottomNavigationView main_menu = findViewById(R.id.main_menu);
-        main_menu.setOnNavigationItemSelectedListener(bottomNavigationListener);
+        mainMenu = findViewById(R.id.main_menu);
+        mainMenu.setOnNavigationItemSelectedListener(bottomNavigationListener);
 
         // Initiate select listener
-        Menu menu = main_menu.getMenu();
+        Menu menu = mainMenu.getMenu();
         menu.getItem(3).setCheckable(false);
 
         // Activate the first fragment
@@ -103,19 +98,19 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.main_menu_overview:
                 item.setChecked(true);
-                activeItem = item;
+                activeItem = item.getItemId();
                 showFragment(new OverviewFragment());
                 break;
 
             case R.id.main_menu_btw:
                 item.setChecked(true);
-                activeItem = item;
+                activeItem = item.getItemId();
                 showFragment(new TaxFragment());
                 break;
 
             case R.id.main_menu_relations:
                 item.setChecked(true);
-                activeItem = item;
+                activeItem = item.getItemId();
                 showFragment(new RelationsFragment());
                 break;
 
@@ -140,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
 
         activeFragment = fragment;
+    }
+
+    private void resumeLastFragment() {
+        if (activeFragment != null) {
+            mainMenu.setSelectedItemId(activeItem);
+            showFragment(activeFragment);
+        }
     }
 
     private void setAuth() {

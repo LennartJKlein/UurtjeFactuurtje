@@ -67,6 +67,7 @@
     <string name="placeholder_company">MyCompany Inc.</string>
     <string name="placeholder_date">01-01-1900</string>
     <string name="placeholder_date_invoice">Last invoice: %1$s</string>
+    <string name="placeholder_currency">€ %1$s</string>
 
     <!-- Invoice document -->
     <string name="invoice">Factuur</string>
@@ -86,6 +87,7 @@
     <string name="error_no_login">Failed to log in. Try again</string>
     <string name="error_no_projects">You don\'t have any projects yet.</string>
     <string name="error_no_relations">You don\'t have any relations yet.</string>
+    <string name="error_no_file_made">Failed to create file. Try again</string>
     <string name="error_field_required">This field is required.</string>
 
     <!-- TODO: Remove or change this placeholder text -->

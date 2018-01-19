@@ -29,6 +29,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -42,11 +43,10 @@ public class Invoice {
     private String endDate;
     private String invoice_number;
     private String projectId;
-    private String senderId;
     private double totalPrice;
     private String userId;
+
     private User user;
-    private Company sender;
     private Company receiver;
     private Project project;
     private String filepath;
@@ -56,17 +56,15 @@ public class Invoice {
     public Invoice() {}
 
     public Invoice(double btw, String companyId, String date, String endDate,
-                   String invoice_number, String projectId, String senderId,
-                   double totalPrice, String userId) {
+                   String invoice_number, String projectId, String userId, double totalPrice) {
         this.btw = btw;
         this.companyId = companyId;
         this.date = date;
         this.endDate = endDate;
         this.invoice_number = invoice_number;
         this.projectId = projectId;
-        this.senderId = senderId;
-        this.totalPrice = totalPrice;
         this.userId = userId;
+        this.totalPrice = totalPrice;
     }
 
     public double getBtw() {
@@ -117,14 +115,6 @@ public class Invoice {
         this.projectId = projectId;
     }
 
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
     public double getTotalPrice() {
         return totalPrice;
     }
@@ -141,44 +131,12 @@ public class Invoice {
         this.userId = userId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Company getSender() {
-        return sender;
-    }
-
-    public void setSender(Company sender) {
-        this.sender = sender;
-    }
-
-    public Company getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Company receiver) {
-        this.receiver = receiver;
-    }
-
     public Project getProject() {
         return project;
     }
 
     public void setProject(Project project) {
         this.project = project;
-    }
-
-    public String getFilepath() {
-        return filepath;
-    }
-
-    public void setFilepath(String filepath) {
-        this.filepath = filepath;
     }
 
     /**
@@ -189,23 +147,21 @@ public class Invoice {
         if (isExternalStorageWritable()) {
 
             this.mContext = mContext;
-            fetchData();
+            this.fetchData();
 
         } else {
             Log.d("Data", "Cannot write to device storage.");
         }
     }
 
-    public void fetchData() {
+    private void fetchData() {
         DatabaseReference db = FirebaseDatabase.getInstance().getReference();
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                setUser(dataSnapshot.child("users").child(userId).getValue(User.class));
-                setSender(dataSnapshot.child("companies").child(senderId).getValue(Company.class));
-                setReceiver(dataSnapshot.child("companies").child(companyId).getValue(Company.class));
-                setProject(dataSnapshot.child("projects").child(projectId).getValue(Project.class));
-
+                user = dataSnapshot.child("users").child(userId).getValue(User.class);
+                receiver = dataSnapshot.child("companies").child(userId).child(companyId).getValue(Company.class);
+                project = dataSnapshot.child("projects").child(userId).child(projectId).getValue(Project.class);
                 buildDocument();
             }
 
@@ -220,7 +176,7 @@ public class Invoice {
      * Create a document for this invoice
      * @return string of the filepath
      */
-    public String buildDocument() {
+    private void buildDocument() {
 
         Resources res = mContext.getResources();
 
@@ -238,7 +194,7 @@ public class Invoice {
         String labelBtw = res.getString(R.string.label_btw);
         String labelTotalPrice = res.getString(R.string.label_total_price);
         String disclaimer = res.getString(R.string.disclaimer,
-                user.getPayDue(), sender.getBank(), sender.getContact());
+                user.getPayDue(), user.getBank(), user.getName());
 
         // Generate the document
         Document doc = new Document();
@@ -253,11 +209,10 @@ public class Invoice {
             doc.add(new Paragraph(receiver.getPostal() + "  " + receiver.getCity()));
 
             // From
-            doc.add(createParagraph(sender.getName(), 2));
-            doc.add(createParagraph(sender.getStreet() + " " + sender.getStreetNr(), 2));
-            doc.add(createParagraph(sender.getPostal() + "  " + sender.getCity(), 2));
-            doc.add(createParagraph("KvK: " + sender.getKvk(), 2));
-            doc.add(createParagraph("BTW: " + sender.getBtw(), 2));
+            doc.add(createParagraph(user.getCompanyName(), 2));
+            doc.add(createParagraph(user.getPostal() + "  " + user.getCity(), 2));
+            doc.add(createParagraph("KvK: " + user.getKvk(), 2));
+            doc.add(createParagraph("BTW: " + user.getBtw(), 2));
 
             // Details
             doc.add(createTitle(title));
@@ -305,25 +260,26 @@ public class Invoice {
 
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
+            Toast.makeText(mContext,
+                    mContext.getResources().getString(R.string.error_no_file_made), Toast.LENGTH_SHORT).show();
         }
-
-        return filepath;
     }
 
-    public Paragraph createParagraph(String content, int align) {
+    private Paragraph createParagraph(String content, int align) {
         Font font = new Font(Font.FontFamily.HELVETICA, 12);
         Paragraph paragraph = new Paragraph(content, font);
         paragraph.setAlignment(align);
         return paragraph;
     }
 
-    public Paragraph createTitle(String content) {
+    private Paragraph createTitle(String content) {
         Font font = new Font(Font.FontFamily.HELVETICA, 24, Font.BOLD);
         Paragraph paragraph = new Paragraph(content, font);
+        paragraph.setSpacingAfter(10);
         return paragraph;
     }
 
-    public PdfPCell createCell(String content,int align, int weight) {
+    private PdfPCell createCell(String content,int align, int weight) {
         Font font;
         if (weight > 400) {
             font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
@@ -339,7 +295,7 @@ public class Invoice {
         return cell;
     }
 
-    public PdfPCell createCellHeader(String content,int align) {
+    private PdfPCell createCellHeader(String content,int align) {
         Font font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
         PdfPCell cell = new PdfPCell(new Phrase(content, font));
         cell.setHorizontalAlignment(align);
@@ -354,18 +310,18 @@ public class Invoice {
         return cell;
     }
 
-    public Paragraph createDisclaimer(String content) {
+    private Paragraph createDisclaimer(String content) {
         Font font = new Font(Font.FontFamily.HELVETICA, 11, Font.ITALIC);
-        Paragraph paragraph = new Paragraph(content, font);
-        return paragraph;
+        font.setColor(BaseColor.GRAY);
+        return new Paragraph(content, font);
     }
 
-    public boolean isExternalStorageWritable() {
+    private boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }
 
-    public String getInvoiceStoragePath() {
+    private String getInvoiceStoragePath() {
         String folder_main = "UurtjeFactuurtje";
         String root = Environment.getExternalStorageDirectory() +  "/" + folder_main;
 
@@ -380,8 +336,8 @@ public class Invoice {
         return filepath;
     }
 
-    public void openFile(Context mContext) {
-        if (filepath != "" || filepath != null) {
+    private void openFile(Context mContext) {
+        if (!Objects.equals(filepath, "") || filepath != null) {
 
             Intent target = new Intent(Intent.ACTION_VIEW);
             target.setDataAndType(Uri.fromFile(new File(filepath)),"application/pdf");

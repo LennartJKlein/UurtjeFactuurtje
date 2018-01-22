@@ -4,14 +4,12 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -19,15 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.weiwangcn.betterspinner.library.BetterSpinner;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 
-public class AddRelationFragment extends DialogFragment implements View.OnClickListener {
+public class AddCompanyFragment extends DialogFragment implements View.OnClickListener {
 
     // Global references
     private Context mContext;
@@ -40,7 +32,6 @@ public class AddRelationFragment extends DialogFragment implements View.OnClickL
     private EditText fieldCity;
     private Button actionInsert;
     private Button actionCancel;
-    private DialogInterface.OnDismissListener onDismissListener;
 
     // Database references
     private DatabaseReference db;
@@ -62,7 +53,7 @@ public class AddRelationFragment extends DialogFragment implements View.OnClickL
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_relation, container, false);
+        View v = inflater.inflate(R.layout.fragment_add_company, container, false);
 
         // UI references
         fieldName = v.findViewById(R.id.field_name);
@@ -72,7 +63,7 @@ public class AddRelationFragment extends DialogFragment implements View.OnClickL
         fieldStreet = v.findViewById(R.id.field_street);
         fieldStreetNr = v.findViewById(R.id.field_street_nr);
         fieldCity = v.findViewById(R.id.field_city);
-        actionInsert = v.findViewById(R.id.action_create_relation);
+        actionInsert = v.findViewById(R.id.action_create_company);
         actionCancel = v.findViewById(R.id.action_cancel);
 
         // Click listeners
@@ -90,7 +81,7 @@ public class AddRelationFragment extends DialogFragment implements View.OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.action_create_relation:
+            case R.id.action_create_company:
                 validateFields();
                 break;
             case R.id.action_cancel:

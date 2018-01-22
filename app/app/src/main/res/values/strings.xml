@@ -1,38 +1,46 @@
 <resources>
     <string name="app_name">Uurtje Factuurtje</string>
 
+    <!-- LoginActivity -->
+    <string name="login_disclaimer">From your Google account only your mail address is used to sign in .</string>
+
     <!-- MainActivity -->
     <string name="title_overview">Overview</string>
     <string name="title_tax">Tax</string>
-    <string name="title_relations">Relations</string>
+    <string name="title_companies">Companies</string>
     <string name="title_settings">Settings</string>
 
     <!-- Overview -->
     <string name="heading_projects">Projects</string>
-    <string name="title_add_project">Start a new project</string>
 
     <!-- ProjectActivity -->
-    <string name="title_activity_project">Raamkozijnen eerste verdieping vernieuwen</string> <!--%1$s-->
+    <string name="title_activity_project">My project...</string> <!--%1$s-->
     <string name="heading_unpaid_work">Unpaid work</string>
     <string name="heading_invoices">Invoices</string>
     <string name="generating_invoice">Generating invoice...</string>
 
+    <!-- TaxActivity -->
+    <string name="title_tax_page">Calculate your tax</string>
+    <string name="title_tax_result">Fields to fill in</string>
+    <string name="form_tax_tip">Select a quarter and a year to see what you need to fill in at your tax screens.</string>
+    <string name="result_title_pay">Leveringen/diensten belast met hoog tarief</string>
+
     <!-- RelationsActivity -->
-    <string name="heading_relations">Relations</string>
-    <string name="title_add_relation">Add a relation</string>
+    <string name="heading_companies">Relations</string>
+    <string name="title_add_company">Add a relation</string>
+    <string name="heading_my_company">My company</string>
 
     <!-- SettingsActivity -->
-    <string name="title_activity_settings">Settings</string>
     <string name="tab_settings_tutorial">Tutorial</string>
     <string name="tab_settings_company">Company</string>
     <string name="tab_settings_program">App</string>
     <string name="tab_settings_user">Account</string>
     <string name="tutorial_title">Things you need to know...</string>
-    <string name="tutorial_text">Lorum ipsum dolor sit amet consectetur adsciping elit.</string>
+    <string name="tutorial_text" translatable="false">Lorum ipsum dolor sit amet consectetur adsciping elit.</string>
 
     <!-- Form fields -->
     <string name="field_name_project">Project description</string>
-    <string name="field_company">Company</string>
+    <string name="field_company">Relation</string>
     <string name="field_hour_price">Price per hour (without tax)</string>
     <string name="field_name">Full name</string>
     <string name="field_mail">Mail</string>
@@ -49,13 +57,15 @@
     <string name="field_kvk">Kamer van Koophandel ID</string>
     <string name="field_pay_due">Payment ultimatum (in days)</string>
     <string name="field_contact">Contact</string>
+    <string name="field_quarter">quarter</string>
+    <string name="field_year">year</string>
 
     <!-- Actions -->
     <string name="title_chooser">Open file</string>
     <string name="action_pay">settle</string>
     <string name="action_create_invoice">new invoice</string>
     <string name="action_create_project">create</string>
-    <string name="action_create_relation">create</string>
+    <string name="action_create_company">add</string>
     <string name="action_logout">Log out</string>
     <string name="action_save">Save</string>
     <string name="action_save_continue">Save and continue</string>
@@ -65,33 +75,40 @@
     <!-- Placeholders -->
     <string name="placeholder_project_name">Name of this project</string>
     <string name="placeholder_company">MyCompany Inc.</string>
-    <string name="placeholder_date">01-01-1900</string>
+    <string name="placeholder_date" translatable="false">01-01-1900</string>
     <string name="placeholder_date_invoice">Last invoice: %1$s</string>
-    <string name="placeholder_currency">€ %1$s</string>
+    <string name="placeholder_currency" translatable="false">€ %1$s</string>
 
     <!-- Invoice document -->
     <string name="invoice">Factuur</string>
     <string name="description">Omschrijving</string>
     <string name="hours">Uren</string>
-    <string name="price">Bedrag</string>
+    <string name="price">Price</string>
     <string name="label_date">Factuurdatum</string>
     <string name="label_invoice_number">Factuurnummer</string>
     <string name="label_subtotal">Subtotaal</string>
     <string name="label_btw">BTW (21%)</string>
     <string name="label_total_price">Totaal</string>
-    <string name="disclaimer">Gelieve het totaalbedrag binnen %1$s dagen te voldoen op rekeningnummer %2$s t.n.v. %3$s onder vermelding van het factuurnummer.</string>
+    <string name="disclaimer">Please pay the total price in %1$s days on bank account %2$s on the name of %3$s. Don\'t forget to enter the invoice number.</string>
 
     <!-- Errors -->
     <string name="error_database_invoice">No connection to your data could be made. Try again</string>
     <string name="error_no_reader">Please install a reader for PDF-files</string>
     <string name="error_no_login">Failed to log in. Try again</string>
     <string name="error_no_projects">You don\'t have any projects yet.</string>
-    <string name="error_no_relations">You don\'t have any relations yet.</string>
+    <string name="error_no_companies">You don\'t have any relations yet.</string>
     <string name="error_no_file_made">Failed to create file. Try again</string>
     <string name="error_field_required">This field is required.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="section_format" translatable="false">Hello World from section: %1$d</string>
+    <string name="title_add_project">Start a new project...</string>
+    <string name="title_relations">Companies</string>
+    <string name="error_no_relations">You don\'t have any relations yet.</string>
+    <string name="action_create_relation">add</string>
+    <string name="heading_relations">Companies</string>
+    <string name="title_add_relation">Add a relation</string>
+    <string name="title_activity_settings">My company</string>
 
 </resources>

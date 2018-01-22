@@ -4,11 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="nl.lennartklein.uurtjefactuurtje.AddRelationFragment">
+    tools:context="nl.lennartklein.uurtjefactuurtje.AddCompanyFragment">
 
     <TextView
         android:id="@+id/title"
-        android:text="@string/title_add_relation"
+        android:text="@string/title_add_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/margin_medium"
@@ -203,8 +203,8 @@
             android:background="@null" />
 
         <Button
-            android:id="@+id/action_create_relation"
-            android:text="@string/action_create_relation"
+            android:id="@+id/action_create_company"
+            android:text="@string/action_create_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

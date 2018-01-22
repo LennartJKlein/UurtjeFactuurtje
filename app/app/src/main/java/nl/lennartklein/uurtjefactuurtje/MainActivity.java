@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -69,11 +68,8 @@ public class MainActivity extends AppCompatActivity {
         mainMenu = findViewById(R.id.main_menu);
         mainMenu.setOnNavigationItemSelectedListener(bottomNavigationListener);
 
-        // Initiate select listener
-        Menu menu = mainMenu.getMenu();
-        menu.getItem(3).setCheckable(false);
-
         // Activate the first fragment
+        Menu menu = mainMenu.getMenu();
         activateFragment(menu.getItem(0));
     }
 
@@ -95,27 +91,20 @@ public class MainActivity extends AppCompatActivity {
      * @param item Item that is selected.
      */
     protected void activateFragment(MenuItem item) {
+        item.setChecked(true);
+        activeItem = item.getItemId();
+
         switch (item.getItemId()) {
             case R.id.main_menu_overview:
-                item.setChecked(true);
-                activeItem = item.getItemId();
                 showFragment(new OverviewFragment());
                 break;
 
             case R.id.main_menu_btw:
-                item.setChecked(true);
-                activeItem = item.getItemId();
                 showFragment(new TaxFragment());
                 break;
 
             case R.id.main_menu_relations:
-                item.setChecked(true);
-                activeItem = item.getItemId();
-                showFragment(new RelationsFragment());
-                break;
-
-            case R.id.main_menu_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                showFragment(new CompaniesFragment());
                 break;
         }
     }

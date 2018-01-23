@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Uurtje Factuurtje</string>
     <string name="placeholder_project_name">Naam van dit project</string>
-    <string name="placeholder_company">MijnBedrijf B.V.</string>
+    <string name="placeholder_company">Gegevens</string>
     <string name="title_tax">BTW</string>
     <string name="title_relations">Bedrijven</string>
     <string name="title_settings">Instellingen</string>
@@ -11,17 +11,17 @@
     <string name="title_activity_settings">Mijn bedrijf</string>
     <string name="tab_settings_tutorial">Uitleg</string>
     <string name="tab_settings_company">Bedrijf</string>
-    <string name="tab_settings_program">App</string>
+    <string name="tab_settings_numbers">Nummers</string>
     <string name="tab_settings_user">Account</string>
     <string name="action_logout">Uitloggen</string>
     <string name="placeholder_date_invoice">Laatste factuur: %1$s</string>
     <string name="heading_unpaid_work">Nog niet uitbetaald</string>
-    <string name="heading_invoices">Gemaakte facturen</string>
+    <string name="heading_invoices">Facturen</string>
     <string name="action_pay">afrekenen</string>
     <string name="action_create_invoice">nieuwe factuur</string>
     <string name="title_activity_project">Mijn project…</string>
     <string name="title_add_project">Start een project</string>
-    <string name="login_disclaimer">Van je Google account wordt alleen je mailadres gebruikt om hier in te loggen.</string>
+    <string name="login_disclaimer">Alleen je mailadres wordt gebruikt om in te loggen.</string>
     <string name="generating_invoice">Factuur aanmaken…</string>
     <string name="title_tax_page">BTW berekenen</string>
     <string name="error_field_required">Dit veld is verplicht.</string>
@@ -36,7 +36,7 @@
     <string name="action_create_relation">toevoegen</string>
     <string name="action_delete">Verwijderen</string>
     <string name="action_save">Opslaan</string>
-    <string name="action_save_continue">Opslaan en doorgaan</string>
+    <string name="action_save_continue">Opslaan en volgende</string>
     <string name="description">Omschrijving</string>
     <string name="disclaimer">Gelieve het totaalbedrag binnen %1$s dagen te voldoen op rekeningnummer %2$s t.n.v. %3$s onder vermelding van het factuurnummer.</string>
     <string name="field_bank">Rekeningnummer</string>
@@ -80,4 +80,13 @@
     <string name="error_no_companies">Je hebt nog geen relaties.</string>
     <string name="title_add_company">Relatie toevoegen</string>
     <string name="action_create_company">toevoegen</string>
+    <string name="heading_memberships">Lidmaatschappen</string>
+    <string name="heading_socials">Media</string>
+    <string name="heading_address">Adres</string>
+    <string name="action_save_close">Opslaan en sluiten</string>
+    <string name="note_saved">Opgeslagen!</string>
+    <string name="field_project">Selecteer een project…</string>
+    <string name="action_add">Toevoegen</string>
+    <string name="tab_work_hours">Manuren</string>
+    <string name="tab_work_product">Product</string>
 </resources>

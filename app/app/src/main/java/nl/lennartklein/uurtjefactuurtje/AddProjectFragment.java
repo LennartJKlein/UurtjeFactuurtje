@@ -1,7 +1,6 @@
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -30,7 +29,16 @@ import java.util.List;
 
 public class AddProjectFragment extends DialogFragment implements View.OnClickListener {
 
-    // Global references
+    // Authentication
+    private FirebaseAuth auth;
+    private FirebaseUser currentUser;
+
+    // Database references
+    private DatabaseReference db;
+    private DatabaseReference dbCompaniesMe;
+    private DatabaseReference dbProjectsMe;
+
+    // UI references
     private Context mContext;
     private EditText fieldName;
     private BetterSpinner fieldRelations;
@@ -38,17 +46,10 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
     private Button actionInsert;
     private Button actionCancel;
 
-    // Database references
-    private DatabaseReference db;
-    private DatabaseReference dbCompaniesMe;
-    private DatabaseReference dbProjectsMe;
-    private FirebaseAuth auth;
-    private FirebaseUser currentUser;
-
     // Data
     private List<Company> relations;
-    private List<String> relationsNames;
-    ArrayAdapter<String> relationsAdapter;
+    private List<String> relationNames;
+    private ArrayAdapter<String> relationsAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,25 +66,23 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_project, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_project, container, false);
 
-        // UI references
-        fieldName = v.findViewById(R.id.field_name);
-        fieldRelations = v.findViewById(R.id.field_company);
-        fieldHourPrice = v.findViewById(R.id.field_hour_price);
-        actionInsert = v.findViewById(R.id.action_create_project);
-        actionCancel = v.findViewById(R.id.action_cancel);
+        // Set UI references
+        fieldName = view.findViewById(R.id.field_name);
+        fieldRelations = view.findViewById(R.id.field_company);
+        fieldHourPrice = view.findViewById(R.id.field_hour_price);
+        actionInsert = view.findViewById(R.id.action_create_project);
+        actionCancel = view.findViewById(R.id.action_cancel);
 
-        // Click listeners
+        // Set click listeners
         actionInsert.setOnClickListener(this);
         actionCancel.setOnClickListener(this);
 
         // Get and set data
-        relations = new ArrayList<>();
-        relationsNames = new ArrayList<>();
         getRelations();
 
-        return v;
+        return view;
     }
 
     private void setAuth() {
@@ -92,21 +91,26 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
     }
 
     private void getRelations() {
-        relationsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, relationsNames);
+        relations = new ArrayList<>();
+        relationNames = new ArrayList<>();
+        relationsAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_dropdown_item_1line, relationNames);
         fieldRelations.setAdapter(relationsAdapter);
 
-        // TODO: only fetch MY relations
         dbCompaniesMe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot companySnapshot: dataSnapshot.getChildren()) {
                     Company company = companySnapshot.getValue(Company.class);
-                    company.setId(companySnapshot.getKey());
 
-                    relations.add(company);
-                    if (company.getName() != null) {
-                        relationsNames.add(company.getName());
+                    if (company != null) {
+                        company.setId(companySnapshot.getKey());
+
+                        relations.add(company);
+
+                        if (company.getName() != null) {
+                            relationNames.add(company.getName());
+                        }
                     }
                 }
 
@@ -177,7 +181,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
     public void insertInDatabase(String name, String companyName, String hourPrice) {
 
-        int companyPosition = relationsNames.indexOf(companyName);
+        int companyPosition = relationNames.indexOf(companyName);
         Company company = relations.get(companyPosition);
 
         Project project = new Project();

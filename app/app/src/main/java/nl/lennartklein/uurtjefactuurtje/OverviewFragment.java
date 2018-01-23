@@ -54,7 +54,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         db = FirebaseDatabase.getInstance().getReference();
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
 
-        // Set global references
+        // Set UI references
         mContext = getActivity().getApplicationContext();
         projectsList = view.findViewById(R.id.list_projects);
         emptyProjectsList = view.findViewById(R.id.list_projects_empty);
@@ -171,8 +171,6 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         ) {
             @Override
             protected void populateViewHolder(final ProjectRow row, Project project, int position) {
-                inProgress(true);
-
                 // Fill the row
                 row.setName(project.getName());
                 row.setCompany(project.getCompanyName());
@@ -192,6 +190,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                     }
                 });
 
+                inProgress(false);
+
                 // Update amount in list
                 checkAmount(projectsList.getAdapter().getItemCount());
             }
@@ -202,6 +202,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         // Update amount in list
         checkAmount(projectsList.getAdapter().getItemCount());
+
+        inProgress(false);
     }
 
     /**
@@ -242,8 +244,6 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkAmount(int amount) {
-        inProgress(false);
-
         if (amount == 0) {
             emptyProjectsList.setVisibility(View.VISIBLE);
             projectsList.setVisibility(View.INVISIBLE);

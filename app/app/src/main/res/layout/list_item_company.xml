@@ -8,10 +8,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_small"
-        android:paddingBottom="@dimen/margin_small"
-        android:paddingStart="@dimen/margin_medium"
-        android:paddingEnd="@dimen/margin_small"
+        android:padding="@dimen/margin_medium"
         android:background="@color/white">
 
         <TextView
@@ -19,6 +16,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/company_name"
+            android:text="@string/placeholder_company"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/action_delete"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         <ImageButton
             android:id="@+id/action_delete"
@@ -29,15 +35,6 @@
             android:layout_centerVertical="true"
             android:background="@drawable/button_circle"
             android:clickable="false"/>
-
-        <TextView
-            android:id="@+id/company_name"
-            android:text="@string/placeholder_company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@id/action_delete"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     </RelativeLayout>
 

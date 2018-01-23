@@ -61,3 +61,15 @@ Eigenlijk geen feedback gehad op het project na afloop van mijn presentatie. Daa
 ##### Issues
 * Nu de eerste schermen werken, blijkt het met de huidige opzet van de database moeilijk om alleen de bedrijven van déze gebruiker te laten zien. De [web lesson van Jeff Daleney](https://angularfirebase.com/lessons/managing-firebase-user-relationships-to-database-records/) gaf een goed voorbeeld. **Actie:** sla bedrijven, projecten, facturen op in een 'submap' met het UserID als titel.
 * Bedrijf van de gebruiker was eerst een 'company' met een labeltje dat het van de gebruiker was. Dit bleek totaal onpraktisch voor het zoeken van de gegevens van 'mijn bedrijf'. Daarom zijn de bedrijfsgegevens toegevoegd aan het user-object.
+
+### 19 januari
+#### Design descisions
+* Het instellingen tabblad in de bottomnavigation voelt wat onnatuurlijk. De flow ervan is anders dan de andere tabbladen: er opent namelijk een heel nieuw scherm. Daarnaast verwacht de gebruiker de informatie over zijn bedrijf niet onder 'instellingen'. Het alternatief is: de pagina 'relaties' ombouwen naar 'bedrijven' en daar ook een linkje voor 'mijn bedrijf' toevoegen. Die verwijst vervolgens naar de instellingenpagina.
+
+### 22 januari
+#### Design descisions
+* Tip van Jan Erik: voeg een 'weet je het zeker?' toe aan verwijderen van relatie, project, etc.
+* De pagina 'bedrijven' heeft een floating action button om een bedrijf toe te voegen. Deze bleek onduidelijk voor gebruikers: hij wordt verwardt met de FAB op de overzichtspagina. Daarom krijgt de FAB op de bedrijven-pagina een andere layout (mede omdat hij alleen van toepassing is op de lijst 'relaties' en niet op 'mijn bedrijf')
+* Tutorial over de app komt niet als tabblad van 'mijn bedrijf'. De tutorial met werking van de app moet op een andere plek komen.
+* Het tabblad 'programma instellingen' wordt 'nummers'
+* Het instellingenveld 'website' verhuist naar het tabblad 'nummers'

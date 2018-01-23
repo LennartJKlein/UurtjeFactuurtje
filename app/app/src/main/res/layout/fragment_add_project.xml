@@ -7,21 +7,42 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
-        <TextView
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/title"
-            android:text="@string/title_add_project"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/margin_medium"
-            android:paddingEnd="@dimen/margin_medium"
-            android:paddingTop="@dimen/margin_medium"
-            android:paddingBottom="@dimen/margin_medium"
             android:layout_alignParentTop="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:background="@color/white"
-            android:elevation="2dp" />
+            android:padding="@dimen/margin_medium"
+            android:background="@color/secondary"
+            android:textColorHint="@color/secondaryLight"
+            android:elevation="2dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/field_name"
+                android:hint="@string/field_name_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nextFocusUp="@id/field_name"
+                android:nextFocusLeft="@id/field_name"
+                android:lineSpacingMultiplier="1.15"
+                android:paddingTop="@dimen/margin_tiny"
+                android:imeActionId="6"
+                android:imeActionLabel="@string/action_save"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:ems="10"
+                android:backgroundTint="@color/secondaryLight"
+                android:textColorHighlight="@color/white"
+                android:textColor="@color/white"
+                android:textColorLink="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textMultiLine|textCapSentences"/>
+
+        </android.support.design.widget.TextInputLayout>
 
         <ScrollView
             android:id="@+id/form"
@@ -35,31 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/margin_medium"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_medium">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/field_name"
-                        android:hint="@string/field_name_project"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nextFocusUp="@id/field_name"
-                        android:nextFocusLeft="@id/field_name"
-                        android:lineSpacingMultiplier="1.15"
-                        android:paddingTop="@dimen/margin_tiny"
-                        android:imeActionId="6"
-                        android:imeActionLabel="@string/action_save"
-                        android:imeOptions="actionNext"
-                        android:ems="10"
-                        android:inputType="textMultiLine" />
-
-                </android.support.design.widget.TextInputLayout>
+                android:padding="@dimen/margin_medium">
 
                 <com.weiwangcn.betterspinner.library.BetterSpinner
                     android:id="@+id/field_company"
@@ -98,22 +95,27 @@
             android:padding="@dimen/margin_small"
             android:background="@color/white"
             android:elevation="4dp"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            style="?android:attr/buttonBarStyle">
 
             <Button
                 android:id="@+id/action_cancel"
                 android:text="@string/action_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null" />
+                android:layout_marginEnd="@dimen/margin_small"
+                style="?android:attr/buttonBarNegativeButtonStyle"/>
 
             <Button
                 android:id="@+id/action_create_project"
                 android:text="@string/action_create_project"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/secondary"/>
 
         </LinearLayout>
     </RelativeLayout>

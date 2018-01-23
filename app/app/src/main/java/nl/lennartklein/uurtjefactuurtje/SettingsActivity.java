@@ -1,5 +1,6 @@
 package nl.lennartklein.uurtjefactuurtje;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,27 +29,76 @@ public class SettingsActivity extends AppCompatActivity {
 
         setAuth();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setToolbar();
 
-        // Create the adapter that will return a fragment for each of the sections of the activity.
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        ViewPager mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        setTabs();
 
     }
 
+    /**
+     * Initiates Firebase authentication
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         current_user = auth.getCurrentUser();
+    }
+
+    /**
+     * Sets the toolbar for displaying a back button
+     */
+    private void setToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     * Creates a options menu in the toolbar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings_menu, menu);
+        return true;
+    }
+
+    /**
+     * Finishes an activity when back button is pressed
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_logout:
+                signOut();
+                break;
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void signOut() {
+        auth.signOut();
+        finish();
+        startActivity(new Intent(this, LoginActivity.class));
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    /**
+     * Initiates the tabbed layout
+     */
+    private void setTabs() {
+        // Create the adapter that will return a fragment for each of the sections of the activity.
+        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        ViewPager pageContainer = findViewById(R.id.container);
+        pageContainer.setAdapter(adapter);
+
+        TabLayout tabs = findViewById(R.id.tabs);
+
+        pageContainer.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pageContainer));
     }
 
     /**
@@ -62,35 +112,21 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
             switch (position) {
                 case 0:
-                    return new SettingsTutorialFragment();
-                case 1:
                     return new SettingsCompanyFragment();
+                case 1:
+                    return new SettingsNumbersFragment();
                 case 2:
-                    return new SettingsProgramFragment();
-                case 3:
                     return new SettingsUserFragment();
             }
-            return new SettingsTutorialFragment();
+            return new SettingsCompanyFragment();
         }
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 3 total pages.
+            return 3;
         }
-    }
-
-    /**
-     * Finish activity when back button in toolbar is pressed
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

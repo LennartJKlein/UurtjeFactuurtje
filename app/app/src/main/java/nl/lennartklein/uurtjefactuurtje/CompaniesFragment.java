@@ -2,7 +2,6 @@ package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,17 +11,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 /**
  * See companies of this user
@@ -33,18 +37,20 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
 
+    // Database references
+    private DatabaseReference db;
+    private DatabaseReference dbUsersMe;
+    private DatabaseReference dbCompaniesMe;
+
     // UI references
     private Context mContext;
     private ProgressBar progressWheel;
     private RecyclerView companiesList;
     private TextView emptyCompaniesList;
-    private FloatingActionButton addCompanyButton;
+    private Button addCompanyButton;
     private RelativeLayout itemMyCompany;
+    private TextView nameMyCompany;
     private ImageButton buttonMyCompany;
-
-    // Database references
-    private DatabaseReference db;
-    private DatabaseReference dbCompaniesMe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         // Set database references
         db = FirebaseDatabase.getInstance().getReference();
         dbCompaniesMe = db.child("companies").child(currentUser.getUid());
+        dbUsersMe = db.child("users").child(currentUser.getUid());
 
         // Set UI references
         mContext = getActivity().getApplicationContext();
@@ -63,11 +70,13 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         emptyCompaniesList = view.findViewById(R.id.list_companies_empty);
         addCompanyButton = view.findViewById(R.id.action_add_company);
         itemMyCompany = view.findViewById(R.id.my_company);
+        nameMyCompany = view.findViewById(R.id.my_company_name);
         buttonMyCompany = view.findViewById(R.id.action_show_my_company);
 
         // Set click listeners
         addCompanyButton.setOnClickListener(this);
         itemMyCompany.setOnClickListener(this);
+        loadMyCompany();
 
         initiateCompaniesList();
 
@@ -95,6 +104,26 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    private void loadMyCompany() {
+        dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    String companyName = user.getCompanyName();
+                    if (!Objects.equals(companyName, "")) {
+                        nameMyCompany.setText(user.getCompanyName());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void openCompanyFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddCompanyFragment dialog = new AddCompanyFragment();
@@ -108,10 +137,6 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         // Construct the list
         RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
         companiesList.setLayoutManager(manager);
-
-        // Add divider line
-        DividerItemDecoration divider = new DividerItemDecoration(companiesList.getContext(),1);
-        companiesList.addItemDecoration(divider);
     }
 
     /**
@@ -142,6 +167,8 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
                         dbCompaniesMe.child(getRef(position).getKey()).setValue(null);
                     }
                 });
+
+                inProgress(false);
 
                 // Update amount in list
                 checkAmount(companiesList.getAdapter().getItemCount());
@@ -180,7 +207,6 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     }
 
     private void checkAmount(int amount) {
-        inProgress(false);
         if (amount == 0) {
             emptyCompaniesList.setVisibility(View.VISIBLE);
             companiesList.setVisibility(View.INVISIBLE);

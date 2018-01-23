@@ -5,79 +5,85 @@
     android:layout_height="match_parent"
     tools:context="nl.lennartklein.uurtjefactuurtje.SettingsUserFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_medium">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/action_logout"
-            android:text="@string/action_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end" />
-
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small">
+            android:orientation="vertical"
+            android:padding="@dimen/margin_medium"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
-            <EditText
-                android:id="@+id/field_name"
-                android:hint="@string/field_name"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_save"
-                android:imeOptions="actionNext"
-                android:ems="10"
-                android:inputType="textPersonName" />
+                android:layout_marginBottom="@dimen/margin_small">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/field_name"
+                    android:hint="@string/field_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusUp="@id/field_name"
+                    android:nextFocusLeft="@id/field_name"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_save"
+                    android:imeOptions="actionNext"
+                    android:ems="10"
+                    android:inputType="textPersonName|textCapWords" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/field_mail"
-                android:hint="@string/field_mail"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_save"
-                android:imeOptions="actionNext"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:layout_marginBottom="@dimen/margin_small">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/field_mail"
+                    android:hint="@string/field_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_save"
+                    android:imeOptions="actionNext"
+                    android:ems="10"
+                    android:inputType="textEmailAddress" />
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small">
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/field_phone"
-                android:hint="@string/field_phone"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_save"
-                android:imeOptions="actionGo"
-                android:ems="10"
-                android:inputType="phone" />
+                android:layout_marginBottom="@dimen/margin_small">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/field_phone"
+                    android:hint="@string/field_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeActionId="6"
+                    android:imeActionLabel="@string/action_save"
+                    android:imeOptions="actionGo"
+                    android:ems="10"
+                    android:inputType="phone" />
 
-        <Button
-            android:id="@+id/action_save_continue"
-            android:text="@string/action_save_continue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            </android.support.design.widget.TextInputLayout>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/action_save_continue"
+                android:text="@string/action_save_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/secondary"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>

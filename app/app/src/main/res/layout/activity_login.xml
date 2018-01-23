@@ -29,8 +29,8 @@
             android:textAlignment="center"
             android:textColor="@color/grey"
             android:textStyle="italic"
-            android:textSize="10sp"
-            android:padding="@dimen/margin_medium"/>
+            android:textSize="@dimen/text_small"
+            android:padding="@dimen/margin_large"/>
 
     </LinearLayout>
 

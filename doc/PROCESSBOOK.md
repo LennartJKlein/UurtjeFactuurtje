@@ -73,3 +73,11 @@ Eigenlijk geen feedback gehad op het project na afloop van mijn presentatie. Daa
 * Tutorial over de app komt niet als tabblad van 'mijn bedrijf'. De tutorial met werking van de app moet op een andere plek komen.
 * Het tabblad 'programma instellingen' wordt 'nummers'
 * Het instellingenveld 'website' verhuist naar het tabblad 'nummers'
+
+### 23 januari
+#### Design descisions
+* De labels van inputvelden zijn inconsistent. De labels en velden lijken te zweven. Een betere floating label, die visueel gelinkt blijft aan een veld, zou helpen. Wellicht is het vervangen van de floating label door een icoon beter en duidelijker. (zeker omdat het voor de gebruiker even duurt om te bedenken wat er in een veld ingevuld moet worden)
+
+### 24 januari
+#### Design descisions
+* Het formulier voor het toevoegen van manuren kan intuitiever. Eerst was er een veld voor het aantal werkuren (als kommagetal). Dit is niet handig en vergt extra denkwerk voor de gebruiker. Beter is om 2 velden te maken: een begintijd en een eindtijd.

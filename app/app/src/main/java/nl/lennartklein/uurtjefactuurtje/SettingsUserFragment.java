@@ -97,8 +97,8 @@ public class SettingsUserFragment extends Fragment implements View.OnClickListen
     }
 
     private void setTextIfEmpty(EditText view, String value) {
-        if (Objects.equals(view.getText().toString(), "")) {
-            if (!Objects.equals(value, "") && value != null) {
+        if (view.getText().toString().equals("")) {
+            if (value != null && !value.equals("")) {
                 view.setText(value);
             }
         }
@@ -106,17 +106,17 @@ public class SettingsUserFragment extends Fragment implements View.OnClickListen
 
     private void saveFields() {
         String name = fieldName.getText().toString();
-        if (!Objects.equals(name, "")) {
+        if (!name.equals("")) {
             dbUsersMe.child("name").setValue(name);
         }
 
         String mail = fieldMail.getText().toString();
-        if (!Objects.equals(mail, "")) {
+        if (!mail.equals("")) {
             dbUsersMe.child("mail").setValue(mail);
         }
 
         String phone = fieldPhone.getText().toString();
-        if (!Objects.equals(phone, "")) {
+        if (!phone.equals("")) {
             dbUsersMe.child("phone").setValue(phone);
         }
 

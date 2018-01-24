@@ -17,7 +17,7 @@
     <string name="title_activity_project">My project…</string> <!--%1$s-->
     <string name="heading_unpaid_work">Unpaid work</string>
     <string name="heading_invoices">Invoices</string>
-    <string name="generating_invoice">Generating invoice...</string>
+    <string name="generating_invoice">Generating invoice…</string>
 
     <!-- Add work -->
     <string name="tab_work_hours">Man hours</string>
@@ -67,6 +67,13 @@
     <string name="field_quarter">Quarter</string>
     <string name="field_year">Year</string>
     <string name="field_project">Select a project…</string>
+    <string name="field_date">Date</string>
+    <string name="field_description">Description…</string>
+    <string name="label_currency">€</string>
+    <string name="field_total_price">Total price (without tax)</string>
+    <string name="field_hours">Hours</string>
+    <string name="field_hours_start">Start time</string>
+    <string name="field_hours_end">End time</string>
 
     <!-- Actions -->
     <string name="title_chooser">Open file</string>
@@ -75,12 +82,15 @@
     <string name="action_create_project">create</string>
     <string name="action_create_company">add</string>
     <string name="action_logout">Log out</string>
+    <string name="action_next">Next</string>
     <string name="action_save">Save</string>
     <string name="action_save_continue">Save and continue</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_save_close">Save and close</string>
     <string name="action_add">Add</string>
+    <string name="action_pick_date">Add a date</string>
+    <string name="action_pick_time">Add</string>
 
     <!-- Placeholders -->
     <string name="placeholder_project_name">Name of this project</string>
@@ -109,14 +119,12 @@
     <string name="error_no_reader">Please install a reader for PDF-files</string>
     <string name="error_no_login">Failed to log in. Try again</string>
     <string name="error_no_projects">You don\'t have any projects yet.</string>
+    <string name="error_no_calculation">Select a project to see the price.</string>
     <string name="error_no_companies">You don\'t have any relations yet.</string>
     <string name="error_no_file_made">Failed to create file. Try again</string>
     <string name="error_field_required">This field is required.</string>
     <string name="error_no_data" translatable="false">Failed to get data from Firebase.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="section_format" translatable="false">Hello World from section: %1$d</string>
     <string name="title_add_project">Start a new project…</string>
     <string name="title_relations">Companies</string>
     <string name="error_no_relations">You don\'t have any relations yet.</string>
@@ -124,5 +132,6 @@
     <string name="heading_relations">Companies</string>
     <string name="title_add_relation">Add a relation</string>
     <string name="title_activity_settings">My company</string>
+    <string name="image_arrow">To</string>
 
 </resources>

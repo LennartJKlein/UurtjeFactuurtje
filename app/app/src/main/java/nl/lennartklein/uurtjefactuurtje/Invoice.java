@@ -337,7 +337,7 @@ public class Invoice {
     }
 
     private void openFile(Context mContext) {
-        if (!Objects.equals(filepath, "") || filepath != null) {
+        if (filepath != null || !filepath.equals("")) {
 
             Intent target = new Intent(Intent.ACTION_VIEW);
             target.setDataAndType(Uri.fromFile(new File(filepath)),"application/pdf");

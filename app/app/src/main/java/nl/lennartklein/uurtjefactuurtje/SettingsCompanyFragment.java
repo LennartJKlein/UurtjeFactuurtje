@@ -97,8 +97,8 @@ public class SettingsCompanyFragment extends Fragment implements View.OnClickLis
     }
 
     private void setTextIfEmpty(EditText view, String value) {
-        if (Objects.equals(view.getText().toString(), "")) {
-            if (!Objects.equals(value, "") && value != null) {
+        if (view.getText().toString().equals("")) {
+            if (value != null && !value.equals("")) {
                 view.setText(value);
             }
         }
@@ -106,27 +106,27 @@ public class SettingsCompanyFragment extends Fragment implements View.OnClickLis
 
     private void saveFields() {
         String companyName = fieldName.getText().toString();
-        if (!Objects.equals(companyName, "")) {
+        if (!companyName.equals("")) {
             dbUsersMe.child("companyName").setValue(companyName);
         }
 
         String postal = fieldPostal.getText().toString();
-        if (!Objects.equals(postal, "")) {
+        if (!postal.equals("")) {
             dbUsersMe.child("postal").setValue(postal);
         }
 
         String streetNr = fieldStreetNr.getText().toString();
-        if (!Objects.equals(streetNr, "")) {
+        if (!streetNr.equals("")) {
             dbUsersMe.child("streetNr").setValue(streetNr);
         }
 
         String street = fieldStreet.getText().toString();
-        if (!Objects.equals(street, "")) {
+        if (!street.equals("")) {
             dbUsersMe.child("street").setValue(street);
         }
 
         String city = fieldCity.getText().toString();
-        if (!Objects.equals(city, "")) {
+        if (!city.equals("")) {
             dbUsersMe.child("city").setValue(city);
         }
 

@@ -97,8 +97,8 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
     }
 
     private void setTextIfEmpty(EditText view, String value) {
-        if (Objects.equals(view.getText().toString(), "")) {
-            if (!Objects.equals(value, "") && value != null) {
+        if (view.getText().toString().equals("")) {
+            if (value != null && !value.equals("")) {
                 view.setText(value);
             }
         }
@@ -106,27 +106,27 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
 
     private void saveFields() {
         String website = fieldWebsite.getText().toString();
-        if (!Objects.equals(website, "")) {
+        if (!website.equals("")) {
             dbUsersMe.child("website").setValue(website);
         }
 
         String bank = fieldBank.getText().toString();
-        if (!Objects.equals(bank, "")) {
+        if (!bank.equals("")) {
             dbUsersMe.child("bank").setValue(bank);
         }
 
         String payDue = fieldPayDue.getText().toString();
-        if (!Objects.equals(payDue, "")) {
+        if (!payDue.equals("")) {
             dbUsersMe.child("payDue").setValue(payDue);
         }
 
         String btw = fieldBtw.getText().toString();
-        if (!Objects.equals(btw, "")) {
+        if (!btw.equals("")) {
             dbUsersMe.child("btw").setValue(btw);
         }
 
         String kvk = fieldKvk.getText().toString();
-        if (!Objects.equals(kvk, "")) {
+        if (!kvk.equals("")) {
             dbUsersMe.child("kvk").setValue(kvk);
         }
 

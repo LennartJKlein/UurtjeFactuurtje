@@ -111,7 +111,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
                 User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
                     String companyName = user.getCompanyName();
-                    if (!Objects.equals(companyName, "")) {
+                    if (!companyName.equals("")) {
                         nameMyCompany.setText(user.getCompanyName());
                     }
                 }

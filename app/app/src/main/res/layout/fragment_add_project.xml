@@ -66,25 +66,43 @@
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:hint="@string/field_company" />
 
-                <android.support.design.widget.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_medium">
+                    android:orientation="horizontal">
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/field_hour_price"
-                        android:hint="@string/field_hour_price"
+                    <TextView
+                        android:id="@+id/label_currency"
+                        android:text="@string/label_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_marginBottom="@dimen/margin_tiny"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:textColor="@color/greyDark"
+                        android:layout_gravity="center"/>
+
+                    <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/margin_tiny"
-                        android:singleLine="true"
-                        android:imeActionId="6"
-                        android:imeActionLabel="@string/action_save"
-                        android:imeOptions="actionGo"
-                        android:ems="10"
-                        android:inputType="numberDecimal|numberSigned" />
+                        android:layout_marginBottom="@dimen/margin_medium">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/field_hour_price"
+                            android:hint="@string/field_hour_price"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/margin_tiny"
+                            android:singleLine="true"
+                            android:imeActionId="6"
+                            android:imeActionLabel="@string/action_save"
+                            android:imeOptions="actionGo"
+                            android:ems="10"
+                            android:inputType="numberDecimal|numberSigned" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

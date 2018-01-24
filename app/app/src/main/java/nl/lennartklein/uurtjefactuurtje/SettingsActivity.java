@@ -89,7 +89,7 @@ public class SettingsActivity extends AppCompatActivity {
      */
     private void setTabs() {
         // Create the adapter that will return a fragment for each of the sections of the activity.
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         ViewPager pageContainer = findViewById(R.id.container);
@@ -104,9 +104,9 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Returns a fragment corresponding to the tab's positions.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class TabsAdapter extends FragmentPagerAdapter {
 
-        SectionsPagerAdapter(FragmentManager fm) {
+        TabsAdapter(FragmentManager fm) {
             super(fm);
         }
 

@@ -45,7 +45,7 @@
 
         <ImageButton
             android:id="@+id/action_show_project"
-            android:src="@drawable/ic_chevron_right_24dp"
+            android:src="@drawable/ic_chevron_right"
             android:layout_width="@dimen/list_button_small"
             android:layout_height="@dimen/list_button_small"
             android:layout_alignParentEnd="true"

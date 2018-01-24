@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/main_menu_overview"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_dashboard_black"
         android:title="@string/title_overview" />
 
     <item
         android:id="@+id/main_menu_btw"
-        android:icon="@drawable/ic_attach_money_black_24dp"
+        android:icon="@drawable/ic_attach_money_black"
         android:title="@string/title_tax" />
 
     <item
         android:id="@+id/main_menu_relations"
-        android:icon="@drawable/ic_business_white_24dp"
+        android:icon="@drawable/ic_business_white"
         android:title="@string/title_relations" />
 
 </menu>

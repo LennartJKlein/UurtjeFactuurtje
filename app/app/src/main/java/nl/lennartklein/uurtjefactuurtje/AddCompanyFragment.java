@@ -47,7 +47,7 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
         setAuth();
 
         // Database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbCompanies = db.child("companies");
     }
 

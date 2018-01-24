@@ -20,7 +20,7 @@ import org.w3c.dom.Text;
 /**
  * Settings page with explanation about the app
  */
-public class ProjectInfoFragment extends Fragment implements View.OnClickListener {
+public class ProjectInfoFragment extends Fragment {
 
     // Authentication
     private FirebaseAuth auth;
@@ -52,7 +52,7 @@ public class ProjectInfoFragment extends Fragment implements View.OnClickListene
         tvDate = view.findViewById(R.id.project_date);
 
         // Set database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
 
         // Get data
@@ -70,23 +70,5 @@ public class ProjectInfoFragment extends Fragment implements View.OnClickListene
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.action_delete:
-                verifyDelete();
-                break;
-        }
-    }
-
-    public void verifyDelete() {
-        //TODO: verify
-        deleteProject();
-    }
-
-    public void deleteProject() {
-        dbProjectsMe.child(project.getId()).setValue(null);
     }
 }

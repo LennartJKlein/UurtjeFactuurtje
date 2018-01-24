@@ -155,7 +155,7 @@ public class Invoice {
     }
 
     private void fetchData() {
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference db = PersistentDatabase.getReference();
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

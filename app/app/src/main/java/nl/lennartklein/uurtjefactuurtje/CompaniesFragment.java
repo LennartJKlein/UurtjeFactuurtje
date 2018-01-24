@@ -59,7 +59,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         setAuth();
 
         // Set database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbCompaniesMe = db.child("companies").child(currentUser.getUid());
         dbUsersMe = db.child("users").child(currentUser.getUid());
 

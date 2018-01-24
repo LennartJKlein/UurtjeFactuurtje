@@ -1,6 +1,7 @@
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -50,6 +51,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
     private List<Company> relations;
     private List<String> relationNames;
     private ArrayAdapter<String> relationsAdapter;
+    private Project project;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         setAuth();
 
         // Database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbCompaniesMe = db.child("companies").child(currentUser.getUid());
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
     }
@@ -180,10 +182,13 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
     public void insertInDatabase(String name, String companyName, String hourPrice) {
 
-        int companyPosition = relationNames.indexOf(companyName);
-        Company company = relations.get(companyPosition);
+        DatabaseReference dbProjectNew = dbProjectsMe.push();
 
-        Project project = new Project();
+        Company company = fetchCompany(companyName);
+
+        // Build the project object
+        project = new Project();
+        project.setId(dbProjectNew.getKey());
         project.setCompanyName(companyName);
         project.setHourPrice(Double.parseDouble(hourPrice));
         project.setName(name);
@@ -191,15 +196,32 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         project.setDate(getDateToday());
         project.setCompanyId(company.getId());
 
-        dbProjectsMe.push().setValue(project);
+        dbProjectNew.setValue(project);
+
+        openProject();
 
         closeFragment();
+    }
+
+    public Company fetchCompany(String companyName) {
+        if (!companyName.equals("")) {
+            int companyPosition = relationNames.indexOf(companyName);
+            return relations.get(companyPosition);
+        } else {
+            return null;
+        }
     }
 
     public String getDateToday() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(c.getTime());
+    }
+
+    public void openProject() {
+        Intent projectIntent = new Intent(mContext, ProjectActivity.class);
+        projectIntent.putExtra("PROJECT_KEY", project.getId());
+        startActivity(projectIntent);
     }
 
     public void closeFragment() {

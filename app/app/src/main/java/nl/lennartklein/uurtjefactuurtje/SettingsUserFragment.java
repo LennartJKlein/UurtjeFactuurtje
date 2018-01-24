@@ -55,7 +55,7 @@ public class SettingsUserFragment extends Fragment implements View.OnClickListen
         setAuth();
 
         // Set database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
 
         // Set UI references

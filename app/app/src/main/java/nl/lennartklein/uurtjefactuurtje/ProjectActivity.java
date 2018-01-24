@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -50,7 +51,7 @@ public class ProjectActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
 
         // Set database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
 
         // Get data
@@ -150,13 +151,37 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     /**
+     * Creates a options menu in the toolbar
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.project_menu, menu);
+        return true;
+    }
+
+    /**
      * Finish activity when back button in toolbar is pressed
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
+        switch(item.getItemId()) {
+            case R.id.menu_delete:
+                verifyDelete();
+                break;
+            case android.R.id.home:
+                finish();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void verifyDelete() {
+        //TODO: verify
+        deleteProject();
+    }
+
+    public void deleteProject() {
+        dbProjectsMe.child(project.getId()).setValue(null);
+        finish();
     }
 }

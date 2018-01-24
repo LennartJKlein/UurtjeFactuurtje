@@ -63,7 +63,7 @@
 
             <ImageButton
                 android:id="@+id/action_show_invoice"
-                android:src="@drawable/ic_receipt_24dp"
+                android:src="@drawable/ic_receipt_primary"
                 android:layout_width="@dimen/list_button"
                 android:layout_height="@dimen/list_button"
                 android:layout_alignParentEnd="true"

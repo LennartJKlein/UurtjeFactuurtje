@@ -69,7 +69,7 @@
     <string name="field_project">Select a project…</string>
     <string name="field_date">Date</string>
     <string name="field_description">Description…</string>
-    <string name="label_currency">€</string>
+    <string name="label_currency" translatable="false">€</string>
     <string name="field_total_price">Total price (without tax)</string>
     <string name="field_hours">Hours</string>
     <string name="field_hours_start">Start time</string>
@@ -87,10 +87,11 @@
     <string name="action_save_continue">Save and continue</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
+    <string name="action_delete_project">Delete project</string>
     <string name="action_save_close">Save and close</string>
     <string name="action_add">Add</string>
     <string name="action_pick_date">Add a date</string>
-    <string name="action_pick_time">Add</string>
+    <string name="action_pick_time">00:00</string>
 
     <!-- Placeholders -->
     <string name="placeholder_project_name">Name of this project</string>
@@ -98,6 +99,9 @@
     <string name="placeholder_date" translatable="false">01-01-1900</string>
     <string name="placeholder_date_invoice">Last invoice: %1$s</string>
     <string name="placeholder_currency" translatable="false">€ %1$s</string>
+    <string name="placeholder_zero" translatable="false">0</string>
+    <string name="placeholder_zeros" translatable="false">00</string>
+    <string name="placeholder_comma" translatable="false">,</string>
 
     <!-- Invoice document -->
     <string name="invoice">Factuur</string>
@@ -113,13 +117,13 @@
 
     <!-- Notifications -->
     <string name="note_saved">Saved!</string>
+    <string name="note_work_added">Work added!</string>
 
     <!-- Errors -->
     <string name="error_database_invoice">No connection to your data could be made. Try again</string>
     <string name="error_no_reader">Please install a reader for PDF-files</string>
     <string name="error_no_login">Failed to log in. Try again</string>
     <string name="error_no_projects">You don\'t have any projects yet.</string>
-    <string name="error_no_calculation">Select a project to see the price.</string>
     <string name="error_no_companies">You don\'t have any relations yet.</string>
     <string name="error_no_file_made">Failed to create file. Try again</string>
     <string name="error_field_required">This field is required.</string>
@@ -133,5 +137,6 @@
     <string name="title_add_relation">Add a relation</string>
     <string name="title_activity_settings">My company</string>
     <string name="image_arrow">To</string>
+    <string name="image_time">Time lapse</string>
 
 </resources>

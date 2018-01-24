@@ -42,13 +42,13 @@
                 android:id="@+id/tab_work_hours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_timelapse_white_24dp" />
+                android:icon="@drawable/ic_timelapse_grey_dark" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tab_work_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_local_offer_white_24dp" />
+                android:icon="@drawable/ic_local_offer_white" />
 
         </android.support.design.widget.TabLayout>
 

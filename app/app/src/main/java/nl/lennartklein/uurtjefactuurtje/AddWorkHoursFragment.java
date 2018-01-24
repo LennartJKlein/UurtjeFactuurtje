@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -27,10 +25,9 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
 
     // UI references
     private Context mContext;
-    private ScrollView form;
-    private TextView fieldTimeStart;
-    private TextView fieldTimeEnd;
-    private TextView fieldDate;
+    private EditText fieldTimeStart;
+    private EditText fieldTimeEnd;
+    private EditText fieldDate;
     private EditText fieldDescription;
     private TextView fieldPrice;
     private Button actionInsert;
@@ -48,7 +45,7 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
     private double hours;
     private String description;
     private double price = 0.00;
-    DecimalFormat currency = new DecimalFormat("0,00");
+    DecimalFormat currency = new DecimalFormat("0.00");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +58,6 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_add_work_hours, container, false);
 
         // Set UI references
-        form = view.findViewById(R.id.form);
         fieldTimeStart = view.findViewById(R.id.field_time_start);
         fieldTimeEnd = view.findViewById(R.id.field_time_end);
         fieldDate = view.findViewById(R.id.field_date);
@@ -70,7 +66,6 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         actionInsert = view.findViewById(R.id.action_create_project);
         actionCancel = view.findViewById(R.id.action_cancel);
 
-        form.setOnClickListener(this);
         fieldDate.setOnClickListener(this);
         fieldTimeStart.setOnClickListener(this);
         fieldTimeEnd.setOnClickListener(this);
@@ -85,9 +80,6 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.form:
-                setPriceField();
-                break;
             case R.id.field_date:
                 showDatePicker();
                 break;
@@ -165,14 +157,14 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
     }
 
     private void setTimeFields() {
-        String startTime = startHour + ":" + startMinute;
+        String startTime = String.format("%1$02d:%2$02d", startHour, startMinute);
         fieldTimeStart.setText(startTime);
 
-        String endTime = endHour + ":" + endMinute;
+        String endTime = String.format("%1$02d:%2$02d", endHour, endMinute);
         fieldTimeEnd.setText(endTime);
 
-        int deltaHours = (endHour - startHour);
-        int deltaMinutes = (endMinute - startMinute) / 60;
+        double deltaHours = (endHour - startHour);
+        double deltaMinutes = ((endMinute - startMinute) / 60.0);
         hours = deltaHours + deltaMinutes;
     }
 
@@ -181,13 +173,12 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         Project project = fragment.fetchProject();
         if (project != null) {
             price = hours * project.getHourPrice();
-            fieldPrice.setText(mContext.getResources().getString(
-                    R.string.placeholder_currency,
-                    currency.format(price)));
         } else {
-            fieldPrice.setText(mContext.getResources().getString(R.string.error_no_calculation));
-            fieldPrice.setTextSize(16);
+            price = hours * 0;
         }
+        fieldPrice.setText(mContext.getResources().getString(
+                R.string.placeholder_currency,
+                currency.format(price)));
     }
 
     public String getDate() {

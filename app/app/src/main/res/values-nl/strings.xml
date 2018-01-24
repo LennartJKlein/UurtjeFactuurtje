@@ -89,4 +89,16 @@
     <string name="action_add">Toevoegen</string>
     <string name="tab_work_hours">Manuren</string>
     <string name="tab_work_product">Product</string>
+    <string name="field_date">Datum</string>
+    <string name="field_description">Omschrijving</string>
+    <string name="field_total_price">Totaalprijs (excl. BTW)</string>
+    <string name="field_hours">Uren</string>
+    <string name="field_hours_start">Starttijd</string>
+    <string name="field_hours_end">Eindtijd</string>
+    <string name="action_pick_date">Datum toevoegen</string>
+    <string name="action_next">Volgende</string>
+    <string name="action_pick_time">00:00</string>
+    <string name="error_no_calculation">Kies een project om de totaalprijs te zien.</string>
+    <string name="image_arrow">tot</string>
+    <string name="image_time">Tijdsverloop</string>
 </resources>

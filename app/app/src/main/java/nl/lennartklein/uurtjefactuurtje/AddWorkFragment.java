@@ -1,6 +1,7 @@
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -53,6 +55,7 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
     private List<Project> projects;
     private List<String> projectNames;
     private ArrayAdapter<String> projectsAdapter;
+    private Project project;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +65,7 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         setAuth();
 
         // Database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
         dbWorkMe = db.child("work").child(currentUser.getUid());
     }
@@ -215,16 +218,20 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         String hours = "0";
         String description = "";
         String date = "";
+
+        // Fetch values from sub forms
+        Fragment page = getChildFragmentManager().findFragmentByTag("android:switcher:" +
+                R.id.container + ":" + pageContainer.getCurrentItem());
         switch (pageContainer.getCurrentItem()) {
             case 0:
-                AddWorkHoursFragment hoursForm = (AddWorkHoursFragment) tabsAdapter.getCurrentFragment();
+                AddWorkHoursFragment hoursForm = (AddWorkHoursFragment) page;
                 hours = hoursForm.getHours();
                 date = hoursForm.getDate();
                 description = hoursForm.getDescription();
                 price = hoursForm.getPrice();
                 break;
             case 1:
-                AddWorkProductFragment productForm = (AddWorkProductFragment) tabsAdapter.getCurrentFragment();
+                AddWorkProductFragment productForm = (AddWorkProductFragment) page;
                 price = productForm.getPrice();
                 date = productForm.getDate();
                 description = productForm.getDescription();
@@ -252,7 +259,7 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
 
     public void insertInDatabase(String price, String hours, String description, String date) {
 
-        Project project = fetchProject();
+        project = fetchProject();
 
         Work work = new Work();
         work.setDescription(description);
@@ -265,7 +272,19 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
 
         dbWorkMe.child(project.getId()).push().setValue(work);
 
+        Toast.makeText(mContext,
+                mContext.getResources().getString(R.string.note_work_added),
+                Toast.LENGTH_SHORT).show();
+
+        openProject();
+
         closeFragment();
+    }
+
+    public void openProject() {
+        Intent projectIntent = new Intent(mContext, ProjectActivity.class);
+        projectIntent.putExtra("PROJECT_KEY", project.getId());
+        startActivity(projectIntent);
     }
 
     public void closeFragment() {

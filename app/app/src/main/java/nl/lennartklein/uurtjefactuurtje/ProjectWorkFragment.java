@@ -52,7 +52,7 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         setAuth();
 
         // Set database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
 

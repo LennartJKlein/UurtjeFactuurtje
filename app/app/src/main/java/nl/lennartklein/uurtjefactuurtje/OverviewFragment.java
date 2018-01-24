@@ -51,7 +51,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         setAuth();
 
         // Set database references
-        db = FirebaseDatabase.getInstance().getReference();
+        db = PersistentDatabase.getReference();
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
 
         // Set UI references

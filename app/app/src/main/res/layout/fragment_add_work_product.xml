@@ -32,16 +32,17 @@
             <TextView
                 android:id="@+id/label_currency"
                 android:text="@string/label_currency"
-                android:layout_width="wrap_content"
+                android:layout_width="24dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_tiny"
                 android:textColor="@color/greyDark"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:textAlignment="center"/>
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/field_price"
-                android:hint="0"
+                android:hint="@string/placeholder_zero"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.65"
@@ -57,7 +58,7 @@
                 android:inputType="number|numberSigned" />
 
             <TextView
-                android:text=","
+                android:text="@string/placeholder_comma"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -67,7 +68,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/field_price_cents"
-                android:hint="00"
+                android:hint="@string/placeholder_zeros"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.55"
@@ -82,43 +83,35 @@
 
         </LinearLayout>
 
-        <TextView
+        <EditText
             android:id="@+id/field_date"
             android:hint="@string/action_pick_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:paddingTop="@dimen/margin_small"
-            android:paddingBottom="@dimen/margin_small"
-            android:paddingStart="@dimen/margin_tiny"
-            android:paddingEnd="@dimen/margin_tiny"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:paddingTop="@dimen/margin_tiny"
+            android:paddingBottom="@dimen/margin_medium"
+            android:singleLine="true"
+            android:focusable="false"
             android:drawablePadding="@dimen/margin_small"
             android:drawableTint="@color/greyDark"
-            android:drawableStart="@drawable/ic_event_black_24dp"
+            android:drawableStart="@drawable/ic_event_grey_dark"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textSize="18sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/margin_tiny"
-            android:layout_marginEnd="@dimen/margin_tiny"
-            android:layout_marginBottom="@dimen/margin_large"
-            android:background="@color/greyDark" />
+            android:textSize="18sp"
+            android:inputType="date"/>
 
         <EditText
             android:id="@+id/field_description"
             android:hint="@string/field_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_large"
             android:paddingTop="@dimen/margin_tiny"
             android:paddingBottom="@dimen/margin_medium"
+            android:singleLine="true"
             android:drawablePadding="@dimen/margin_small"
             android:drawableTint="@color/greyDark"
-            android:drawableStart="@drawable/ic_short_text_black_24dp"
-            android:singleLine="true"
+            android:drawableStart="@drawable/ic_short_text_grey_dark"
             android:imeActionLabel="@string/action_save"
             android:imeOptions="actionDone"
             android:inputType="text|textMultiLine"/>

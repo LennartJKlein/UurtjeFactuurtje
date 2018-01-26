@@ -81,3 +81,4 @@ Eigenlijk geen feedback gehad op het project na afloop van mijn presentatie. Daa
 ### 24 januari
 #### Design descisions
 * Het formulier voor het toevoegen van manuren kan intuitiever. Eerst was er een veld voor het aantal werkuren (als kommagetal). Dit is niet handig en vergt extra denkwerk voor de gebruiker. Beter is om 2 velden te maken: een begintijd en een eindtijd.
+* De app moet ook werken wanneer internet even niet beschikbaar is. Daarom een PersistentDatabase class door de hele app getrokken, zodat er een offline variant van de database altijd beschikbaar is.

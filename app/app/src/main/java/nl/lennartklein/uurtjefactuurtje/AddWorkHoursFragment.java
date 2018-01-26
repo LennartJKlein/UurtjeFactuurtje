@@ -45,7 +45,7 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
     private double hours;
     private String description;
     private double price = 0.00;
-    DecimalFormat currency = new DecimalFormat("0.00");
+    private DecimalFormat currency = new DecimalFormat("0.00");
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

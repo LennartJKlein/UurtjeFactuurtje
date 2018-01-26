@@ -14,10 +14,13 @@
     <string name="heading_projects">Projects</string>
 
     <!-- ProjectActivity -->
-    <string name="title_activity_project">My project…</string> <!--%1$s-->
+    <string name="title_activity_project">My project…</string>
+    <string name="tab_project_work">Work</string>
+    <string name="tab_project_invoices">Invoices</string>
     <string name="heading_unpaid_work">Unpaid work</string>
     <string name="heading_invoices">Invoices</string>
     <string name="generating_invoice">Generating invoice…</string>
+    <string name="title_change_name">Project name</string>
 
     <!-- Add work -->
     <string name="tab_work_hours">Man hours</string>
@@ -83,6 +86,7 @@
     <string name="action_create_company">add</string>
     <string name="action_logout">Log out</string>
     <string name="action_next">Next</string>
+    <string name="action_ok">Ok</string>
     <string name="action_save">Save</string>
     <string name="action_save_continue">Save and continue</string>
     <string name="action_cancel">Cancel</string>
@@ -97,11 +101,14 @@
     <string name="placeholder_project_name">Name of this project</string>
     <string name="placeholder_company">Information</string>
     <string name="placeholder_date" translatable="false">01-01-1900</string>
+    <string name="placeholder_date_short" translatable="false">01 jan</string>
     <string name="placeholder_date_invoice">Last invoice: %1$s</string>
     <string name="placeholder_currency" translatable="false">€ %1$s</string>
     <string name="placeholder_zero" translatable="false">0</string>
     <string name="placeholder_zeros" translatable="false">00</string>
     <string name="placeholder_comma" translatable="false">,</string>
+    <string name="placeholder_work">Description of this work…</string>
+    <string name="placeholder_hours">%1$s hours</string>
 
     <!-- Invoice document -->
     <string name="invoice">Factuur</string>
@@ -128,6 +135,8 @@
     <string name="error_no_file_made">Failed to create file. Try again</string>
     <string name="error_field_required">This field is required.</string>
     <string name="error_no_data" translatable="false">Failed to get data from Firebase.</string>
+    <string name="error_no_permission">Failed to create invoice. No permission to write to storage.</string>
+    <string name="error_no_work_unpaid">There is no unpaid work for this project.</string>
 
     <string name="title_add_project">Start a new project…</string>
     <string name="title_relations">Companies</string>

@@ -67,7 +67,8 @@
                     android:layout_marginEnd="@dimen/margin_medium"
                     android:layout_below="@id/list_title"
                     android:elevation="2dp"
-                    android:background="@drawable/list_card"/>
+                    android:background="@drawable/list_card"
+                    tools:listitem="@layout/list_item_project"/>
 
             </RelativeLayout>
 

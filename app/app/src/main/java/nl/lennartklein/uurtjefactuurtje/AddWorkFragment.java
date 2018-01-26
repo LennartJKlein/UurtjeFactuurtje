@@ -143,10 +143,6 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
             // Show 2 total pages.
             return 2;
         }
-
-        private Fragment getCurrentFragment() {
-            return currentFragment;
-        }
     }
 
     private void getProjects() {
@@ -268,9 +264,8 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         work.setPrice(Double.parseDouble(price));
         work.setUserId(currentUser.getUid());
         work.setProjectId(project.getId());
-        work.setPaid(0);
 
-        dbWorkMe.child(project.getId()).push().setValue(work);
+        dbWorkMe.child(project.getId()).child("unpaid").push().setValue(work);
 
         Toast.makeText(mContext,
                 mContext.getResources().getString(R.string.note_work_added),

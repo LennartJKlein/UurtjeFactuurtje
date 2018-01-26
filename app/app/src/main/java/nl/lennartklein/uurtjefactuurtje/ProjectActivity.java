@@ -1,6 +1,8 @@
 package nl.lennartklein.uurtjefactuurtje;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,9 +11,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,8 +32,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Objects;
 
-public class ProjectActivity extends AppCompatActivity {
+public class ProjectActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Authentication
     private FirebaseAuth auth;
@@ -32,12 +44,17 @@ public class ProjectActivity extends AppCompatActivity {
 
     // Database references
     private DatabaseReference db;
+    private DatabaseReference dbUsersMe;
     private DatabaseReference dbProjectsMe;
+    private DatabaseReference dbInvoicesMe;
+    private DatabaseReference dbCompaniesMe;
 
     // Data
-    Project project;
+    private User user;
+    private Project project;
 
     // UI references
+    private Context mContext;
     private Toolbar toolbar;
 
     @Override
@@ -47,19 +64,44 @@ public class ProjectActivity extends AppCompatActivity {
 
         setAuth();
 
-        // Set UI references
+        setReferences();
+
+        // Set UI
+        mContext = this;
         toolbar = findViewById(R.id.toolbar);
-
-        // Set database references
-        db = PersistentDatabase.getReference();
-        dbProjectsMe = db.child("projects").child(currentUser.getUid());
-
-        // Get data
-        String projectKey = getIntent().getExtras().getString("PROJECT_KEY");
-        fetchProject(projectKey);
-
+        toolbar.setOnClickListener(this);
         setBackButton();
 
+        // Get data for this project
+        String projectKey = getIntent().getExtras().getString("PROJECT_KEY");
+        if (projectKey != null) {
+            fetchProject(projectKey);
+            fetchUser();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.action_create_invoice:
+                changeProjectName();
+                break;
+        }
+    }
+
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
+    }
+
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbUsersMe = db.child("users").child(currentUser.getUid());
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
+        dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
+        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
     }
 
     private void fetchProject(String key) {
@@ -76,9 +118,24 @@ public class ProjectActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(ProjectActivity.this,
-                        getResources().getString(R.string.error_no_projects), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, getResources().getString(R.string.error_no_projects),
+                        Toast.LENGTH_SHORT).show();
                 finish();
+            }
+        });
+    }
+
+    private void fetchUser() {
+        dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(mContext, getResources().getString(R.string.error_no_data),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -136,11 +193,6 @@ public class ProjectActivity extends AppCompatActivity {
         }
     }
 
-    private void setAuth() {
-        auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
-    }
-
     /**
      * Set back button in toolbar
      */
@@ -183,5 +235,83 @@ public class ProjectActivity extends AppCompatActivity {
     public void deleteProject() {
         dbProjectsMe.child(project.getId()).setValue(null);
         finish();
+    }
+
+    /**
+     * Create an invoice for this project
+     */
+    public void createNewInvoice() {
+        Toast.makeText(mContext, getString(R.string.generating_invoice), Toast.LENGTH_SHORT).show();
+
+        // Add 1 to invoiceNumber of user
+        long newInvoiceNumber = Long.valueOf(user.getInvoiceNumber()) + 1;
+        dbUsersMe.child("invoiceNumber").setValue(String.valueOf(newInvoiceNumber));
+
+        // Create new invoice object
+        Invoice invoice = new Invoice();
+        invoice.setDate(getDateToday(0));
+        invoice.setEndDate(getDateToday(Integer.valueOf(user.getPayDue())));
+        invoice.setInvoice_number(user.getInvoiceNumber() );
+        invoice.setUserId(currentUser.getUid());
+        invoice.setCompanyId(project.getCompanyId());
+        invoice.setProjectId(project.getId());
+        invoice.calculatePrice();
+
+        // Initiate new file generator
+        GeneratePdf writer = new GeneratePdf(mContext, invoice);
+        writer.createFile();
+
+        // Add invoice to database
+        insertIntoDatabase(invoice);
+    }
+
+    public String getDateToday(int extraDays) {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        c.add(Calendar.DATE, extraDays);
+        return df.format(c.getTime());
+    }
+
+    public void insertIntoDatabase(Invoice invoice) {
+        dbInvoicesMe.push().setValue(invoice);
+    }
+
+    private void changeProjectName() {
+        // Set up dialog
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+        alert.setTitle(R.string.title_change_name);
+
+        // Create input field
+        final EditText input = new EditText(mContext);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setSingleLine();
+        LinearLayout linearLayout = new LinearLayout(mContext);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER;
+        input.setLayoutParams(layoutParams);
+
+        // Set input field
+        input.setText(project.getName(), TextView.BufferType.EDITABLE);
+        linearLayout.addView(input);
+        linearLayout.setPadding(36, 0, 36, 0);
+        alert.setView(linearLayout);
+
+        // Create a delete button
+        alert.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // Save input to the database
+                String name = input.getText().toString();
+                dbProjectsMe.child(project.getId()).child("name").setValue(name);
+            }
+        });
+
+        // Create a cancel button
+        alert.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        alert.show();
     }
 }

@@ -98,7 +98,11 @@
     <string name="action_pick_date">Datum toevoegen</string>
     <string name="action_next">Volgende</string>
     <string name="action_pick_time">00:00</string>
-    <string name="error_no_calculation">Kies een project om de totaalprijs te zien.</string>
     <string name="image_arrow">tot</string>
     <string name="image_time">Tijdsverloop</string>
+    <string name="action_delete_project">Project verwijderen</string>
+    <string name="note_work_added">Werk toegevoegd!</string>
+    <string name="tab_project_work">Werk</string>
+    <string name="tab_project_invoices">Facturen</string>
+    <string name="error_no_permission">Mislukt. Geef toestemming om bestanden op te slaan.</string>
 </resources>

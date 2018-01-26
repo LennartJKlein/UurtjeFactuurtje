@@ -22,7 +22,7 @@ public class Work implements Serializable {
     Work() {}
 
     public Work(String id, String userId, String projectId, String invoiceId, String description,
-                String date, double hours, double price, int paid) {
+                String date, double hours, double price) {
         this.id = id;
         this.userId = userId;
         this.projectId = projectId;
@@ -31,7 +31,6 @@ public class Work implements Serializable {
         this.date = date;
         this.hours = hours;
         this.price = price;
-        this.paid = paid;
     }
 
     public String getId() {
@@ -96,13 +95,5 @@ public class Work implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public int getPaid() {
-        return paid;
-    }
-
-    public void setPaid(int paid) {
-        this.paid = paid;
     }
 }

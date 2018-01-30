@@ -82,3 +82,20 @@ Eigenlijk geen feedback gehad op het project na afloop van mijn presentatie. Daa
 #### Design descisions
 * Het formulier voor het toevoegen van manuren kan intuitiever. Eerst was er een veld voor het aantal werkuren (als kommagetal). Dit is niet handig en vergt extra denkwerk voor de gebruiker. Beter is om 2 velden te maken: een begintijd en een eindtijd.
 * De app moet ook werken wanneer internet even niet beschikbaar is. Daarom een PersistentDatabase class door de hele app getrokken, zodat er een offline variant van de database altijd beschikbaar is.
+
+### 25 januari
+#### Issues
+* Ik ben vrij lang bezig met het werkend krijgen van 'werk' toevoegen. Dit deel bleek gecompliceerder dan verwacht. Een aantal features lopen nu achter, zoals 'kosten' en 'btw'. Deze zullen waarschijnlijk niet klaar zijn voor de beta-versie.
+
+### 29 januari
+#### Issues
+* Het systeem van facturen maken tot PDF bleek buggy'er dan verwacht. Er zaten een hoop fouten in, dat als de gebruiker iets onverwachts deed, het systeem daar niet mee overweg kon. Dit heeft me uiteindelijk de hele dag gekost, terwijl ik eigenlijk nog MVP-features moest toevoegen.
+
+#### Design descisions
+* Het genereren van PDF's was onhandig opgezet: de file-generator zelf ging nog calls maken naar FireBase om delen van de informatie van het bestand op te halen. Actie: alle data verzamelen vóór het naar de generator gaat.
+
+### 30 januari
+Vliegende start. Facturen jzijn gerepareerd, 'kosten' zijn toegevoegd en hebben hun eigen invoerscherm.
+
+#### Design descisions
+* Het woord 'kost' en 'kosten' was verwarrend. Dit merkte ik bij het uitleggen van mijn voortgang aan mijn team. De nieuwe Nederlandse term wordt nu 'aankoop', 'aankopen', 'aanschaf'.

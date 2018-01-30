@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    android:id="@+id/container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_medium"
+    android:background="?selectableItemBackground">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/cost_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:text="@string/placeholder_date_short" />
+
+    <TextView
+        android:id="@+id/cost_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/cost_date"
+        android:layout_toStartOf="@id/cost_price"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="@string/placeholder_cost" />
+
+    <TextView
+        android:id="@+id/cost_company"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/cost_date"
+        android:layout_toStartOf="@id/cost_price"
+        android:layout_below="@id/cost_description"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:text="@string/placeholder_company"/>
+
+    <TextView
+        android:id="@+id/cost_invoice_nr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/cost_date"
+        android:layout_toStartOf="@id/cost_price"
+        android:layout_below="@id/cost_company"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:text="@string/placeholder_invoice_nr"/>
+
+    <TextView
+        android:id="@+id/cost_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:text="@string/placeholder_currency" />
+
+
+</RelativeLayout>

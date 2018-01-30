@@ -28,13 +28,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Objects;
+
+import static android.content.ContentValues.TAG;
 
 public class ProjectActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -45,13 +44,14 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     // Database references
     private DatabaseReference db;
     private DatabaseReference dbUsersMe;
+    private DatabaseReference dbWorkMe;
     private DatabaseReference dbProjectsMe;
     private DatabaseReference dbInvoicesMe;
-    private DatabaseReference dbCompaniesMe;
 
     // Data
     private User user;
     private Project project;
+    private double TAX_RATE = 0.21;
 
     // UI references
     private Context mContext;
@@ -82,34 +82,35 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.action_create_invoice:
-                changeProjectName();
-                break;
-        }
-    }
-
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
 
+    /**
+     * Sets the database references
+     */
     private void setReferences() {
         db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
+        dbWorkMe = db.child("work").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
-        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
     }
 
-    private void fetchProject(String key) {
+    /**
+     * Gets the project from the database
+     * @param key: the unique FireBase key of the project
+     */
+    private void fetchProject(final String key) {
         dbProjectsMe.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 project = dataSnapshot.getValue(Project.class);
-                project.setId(dataSnapshot.getKey());
+                project.setId(key);
 
                 toolbar.setTitle(project.getName());
 
@@ -118,13 +119,16 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(mContext, getResources().getString(R.string.error_no_projects),
+                Toast.makeText(mContext, getString(R.string.error_no_projects),
                         Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
 
+    /**
+     * Gets user information from the database
+     */
     private void fetchUser() {
         dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -134,12 +138,15 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(mContext, getResources().getString(R.string.error_no_data),
+                Toast.makeText(mContext, getString(R.string.error_no_data),
                         Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * Initiates the tabs layout
+     */
     private void initiatePager() {
         // UI references
         ViewPager mViewPager = findViewById(R.id.container);
@@ -194,7 +201,20 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Set back button in toolbar
+     * Handles the onClicks in this activity
+     * @param view: the clicked view
+     */
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.toolbar:
+                changeProjectName();
+                break;
+        }
+    }
+
+    /**
+     * Sets back button in toolbar
      */
     private void setBackButton() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -212,11 +232,14 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Finish activity when back button in toolbar is pressed
+     * Handles clicking in the toolbar menu
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
+            case R.id.menu_change_name:
+                changeProjectName();
+                break;
             case R.id.menu_delete:
                 verifyDelete();
                 break;
@@ -227,59 +250,13 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         return super.onOptionsItemSelected(item);
     }
 
-    public void verifyDelete() {
-        //TODO: verify
-        deleteProject();
-    }
-
-    public void deleteProject() {
-        dbProjectsMe.child(project.getId()).setValue(null);
-        finish();
-    }
-
     /**
-     * Create an invoice for this project
+     * Shows a dialog to change the name of the project
      */
-    public void createNewInvoice() {
-        Toast.makeText(mContext, getString(R.string.generating_invoice), Toast.LENGTH_SHORT).show();
-
-        // Add 1 to invoiceNumber of user
-        long newInvoiceNumber = Long.valueOf(user.getInvoiceNumber()) + 1;
-        dbUsersMe.child("invoiceNumber").setValue(String.valueOf(newInvoiceNumber));
-
-        // Create new invoice object
-        Invoice invoice = new Invoice();
-        invoice.setDate(getDateToday(0));
-        invoice.setEndDate(getDateToday(Integer.valueOf(user.getPayDue())));
-        invoice.setInvoice_number(user.getInvoiceNumber() );
-        invoice.setUserId(currentUser.getUid());
-        invoice.setCompanyId(project.getCompanyId());
-        invoice.setProjectId(project.getId());
-        invoice.calculatePrice();
-
-        // Initiate new file generator
-        GeneratePdf writer = new GeneratePdf(mContext, invoice);
-        writer.createFile();
-
-        // Add invoice to database
-        insertIntoDatabase(invoice);
-    }
-
-    public String getDateToday(int extraDays) {
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        c.add(Calendar.DATE, extraDays);
-        return df.format(c.getTime());
-    }
-
-    public void insertIntoDatabase(Invoice invoice) {
-        dbInvoicesMe.push().setValue(invoice);
-    }
-
     private void changeProjectName() {
         // Set up dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-        alert.setTitle(R.string.title_change_name);
+        alert.setTitle(getString(R.string.title_change_name));
 
         // Create input field
         final EditText input = new EditText(mContext);
@@ -303,6 +280,10 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
                 // Save input to the database
                 String name = input.getText().toString();
                 dbProjectsMe.child(project.getId()).child("name").setValue(name);
+
+                // Update UI
+                project.setName(name);
+                toolbar.setTitle(name);
             }
         });
 
@@ -313,5 +294,173 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
         alert.show();
+    }
+
+    /**
+     * Shows a dialog to verify the deletion of this project
+     */
+    public void verifyDelete() {
+        // Set up dialog
+        AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+        alert.setTitle(getString(R.string.note_verify_delete));
+
+        // Create a delete button
+        alert.setPositiveButton(R.string.action_delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                deleteProject();
+            }
+        });
+
+        // Create a cancel button
+        alert.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        alert.show();
+    }
+
+    /**
+     * Deletes the current project from the database
+     */
+    public void deleteProject() {
+        dbProjectsMe.child(project.getId()).setValue(null);
+        finish();
+    }
+
+    /**
+     * Create an invoice for this project
+     */
+    public void createNewInvoice() {
+        Toast.makeText(mContext, getString(R.string.generating_invoice), Toast.LENGTH_SHORT).show();
+
+        // Add 1 to invoiceNumber of user
+        long newInvoiceNumber = Long.valueOf(user.getInvoiceNumber()) + 1;
+        dbUsersMe.child("invoiceNumber").setValue(String.valueOf(newInvoiceNumber));
+
+        // Create new invoice object
+        Invoice invoice = new Invoice();
+        invoice.setInvoiceNr(user.getInvoiceNumber() );
+        invoice.setProjectId(project.getId());
+        invoice.setDate(getDateToday(0));
+        invoice.setEndDate(getDateToday(Integer.valueOf(user.getPayDue())));
+        invoice.setUserId(currentUser.getUid());
+        invoice.setCompanyId(project.getCompanyId());
+
+        // Push new invoice to database and fetch its key
+        String key = insertIntoDatabase(invoice);
+        invoice.setKey(key);
+
+        // Add the date of the invoice to the project
+        project.setLastInvoice(invoice.getDate());
+        dbProjectsMe.child(project.getId()).child("lastInvoice").setValue(invoice.getDate());
+
+        // Calculate the totals of the invoice
+        fetchData(invoice);
+    }
+
+    private void fetchData(final Invoice invoice) {
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot data) {
+                // Get Id's for this invoice
+                String userId = invoice.getUserId();
+                String companyId = invoice.getCompanyId();
+                String projectId = invoice.getProjectId();
+
+                // Set user
+                invoice.setUser(user);
+
+                // Set project
+                invoice.setProject(project);
+
+                // Fetch receiver company
+                Company company = data.child("companies").child(userId).child(companyId)
+                        .getValue(Company.class);
+                invoice.setCompany(company);
+                Log.d("Data", invoice.getCompany().getName());
+
+                // Fetch all unpaid work for this project
+                DatabaseReference dbWorkThis = dbWorkMe.child(projectId);
+                DataSnapshot dataWorks = data.child("work").child(userId).child(projectId).child("unpaid");
+                for (DataSnapshot workSnapshot : dataWorks.getChildren()) {
+                    Work work = workSnapshot.getValue(Work.class);
+                    if (work != null) {
+
+                        // Add this work to the invoice
+                        invoice.addWork(work);
+                        work.setInvoiceId(invoice.getKey());
+
+                        // Set this work as 'paid'
+                        dbWorkThis.child("unpaid").child(workSnapshot.getKey()).setValue(null);
+                        dbWorkThis.child("paid").push().setValue(work);
+                    }
+                }
+
+                calculatePriceAndBuild(invoice);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    private void calculatePriceAndBuild(Invoice invoice) {
+        double totalPrice = 0.00;
+        for (Work work : invoice.getWorks()) {
+            if (work != null) {
+                totalPrice += work.getPrice();
+            }
+        }
+        double btw = Math.round((totalPrice * TAX_RATE) * 100.0) / 100.0;
+        totalPrice = Math.round((totalPrice + btw) * 100.0) / 100.0;
+
+        invoice.setBtw(btw);
+        invoice.setTotalPrice(totalPrice);
+        dbInvoicesMe.child(invoice.getKey()).child("btw").setValue(btw);
+        dbInvoicesMe.child(invoice.getKey()).child("totalPrice").setValue(totalPrice);
+
+        writeInvoiceDocument(invoice);
+    }
+
+    private void writeInvoiceDocument(Invoice invoice) {
+        // Generate file
+        GeneratePdf writer = new GeneratePdf(mContext, invoice);
+        String writerPath = writer.createFile();
+        invoice.setFilePath(writerPath);
+
+        insertPathIntoDatabase(invoice);
+    }
+
+    /**
+     * Inserts an invoice object to the database
+     * @param invoice: Invoice object
+     * @return key of the pushed object
+     */
+    public String insertIntoDatabase(Invoice invoice) {
+        DatabaseReference dbInvoiceNew = dbInvoicesMe.push();
+        dbInvoiceNew.setValue(invoice);
+
+        return dbInvoiceNew.getKey();
+    }
+
+    public void insertPathIntoDatabase(Invoice invoice) {
+        if (invoice.getFilePath() != null) {
+            dbInvoicesMe.child(invoice.getKey()).child("filePath").setValue(invoice.getFilePath());
+        }
+    }
+
+    /**
+     * Returns the date of today
+     * @param extraDays: additional days to the future
+     * @return formatted date
+     */
+    public String getDateToday(int extraDays) {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        c.add(Calendar.DATE, extraDays);
+        return df.format(c.getTime());
     }
 }

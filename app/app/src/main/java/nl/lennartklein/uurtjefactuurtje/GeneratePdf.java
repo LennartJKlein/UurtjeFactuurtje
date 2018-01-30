@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
@@ -39,19 +40,16 @@ import static android.content.ContentValues.TAG;
 
 public class GeneratePdf {
 
+    // Data
     private Context mContext;
     private Invoice invoice;
-    private User user;
-    private Company receiver;
-    private Project project;
-    private List<Work> works;
     private String filepath;
 
-    // Data / template
+    // Template
     private Resources res;
     private String title;
     private String labelDate;
-    private String labelInvoice_number;
+    private String labelInvoiceNr;
     private String labelDescription;
     private String labelHours;
     private String labelPrice;
@@ -59,68 +57,36 @@ public class GeneratePdf {
     private String labelBtw;
     private String labelTotalPrice;
     private String disclaimer;
-    private DecimalFormat currency = new DecimalFormat("0.00");
+    private DecimalFormat currencyFormat = new DecimalFormat("0.00");
+    private DecimalFormat timeFormat = new DecimalFormat("0.00");
 
     public GeneratePdf(Context mContext, Invoice invoice) {
         this.mContext = mContext;
         this.invoice = invoice;
         this.res = mContext.getResources();
-        this.works = new ArrayList<>();
     }
 
     /**
      * Create a file of this invoice
      */
-    public void createFile() {
+    public String createFile() {
         if (isExternalStorageWritable()) {
-            getDataAndBuild();
+
+            return buildDocument();
+
         } else {
-            Log.d("Data", "Cannot write to device storage.");
-            Toast.makeText(mContext,
-                    res.getString(R.string.error_no_permission),
+            Toast.makeText(mContext, res.getString(R.string.error_no_permission),
                     Toast.LENGTH_SHORT).show();
+
+            return null;
         }
-    }
-
-    private void getDataAndBuild() {
-        DatabaseReference db = PersistentDatabase.getReference();
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot data) {
-                String userId = invoice.getUserId();
-                String companyId = invoice.getCompanyId();
-                String projectId = invoice.getProjectId();
-
-                // Fetch related user (sender), receiver and project
-                user = data.child("users").child(userId).getValue(User.class);
-                receiver = data.child("companies").child(userId).child(companyId).getValue(Company.class);
-                project = data.child("projects").child(userId).child(projectId).getValue(Project.class);
-
-                // Fetch all work for this project
-                DataSnapshot dataWorks = data.child("work").child(userId).child(projectId).child("unpaid");
-                for (DataSnapshot workSnapshot : dataWorks.getChildren()) {
-                    Work work = workSnapshot.getValue(Work.class);
-                    if (work != null) {
-                        works.add(work);
-                    }
-                }
-
-                // Build the document now
-                buildDocument();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        });
     }
 
     /**
      * Create a document for this invoice
      * @return string of the filepath
      */
-    private void buildDocument() {
+    private String buildDocument() {
 
         filepath = getInvoiceStoragePath();
 
@@ -139,8 +105,6 @@ public class GeneratePdf {
             writeFooter(doc);
             doc.close();
 
-            setWorkPaid();
-
             openFile();
 
         } catch (DocumentException | FileNotFoundException e) {
@@ -148,6 +112,8 @@ public class GeneratePdf {
             Toast.makeText(mContext,
                     res.getString(R.string.error_no_file_made), Toast.LENGTH_SHORT).show();
         }
+
+        return filepath;
     }
 
     private boolean isExternalStorageWritable() {
@@ -159,7 +125,7 @@ public class GeneratePdf {
         String folder_main = "UurtjeFactuurtje";
         String root = Environment.getExternalStorageDirectory() +  "/" + folder_main;
 
-        String filename = "#" + invoice.getInvoice_number() + " " + receiver.getName() + ".pdf";
+        String filename = "#" + invoice.getInvoiceNr() + " " + invoice.getCompany().getName() + ".pdf";
         String filepath = root + "/" + filename;
 
         File dir = new File(root);
@@ -173,7 +139,7 @@ public class GeneratePdf {
     private void getTemplate() {
         title = res.getString(R.string.invoice);
         labelDate = res.getString(R.string.label_date);
-        labelInvoice_number = res.getString(R.string.label_invoice_number);
+        labelInvoiceNr = res.getString(R.string.label_invoice_number);
         labelDescription = res.getString(R.string.description);
         labelHours = res.getString(R.string.hours);
         labelPrice = res.getString(R.string.price);
@@ -181,15 +147,19 @@ public class GeneratePdf {
         labelBtw = res.getString(R.string.label_btw);
         labelTotalPrice = res.getString(R.string.label_total_price);
         disclaimer = res.getString(R.string.disclaimer,
-                user.getPayDue(), user.getBank(), user.getName());
+                invoice.getUser().getPayDue(),
+                invoice.getUser().getBank(),
+                invoice.getUser().getName()
+        );
     }
 
     private void writeSalutation(Document doc) {
         try {
-            doc.add(new Paragraph(receiver.getName()));
-            doc.add(new Paragraph("T.a.v. " + receiver.getContact()));
-            doc.add(new Paragraph(receiver.getStreet() + " " + receiver.getStreetNr()));
-            doc.add(new Paragraph(receiver.getPostal() + "  " + receiver.getCity()));
+            Company company = invoice.getCompany();
+            doc.add(new Paragraph(company.getName()));
+            doc.add(new Paragraph("T.a.v. " + company.getContact()));
+            doc.add(new Paragraph(company.getStreet() + " " + company.getStreetNr()));
+            doc.add(new Paragraph(company.getPostal() + "  " + company.getCity()));
         } catch (DocumentException e) {
             e.printStackTrace();
         }
@@ -197,6 +167,7 @@ public class GeneratePdf {
 
     private void writeSender(Document doc) {
         try {
+            User user = invoice.getUser();
             doc.add(createParagraph(user.getCompanyName(), 2));
             doc.add(createParagraph(user.getPostal() + "  " + user.getCity(), 2));
             doc.add(createParagraph("KvK: " + user.getKvk(), 2));
@@ -208,9 +179,10 @@ public class GeneratePdf {
 
     private void writeInvoiceDetails(Document doc) {
         try {
+            Project project = invoice.getProject();
             doc.add(createTitle(title));
             doc.add(new Paragraph(labelDate + ": " + invoice.getDate()));
-            doc.add(new Paragraph(labelInvoice_number + ": #" + invoice.getInvoice_number()));
+            doc.add(new Paragraph(labelInvoiceNr + ": #" + invoice.getInvoiceNr()));
             doc.add(Chunk.NEWLINE);
             doc.add(new Paragraph(project.getName()));
             doc.add(Chunk.NEWLINE);
@@ -229,28 +201,34 @@ public class GeneratePdf {
             table.addCell(createCellHeader(labelPrice, 2));
 
             // Table - work
-            for (Work work: works) {
+            for (Work work: invoice.getWorks()) {
+
+                String hours = "-";
+                if (work.getHours() > 0) {
+                    hours = String.valueOf(timeFormat.format(work.getHours()));
+                }
+
                 table.addCell(createCell(work.getDescription(), 0, 400));
-                table.addCell(createCell(String.valueOf(work.getHours()), 1, 400));
+                table.addCell(createCell(hours, 1, 400));
                 table.addCell(createCell(res.getString(
                         R.string.placeholder_currency,
-                        currency.format(work.getPrice())),
+                        currencyFormat.format(work.getPrice())),
                         2,400));
             }
 
             // Table - totals
-            String subtotal = currency.format(invoice.getTotalPrice() - invoice.getBtw());
+            String subtotal = currencyFormat.format(invoice.getTotalPrice() - invoice.getBtw());
             table.addCell(createCell("", 0, 0));
             table.addCell(createCell(labelSubtotal, 2, 700));
             table.addCell(createCell("€  " + subtotal, 2, 400));
 
             table.addCell(createCell("", 0, 0));
             table.addCell(createCell(labelBtw, 2, 700));
-            table.addCell(createCell("€  " + currency.format(invoice.getBtw()), 2, 400));
+            table.addCell(createCell("€  " + currencyFormat.format(invoice.getBtw()), 2, 400));
 
             table.addCell(createCell("", 0, 0));
             table.addCell(createCell(labelTotalPrice, 2, 700));
-            table.addCell(createCell("€  " + currency.format(invoice.getTotalPrice()), 2, 700));
+            table.addCell(createCell("€  " + currencyFormat.format(invoice.getTotalPrice()), 2, 700));
 
             doc.add(table);
 
@@ -318,30 +296,6 @@ public class GeneratePdf {
         Font font = new Font(Font.FontFamily.HELVETICA, 11, Font.ITALIC);
         font.setColor(BaseColor.GRAY);
         return new Paragraph(content, font);
-    }
-
-    /**
-     * Mark the work in this invoice as 'paid' in the database
-     */
-    private void setWorkPaid() {
-        DatabaseReference dbWorkMe = PersistentDatabase.getReference().child("work").child(invoice.getUserId());
-        final DatabaseReference dbWorkThis = dbWorkMe.child(invoice.getProjectId());
-
-        dbWorkThis.child("unpaid").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot workSnapshot: dataSnapshot.getChildren()) {
-                    Work work = workSnapshot.getValue(Work.class);
-                    dbWorkThis.child("unpaid").child(workSnapshot.getKey()).setValue(null);
-                    dbWorkThis.child("paid").push().setValue(work);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-            }
-        });
     }
 
     private void openFile() {

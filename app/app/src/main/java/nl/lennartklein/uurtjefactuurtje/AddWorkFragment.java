@@ -201,6 +201,12 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
+    public void setProject(String project) {
+        if (fieldProject != null) {
+            fieldProject.setText(project);
+        }
+    }
+
     public void validateFields() {
 
         // Reset previous errors

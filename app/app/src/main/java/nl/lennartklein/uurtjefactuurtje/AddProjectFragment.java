@@ -147,26 +147,22 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         boolean cancel = false;
         View focusView = null;
 
-        // Store values at the time of the login attempt
+        // Store values
         final String name = fieldName.getText().toString();
         final String companyName = fieldRelations.getText().toString();
         final String hourPrice = fieldHourPrice.getText().toString();
 
-        // Check for a valid name, if the user entered one
+        // Check for a valid fields
         if (TextUtils.isEmpty(name)) {
             fieldName.setError(getString(R.string.error_field_required));
             focusView = fieldName;
             cancel = true;
         }
-
-        // Check for a valid company
         if (TextUtils.isEmpty(companyName)) {
             fieldRelations.setError(getString(R.string.error_field_required));
             focusView = fieldRelations;
             cancel = true;
         }
-
-        // Check for a valid hour price
         if (TextUtils.isEmpty(hourPrice)) {
             fieldHourPrice.setError(getString(R.string.error_field_required));
             focusView = fieldHourPrice;

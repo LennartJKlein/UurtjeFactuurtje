@@ -114,7 +114,7 @@
             android:drawableStart="@drawable/ic_short_text_grey_dark"
             android:imeActionLabel="@string/action_save"
             android:imeOptions="actionDone"
-            android:inputType="text|textMultiLine"/>
+            android:inputType="text|textMultiLine|textCapSentences"/>
 
     </LinearLayout>
 

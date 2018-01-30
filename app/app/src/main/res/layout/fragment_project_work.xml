@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="nl.lennartklein.uurtjefactuurtje.ProjectWorkFragment"
-    android:padding="@dimen/margin_medium">
+    android:paddingStart="@dimen/margin_medium"
+    android:paddingEnd="@dimen/margin_medium">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,8 +21,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/heading_unpaid_work"
-                android:layout_marginBottom="@dimen/margin_medium"
                 android:layout_marginEnd="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_medium"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/primary" />
 
@@ -48,22 +50,43 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list_work"
-                android:scrollbars="none"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/list_title"
-                tools:listitem="@layout/list_item_work"/>
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/list_title"
+                tools:listitem="@layout/list_item_work"
+                android:scrollbars="none" />
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/action_create_invoice"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/actions"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/action_pay"
-            android:layout_gravity="end"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/primary"/>
+            android:gravity="end"
+            style="?android:attr/buttonBarStyle">
+
+            <Button
+                android:id="@+id/action_create_invoice"
+                android:text="@string/action_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary"
+                android:drawableStart="@drawable/ic_attach_money"
+                android:drawableTint="@color/primary"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:background="?selectableItemBackground"/>
+
+            <Button
+                android:id="@+id/action_add_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_add"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/primary"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

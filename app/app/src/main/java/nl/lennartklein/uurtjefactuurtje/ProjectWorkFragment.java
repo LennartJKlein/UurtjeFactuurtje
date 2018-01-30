@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,12 +52,11 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private RecyclerView workList;
     private TextView emptyWorkList;
     private Button newInvoice;
+    private Button addWork;
 
     // Database references
     private DatabaseReference db;
     private DatabaseReference dbUsersMe;
-    private DatabaseReference dbInvoicesMe;
-    private DatabaseReference dbCompaniesMe;
     private DatabaseReference dbWorkMe;
 
     // Data
@@ -77,6 +77,8 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         progressWheel = view.findViewById(R.id.list_loader);
         workList = view.findViewById(R.id.list_work);
         emptyWorkList = view.findViewById(R.id.list_work_empty);
+        addWork = view.findViewById(R.id.action_add_work);
+        addWork.setOnClickListener(this);
         newInvoice = view.findViewById(R.id.action_create_invoice);
         newInvoice.setOnClickListener(this);
 
@@ -113,6 +115,9 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
                 ProjectActivity parent = (ProjectActivity) getActivity();
                 parent.createNewInvoice();
                 break;
+            case R.id.action_add_work:
+                openWorkFragment();
+                break;
         }
     }
 
@@ -124,8 +129,6 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private void setReferences() {
         db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
-        dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
-        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
         dbWorkMe = db.child("work").child(currentUser.getUid());
     }
 
@@ -230,7 +233,8 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         public void setHours(double hours, Resources res) {
             TextView tvHours = view.findViewById(R.id.work_hours);
             if (hours > 0) {
-                String convertedHours = String.valueOf(hours);
+                DecimalFormat format = new DecimalFormat("0.00");
+                String convertedHours = String.valueOf(format.format(hours));
                 convertedHours = res.getString(R.string.placeholder_hours, convertedHours);
                 tvHours.setText(convertedHours);
             } else {
@@ -269,6 +273,13 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
             progressWheel.setVisibility(View.INVISIBLE);
             workList.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void openWorkFragment() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        AddWorkFragment dialog = new AddWorkFragment();
+        dialog.show(transaction, "AddWork");
+        dialog.setProject(project.getName());
     }
 
 }

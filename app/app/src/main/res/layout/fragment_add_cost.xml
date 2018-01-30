@@ -2,62 +2,212 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
     tools:context="nl.lennartklein.uurtjefactuurtje.AddCostFragment">
 
-    <com.weiwangcn.betterspinner.library.BetterSpinner
-        android:id="@+id/project"
-        android:hint="@string/field_project"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:paddingStart="@dimen/margin_medium"
-        android:paddingEnd="@dimen/margin_medium"
-        android:paddingTop="@dimen/margin_large"
-        android:paddingBottom="@dimen/margin_large"
-        android:background="@color/secondary"
-        android:textColor="@color/white"
-        android:textColorHint="@color/secondaryLight"
-        android:drawableTint="@color/white"
-        android:textCursorDrawable="@color/primary"
-        android:textColorHighlight="@color/secondaryLight" />
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:layout_constraintTop_toBottomOf="@id/project"
-        android:backgroundTint="@color/secondary">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabSelectedTextColor="@color/white"
-            app:tabIndicatorColor="@color/white">
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_work_hours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_timelapse_grey_dark" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/tab_work_product"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_local_offer_white" />
-
-        </android.support.design.widget.TabLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/margin_medium"
+            android:background="@color/secondary"
+            android:textColorHint="@color/secondaryLight"
+            android:elevation="2dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/field_description"
+                android:hint="@string/field_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nextFocusUp="@id/field_description"
+                android:nextFocusLeft="@id/field_description"
+                android:lineSpacingMultiplier="1.15"
+                android:paddingTop="@dimen/margin_tiny"
+                android:imeActionId="6"
+                android:imeActionLabel="@string/action_save"
+                android:imeOptions="actionNext"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:ems="10"
+                android:backgroundTint="@color/secondaryLight"
+                android:textColorHighlight="@color/white"
+                android:textColor="@color/white"
+                android:textColorLink="@color/white"
+                android:textColorHint="@color/white"
+                android:inputType="textMultiLine|textCapSentences"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <ScrollView
+            android:id="@+id/form"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/pale"
+            android:layout_below="@id/title"
+            android:layout_above="@id/actions">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_medium">
+
+                <com.weiwangcn.betterspinner.library.BetterSpinner
+                    android:id="@+id/field_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableTint="@color/greyDark"
+                    android:drawableStart="@drawable/ic_business_grey_dark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    android:hint="@string/field_company" />
+
+                <EditText
+                    android:id="@+id/field_date"
+                    android:hint="@string/action_pick_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:focusable="false"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableTint="@color/greyDark"
+                    android:drawableStart="@drawable/ic_event_grey_dark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    android:inputType="date"/>
+
+                <EditText
+                    android:id="@+id/field_invoice_nr"
+                    android:hint="@string/field_invoice_nr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableTint="@color/greyDark"
+                    android:drawableStart="@drawable/ic_local_offer_grey_dark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    android:inputType="text"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/field_total_price"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_small"
+                    android:layout_marginStart="@dimen/margin_tiny"
+                    android:layout_marginEnd="@dimen/margin_tiny"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_tiny"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/label_currency"
+                        android:text="@string/label_currency"
+                        android:layout_width="24dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_marginEnd="@dimen/margin_tiny"
+                        android:textColor="@color/greyDark"
+                        android:layout_gravity="center"
+                        android:textAlignment="center"/>
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/field_price_euros"
+                        android:hint="@string/placeholder_zero"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.65"
+                        android:paddingTop="@dimen/margin_tiny"
+                        android:paddingBottom="@dimen/margin_small"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:singleLine="true"
+                        android:nextFocusRight="@id/field_price_cents"
+                        android:nextFocusDown="@id/field_price_cents"
+                        android:imeActionLabel="@string/action_next"
+                        android:imeOptions="actionNext"
+                        android:textAlignment="viewEnd"
+                        android:inputType="number|numberSigned" />
+
+                    <TextView
+                        android:text="@string/placeholder_comma"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:textColor="@color/greyDark"
+                        android:layout_gravity="center"/>
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/field_price_cents"
+                        android:hint="@string/placeholder_zeros"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.55"
+                        android:paddingTop="@dimen/margin_tiny"
+                        android:paddingBottom="@dimen/margin_small"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                        android:singleLine="true"
+                        android:maxLength="2"
+                        android:imeActionLabel="@string/action_next"
+                        android:imeOptions="actionNext"
+                        android:inputType="number|numberSigned" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/actions"
+            android:gravity="end"
+            android:padding="@dimen/margin_small"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            style="?android:attr/buttonBarStyle">
+
+            <Button
+                android:id="@+id/action_cancel"
+                android:text="@string/action_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_small"
+                style="?android:attr/buttonBarNegativeButtonStyle"/>
+
+            <Button
+                android:id="@+id/action_add"
+                android:text="@string/action_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/secondary"/>
+
+        </LinearLayout>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

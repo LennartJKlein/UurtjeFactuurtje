@@ -16,7 +16,6 @@ public class Work implements Serializable {
     private String date;
     private double hours;
     private double price;
-    private int paid;
 
     // Empty constructor for FireBase
     Work() {}

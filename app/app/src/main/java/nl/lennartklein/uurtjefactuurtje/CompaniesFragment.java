@@ -76,6 +76,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         // Set click listeners
         addCompanyButton.setOnClickListener(this);
         itemMyCompany.setOnClickListener(this);
+
         loadMyCompany();
 
         initiateCompaniesList();

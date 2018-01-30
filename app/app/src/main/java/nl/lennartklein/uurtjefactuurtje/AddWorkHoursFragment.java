@@ -69,6 +69,9 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         fieldDate.setOnClickListener(this);
         fieldTimeStart.setOnClickListener(this);
         fieldTimeEnd.setOnClickListener(this);
+        fieldDate.setOnClickListener(this);
+        fieldPrice.setOnClickListener(this);
+        fieldDescription.setOnClickListener(this);
 
         initiatePickerData();
 
@@ -79,6 +82,8 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+        setPriceField();
+
         switch (view.getId()){
             case R.id.field_date:
                 showDatePicker();

@@ -12,6 +12,10 @@
 
     <!-- Overview -->
     <string name="heading_projects">Projects</string>
+    <string name="heading_costs">Costs</string>
+    <string name="menu_work">Work</string>
+    <string name="menu_cost">Cost</string>
+    <string name="menu_project">Project</string>
 
     <!-- ProjectActivity -->
     <string name="title_activity_project">My project…</string>
@@ -20,7 +24,8 @@
     <string name="heading_unpaid_work">Unpaid work</string>
     <string name="heading_invoices">Invoices</string>
     <string name="generating_invoice">Generating invoice…</string>
-    <string name="title_change_name">Project name</string>
+    <string name="title_change_name">New name</string>
+    <string name="label_date_start">Start date</string>
 
     <!-- Add work -->
     <string name="tab_work_hours">Man hours</string>
@@ -31,6 +36,7 @@
     <string name="title_tax_result">Fields to fill in</string>
     <string name="form_tax_tip">Select a quarter and a year to see what you need to fill in at your tax screens.</string>
     <string name="result_title_pay">Leveringen/diensten belast met hoog tarief</string>
+    <string name="placeholder_quarter">Quarter %1$s</string>
 
     <!-- RelationsActivity -->
     <string name="heading_companies">Relations</string>
@@ -77,11 +83,13 @@
     <string name="field_hours">Hours</string>
     <string name="field_hours_start">Start time</string>
     <string name="field_hours_end">End time</string>
+    <string name="field_invoice_nr">Invoice nr</string>
 
     <!-- Actions -->
     <string name="title_chooser">Open file</string>
     <string name="action_pay">settle</string>
     <string name="action_create_invoice">new invoice</string>
+    <string name="action_create_relation">add</string>
     <string name="action_create_project">create</string>
     <string name="action_create_company">add</string>
     <string name="action_logout">Log out</string>
@@ -96,6 +104,7 @@
     <string name="action_add">Add</string>
     <string name="action_pick_date">Add a date</string>
     <string name="action_pick_time">00:00</string>
+    <string name="action_change_name">Change name</string>
 
     <!-- Placeholders -->
     <string name="placeholder_project_name">Name of this project</string>
@@ -109,43 +118,49 @@
     <string name="placeholder_comma" translatable="false">,</string>
     <string name="placeholder_work">Description of this work…</string>
     <string name="placeholder_hours">%1$s hours</string>
+    <string name="placeholder_invoice_nr" translatable="false">#%1$s</string>
+    <string name="placeholder_cost">A cost</string>
+    <string name="placeholder_current_date">Today it\'s %1$s</string>
 
     <!-- Invoice document -->
-    <string name="invoice">Factuur</string>
-    <string name="description">Omschrijving</string>
-    <string name="hours">Uren</string>
+    <string name="invoice">Invoice</string>
+    <string name="description">Description</string>
+    <string name="hours">Hours</string>
     <string name="price">Price</string>
-    <string name="label_date">Factuurdatum</string>
-    <string name="label_invoice_number">Factuurnummer</string>
-    <string name="label_subtotal">Subtotaal</string>
-    <string name="label_btw">BTW (21%)</string>
-    <string name="label_total_price">Totaal</string>
+    <string name="label_date">Invoice date</string>
+    <string name="label_invoice_number">Invoice ID</string>
+    <string name="label_subtotal">Sub total</string>
+    <string name="label_btw">Tax (21%)</string>
+    <string name="label_total_price">Total</string>
     <string name="disclaimer">Please pay the total price in %1$s days on bank account %2$s on the name of %3$s. Don\'t forget to enter the invoice number.</string>
 
     <!-- Notifications -->
     <string name="note_saved">Saved!</string>
     <string name="note_work_added">Work added!</string>
+    <string name="note_verify_delete">Delete this project?</string>
 
     <!-- Errors -->
     <string name="error_database_invoice">No connection to your data could be made. Try again</string>
     <string name="error_no_reader">Please install a reader for PDF-files</string>
     <string name="error_no_login">Failed to log in. Try again</string>
     <string name="error_no_projects">You don\'t have any projects yet.</string>
+    <string name="error_no_costs">You don\'t have any costs yet.</string>
     <string name="error_no_companies">You don\'t have any relations yet.</string>
+    <string name="error_no_relations">You don\'t have any relations yet.</string>
     <string name="error_no_file_made">Failed to create file. Try again</string>
     <string name="error_field_required">This field is required.</string>
     <string name="error_no_data" translatable="false">Failed to get data from Firebase.</string>
     <string name="error_no_permission">Failed to create invoice. No permission to write to storage.</string>
     <string name="error_no_work_unpaid">There is no unpaid work for this project.</string>
+    <string name="error_no_invoices">There are no invoices made for this project yet.</string>
 
     <string name="title_add_project">Start a new project…</string>
     <string name="title_relations">Companies</string>
-    <string name="error_no_relations">You don\'t have any relations yet.</string>
-    <string name="action_create_relation">add</string>
     <string name="heading_relations">Companies</string>
     <string name="title_add_relation">Add a relation</string>
     <string name="title_activity_settings">My company</string>
     <string name="image_arrow">To</string>
     <string name="image_time">Time lapse</string>
+    <string name="image_invoice">Show invoice</string>
 
 </resources>

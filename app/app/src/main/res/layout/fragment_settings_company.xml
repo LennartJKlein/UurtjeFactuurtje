@@ -17,123 +17,94 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/field_name"
+                android:hint="@string/field_name_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small">
-
-                <EditText
-                    android:id="@+id/field_name"
-                    android:hint="@string/field_name_company"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_save"
-                    android:imeOptions="actionNext"
-                    android:ems="10"
-                    android:inputType="text|textCapSentences" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <TextView
-                android:id="@+id/title_address"
-                android:text="@string/heading_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_large"
-                android:layout_marginEnd="@dimen/margin_tiny"
-                android:layout_marginBottom="@dimen/margin_small"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:textColor="@color/primary"/>
+                android:layout_marginBottom="@dimen/margin_large"
+                android:paddingTop="@dimen/margin_tiny"
+                android:paddingBottom="@dimen/margin_medium"
+                android:singleLine="true"
+                android:nextFocusUp="@id/field_name"
+                android:nextFocusLeft="@id/field_name"
+                android:drawablePadding="@dimen/margin_small"
+                android:drawableTint="@color/greyDark"
+                android:drawableStart="@drawable/ic_business_grey_dark"
+                android:imeActionLabel="@string/action_save"
+                android:imeOptions="actionNext"
+                android:inputType="text|textCapSentences"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:padding="@dimen/margin_tiny"
+                    android:src="@drawable/ic_location_grey_dark"/>
+
+                <EditText
+                    android:id="@+id/field_postal"
+                    android:hint="@string/field_postal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.5"
                     android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginBottom="@dimen/margin_small">
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:imeActionLabel="@string/action_save"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress"/>
 
-                    <EditText
-                        android:id="@+id/field_postal"
-                        android:hint="@string/field_postal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:imeActionId="6"
-                        android:imeActionLabel="@string/action_save"
-                        android:imeOptions="actionNext"
-                        android:ems="10"
-                        android:inputType="textPostalAddress" />
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
+                <EditText
+                    android:id="@+id/field_street_nr"
+                    android:hint="@string/field_street_nr"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.4"
-                    android:layout_marginBottom="@dimen/margin_small">
-
-                    <EditText
-                        android:id="@+id/field_street_nr"
-                        android:hint="@string/field_street_nr"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:imeActionId="6"
-                        android:imeActionLabel="@string/action_save"
-                        android:imeOptions="actionNext"
-                        android:ems="10"
-                        android:inputType="text" />
-
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_weight="0.35"
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:imeActionLabel="@string/action_save"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"/>
 
             </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/field_street"
+                android:hint="@string/field_street"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small">
+                android:layout_marginStart="@dimen/margin_icon"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:paddingTop="@dimen/margin_tiny"
+                android:paddingBottom="@dimen/margin_medium"
+                android:singleLine="true"
+                android:imeActionLabel="@string/action_save"
+                android:imeOptions="actionNext"
+                android:inputType="text"/>
 
-                <EditText
-                    android:id="@+id/field_street"
-                    android:hint="@string/field_street"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_save"
-                    android:imeOptions="actionNext"
-                    android:ems="10"
-                    android:inputType="text|textCapSentences" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/field_city"
+                android:hint="@string/field_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_small">
-
-                <EditText
-                    android:id="@+id/field_city"
-                    android:hint="@string/field_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:imeActionId="6"
-                    android:imeActionLabel="@string/action_save"
-                    android:imeOptions="actionGo"
-                    android:ems="10"
-                    android:inputType="text|textCapSentences" />
-
-            </android.support.design.widget.TextInputLayout>
+                android:layout_marginStart="@dimen/margin_icon"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:paddingTop="@dimen/margin_tiny"
+                android:paddingBottom="@dimen/margin_medium"
+                android:singleLine="true"
+                android:imeActionLabel="@string/action_save"
+                android:imeOptions="actionDone"
+                android:inputType="text"/>
 
             <Button
                 android:id="@+id/action_save_continue"
@@ -143,6 +114,8 @@
                 android:layout_marginTop="@dimen/margin_large"
                 android:layout_marginBottom="@dimen/margin_large"
                 android:textColor="@color/white"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
                 android:backgroundTint="@color/secondary"/>
 
         </LinearLayout>

@@ -10,35 +10,53 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"/>
+
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_attach_money"
-            android:layout_marginBottom="@dimen/margin_medium"/>
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:src="@drawable/logo"
+            android:layout_marginBottom="@dimen/margin_large"/>
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/action_login_google"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_medium"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/disclaimer"
-            android:text="@string/login_disclaimer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@color/primaryLight"
-            android:textStyle="italic"
-            android:textSize="@dimen/text_small"
-            android:paddingStart="@dimen/margin_large"
-            android:paddingEnd="@dimen/margin_large"/>
+                <com.google.android.gms.common.SignInButton
+                    android:id="@+id/action_login_google"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:layout_marginStart="@dimen/margin_icon"
+                    android:layout_marginEnd="@dimen/margin_icon"/>
+
+                <TextView
+                    android:id="@+id/disclaimer"
+                    android:text="@string/login_disclaimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/primaryLight"
+                    android:fontFamily="@font/lato_italic"
+                    android:textSize="@dimen/text_small"
+                    android:paddingStart="@dimen/margin_large"
+                    android:paddingEnd="@dimen/margin_large"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

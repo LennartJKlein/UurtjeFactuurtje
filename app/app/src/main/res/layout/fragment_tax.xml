@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_small"
-            android:textStyle="bold"
+            android:fontFamily="@font/lato_bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <LinearLayout
@@ -68,7 +68,7 @@
             <TextView
                 android:id="@+id/form_tip"
                 android:text="@string/form_tax_tip"
-                android:textStyle="italic"
+                android:fontFamily="@font/lato_italic"
                 android:textColor="@color/primaryLight"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_width="match_parent"
@@ -84,9 +84,8 @@
                 <TextView
                     android:id="@+id/tax_tip"
                     android:text="@string/result_tax_tip"
-                    android:textStyle="italic"
+                    android:fontFamily="@font/lato_italic"
                     android:textColor="@color/primaryLight"
-                    android:layout_marginTop="@dimen/margin_small"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -105,7 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/lato_bold"
                         android:layout_marginBottom="@dimen/margin_small"/>
 
                     <LinearLayout
@@ -124,6 +123,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
+                            android:layout_marginEnd="@dimen/margin_medium"
                             android:textSize="@dimen/text_small"/>
 
                         <TextView
@@ -152,6 +152,7 @@
                             android:layout_weight="0.6"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_medium"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:layout_gravity="bottom"/>
 
@@ -189,7 +190,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/lato_bold"
                         android:layout_marginBottom="@dimen/margin_small"/>
 
                     <TextView

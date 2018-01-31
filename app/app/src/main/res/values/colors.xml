@@ -7,11 +7,11 @@
     <color name="secondaryLight">#ffa09f</color>
     <color name="secondary">#F38987</color>
     <color name="secondaryDark">#c35b59</color>
-    <color name="error">#c35b59</color>
     <color name="white">#FFFFFF</color>
     <color name="pale">#FEFEFE</color>
     <color name="grey">#AAAAAA</color>
     <color name="greyLight">#E6E6E6</color>
     <color name="greyDark">#777777</color>
     <color name="black">#000000</color>
+    <color name="error">#c35b59</color>
 </resources>

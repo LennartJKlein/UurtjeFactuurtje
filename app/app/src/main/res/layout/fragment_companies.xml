@@ -4,7 +4,7 @@
     tools:context="nl.lennartklein.uurtjefactuurtje.CompaniesFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greyLight">
+    android:background="@color/primaryDarker">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,8 +36,12 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_people_primary_light"
+                        android:drawablePadding="@dimen/margin_small"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="@color/greyDark"/>
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/primaryLight"/>
 
                     <Button
                         android:id="@+id/action_add_company"
@@ -49,6 +53,8 @@
                         android:layout_alignParentEnd="true"
                         android:textSize="@dimen/text_small"
                         android:textColor="@color/secondary"
+                        android:fontFamily="sans-serif"
+                        android:textStyle="bold"
                         android:background="?selectableItemBackground"
                         style="?android:attr/buttonStyleSmall"/>
 
@@ -75,7 +81,7 @@
                     android:padding="@dimen/margin_medium"
                     android:elevation="2dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:textStyle="italic"
+                    android:fontFamily="@font/lato_italic"
                     android:textColor="@color/grey"
                     android:background="@drawable/list_card"
                     android:visibility="invisible" />
@@ -107,7 +113,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_medium"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textColor="@color/greyDark"/>
+                    android:fontFamily="@font/lato_bold"
+                    android:textColor="@color/primaryLight"/>
 
                 <RelativeLayout
                     android:id="@+id/my_company"
@@ -133,6 +140,7 @@
                     <ImageButton
                         android:id="@+id/action_show_my_company"
                         android:src="@drawable/ic_chevron_right"
+                        android:tint="@color/secondary"
                         android:layout_width="@dimen/list_button_small"
                         android:layout_height="@dimen/list_button_small"
                         android:layout_alignParentEnd="true"

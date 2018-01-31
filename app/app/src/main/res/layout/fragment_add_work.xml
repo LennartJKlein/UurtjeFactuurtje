@@ -85,6 +85,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_small"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
                 style="?android:attr/buttonBarNegativeButtonStyle"/>
 
             <Button
@@ -93,6 +95,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
                 android:backgroundTint="@color/secondary"/>
 
         </LinearLayout>

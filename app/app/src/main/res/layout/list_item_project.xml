@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/project_name"
             android:layout_toStartOf="@id/action_show_project"
+            android:paddingBottom="@dimen/margin_tiny"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/greyDark" />
 
@@ -42,7 +43,7 @@
             android:layout_toStartOf="@id/action_show_project"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/grey"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_small" />
 
         <ImageButton
             android:id="@+id/action_show_project"

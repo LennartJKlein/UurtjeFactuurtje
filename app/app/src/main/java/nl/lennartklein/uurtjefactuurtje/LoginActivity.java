@@ -52,6 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        getSupportActionBar().hide();
+
         // Global references
         googleButton = findViewById(R.id.action_login_google);
         mContext = this;

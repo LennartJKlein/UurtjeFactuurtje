@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/margin_medium"
+        android:textColor="@color/greyDark"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:text="@string/placeholder_date_short" />
 
@@ -24,6 +25,7 @@
         android:layout_toStartOf="@id/cost_price"
         android:layout_marginEnd="@dimen/margin_medium"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textStyle="bold"
         android:text="@string/placeholder_cost" />
 
     <TextView
@@ -34,7 +36,9 @@
         android:layout_toStartOf="@id/cost_price"
         android:layout_below="@id/cost_description"
         android:layout_marginEnd="@dimen/margin_medium"
+        android:textColor="@color/greyDark"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="@dimen/text_small"
         android:text="@string/placeholder_company"/>
 
     <TextView
@@ -46,6 +50,8 @@
         android:layout_below="@id/cost_company"
         android:layout_marginEnd="@dimen/margin_medium"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="@dimen/text_tiny"
+        android:textColor="@color/grey"
         android:text="@string/placeholder_invoice_nr"/>
 
     <TextView
@@ -54,7 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+        android:textStyle="bold"
         android:text="@string/placeholder_currency" />
 
 

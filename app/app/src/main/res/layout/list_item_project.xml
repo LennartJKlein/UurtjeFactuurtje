@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/action_show_project"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:paddingBottom="@dimen/margin_tiny"
+            android:fontFamily="@font/lato_bold"/>
 
         <TextView
             android:id="@+id/project_company"
@@ -28,9 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/project_name"
             android:layout_toStartOf="@id/action_show_project"
-            android:paddingTop="@dimen/margin_small"
-            android:textColor="@color/greyDark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/greyDark" />
 
         <TextView
             android:id="@+id/project_last_invoice"
@@ -46,6 +47,7 @@
         <ImageButton
             android:id="@+id/action_show_project"
             android:src="@drawable/ic_chevron_right"
+            android:tint="@color/secondary"
             android:layout_width="@dimen/list_button_small"
             android:layout_height="@dimen/list_button_small"
             android:layout_alignParentEnd="true"

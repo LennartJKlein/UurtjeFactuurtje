@@ -302,7 +302,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     public void verifyDelete() {
         // Set up dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-        alert.setTitle(getString(R.string.note_verify_delete));
+        alert.setTitle(getString(R.string.note_verify_delete_project));
 
         // Create a delete button
         alert.setPositiveButton(R.string.action_delete, new DialogInterface.OnClickListener() {

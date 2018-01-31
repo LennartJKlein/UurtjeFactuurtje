@@ -252,7 +252,8 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         // Build the project object
         Cost cost = new Cost();
         cost.setPrice(Double.parseDouble(price));
-        cost.setBtw(cost.getPrice() * TAX_RATE);
+        cost.setBtw(Math.round((cost.getPrice() * TAX_RATE) * 100.0) / 100.0);
+        cost.setPrice(Double.parseDouble(price) + cost.getBtw());
         cost.setCompanyId(company.getId());
         cost.setCompanyName(company.getName());
         cost.setDate(date);

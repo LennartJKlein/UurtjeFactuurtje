@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/secondary</item>
+        <item name="android:statusBarColor">@color/primary</item>
+        <item name="android:fontFamily">@font/lato</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

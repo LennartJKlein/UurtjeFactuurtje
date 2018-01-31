@@ -35,8 +35,11 @@
     <string name="title_tax_page">Calculate your tax</string>
     <string name="title_tax_result">Fields to fill in</string>
     <string name="form_tax_tip">Select a quarter and a year to see what you need to fill in at your tax screens.</string>
-    <string name="result_title_pay">Leveringen/diensten belast met hoog tarief</string>
-    <string name="placeholder_quarter">Quarter %1$s</string>
+    <string name="result_title_pay" translatable="false">Leveringen/diensten belast met hoog tarief</string>
+    <string name="label_pay_price" translatable="false">Bedrag waarover omzetbelasting wordt berekend</string>
+    <string name="label_pay_tax" translatable="false">Omzetbelasting</string>
+    <string name="result_title_receive" translatable="false">Voorbelasting</string>
+    <string name="result_tax_tip">Fill in the following numbers in your tax screens.</string>
 
     <!-- RelationsActivity -->
     <string name="heading_companies">Relations</string>
@@ -120,6 +123,7 @@
     <string name="placeholder_hours">%1$s hours</string>
     <string name="placeholder_invoice_nr" translatable="false">#%1$s</string>
     <string name="placeholder_cost">A cost</string>
+    <string name="placeholder_quarter">Quarter %1$s</string>
     <string name="placeholder_current_date">Today it\'s %1$s</string>
 
     <!-- Invoice document -->
@@ -137,7 +141,8 @@
     <!-- Notifications -->
     <string name="note_saved">Saved!</string>
     <string name="note_work_added">Work added!</string>
-    <string name="note_verify_delete">Delete this project?</string>
+    <string name="note_verify_delete_project">Delete this project?</string>
+    <string name="note_verify_delete_cost">Delete this cost?</string>
 
     <!-- Errors -->
     <string name="error_database_invoice">No connection to your data could be made. Try again</string>

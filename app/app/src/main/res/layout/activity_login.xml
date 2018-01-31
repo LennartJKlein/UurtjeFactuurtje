@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primaryDark"
     tools:context="nl.lennartklein.uurtjefactuurtje.LoginActivity">
 
     <LinearLayout
@@ -13,6 +14,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attach_money"
+            android:layout_marginBottom="@dimen/margin_medium"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/action_login_google"
@@ -27,10 +34,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textColor="@color/grey"
+            android:textColor="@color/primaryLight"
             android:textStyle="italic"
             android:textSize="@dimen/text_small"
-            android:padding="@dimen/margin_large"/>
+            android:paddingStart="@dimen/margin_large"
+            android:paddingEnd="@dimen/margin_large"/>
 
     </LinearLayout>
 

@@ -165,7 +165,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
      */
     private void initiateProjectsList() {
         // Construct the list
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext,
+                LinearLayoutManager.VERTICAL, true);
         projectsList.setLayoutManager(manager);
 
         // Add divider line
@@ -268,7 +269,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
      */
     private void initiateCostsList() {
         // Construct the list
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext,
+                LinearLayoutManager.VERTICAL, true);
         costsList.setLayoutManager(manager);
 
         // Add divider line
@@ -290,7 +292,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                         Cost.class,
                         R.layout.list_item_cost,
                         CostRow.class,
-                        dbCostsMe
+                        dbCostsMe.orderByChild("date")
                 ) {
                     @Override
                     protected void populateViewHolder(final CostRow row, final Cost cost, int position) {
@@ -421,7 +423,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         Log.d("Cost", "Clicked");
         // Set up dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-        alert.setTitle(getString(R.string.note_verify_delete));
+        alert.setTitle(getString(R.string.note_verify_delete_cost));
 
         // Create a delete button
         alert.setPositiveButton(R.string.action_delete, new DialogInterface.OnClickListener() {

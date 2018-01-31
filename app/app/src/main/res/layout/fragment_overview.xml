@@ -5,7 +5,7 @@
     tools:context="nl.lennartklein.uurtjefactuurtje.OverviewFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greyLight">
+    android:background="@color/primaryDark">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,16 +21,32 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/primaryDark">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/current_date"
+                    android:text="@string/placeholder_current_date"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textAlignment="center"
+                    android:fontFamily="@font/lato_italic"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/primaryLight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/primary"
+                    android:paddingTop="@dimen/margin_small"
+                    android:paddingBottom="@dimen/margin_small" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/margin_large">
 
                     <TextView
                         android:id="@+id/list_title"
@@ -42,10 +58,11 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:gravity="center_vertical"
-                        android:drawableStart="@drawable/ic_folder_grey_dark"
+                        android:drawableStart="@drawable/ic_folder_primary_light"
                         android:drawablePadding="@dimen/margin_small"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="@color/greyDark"/>
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/primaryLight"/>
 
                     <TextView
                         android:id="@+id/list_projects_empty"
@@ -59,7 +76,7 @@
                         android:padding="@dimen/margin_medium"
                         android:elevation="2dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textStyle="italic"
+                        android:fontFamily="@font/lato_italic"
                         android:textColor="@color/grey"
                         android:background="@drawable/list_card"
                         android:visibility="invisible"/>
@@ -81,8 +98,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_large"
-                    android:layout_marginBottom="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_medium"
+                    android:paddingBottom="@dimen/margin_large"
                     android:orientation="vertical">
 
                     <TextView
@@ -95,10 +112,11 @@
                         android:layout_marginTop="@dimen/margin_medium"
                         android:layout_marginBottom="@dimen/margin_medium"
                         android:gravity="center_vertical"
-                        android:drawableStart="@drawable/ic_receipt_grey_dark"
+                        android:drawableStart="@drawable/ic_receipt_primary_light"
                         android:drawablePadding="@dimen/margin_small"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                        android:textColor="@color/greyDark"/>
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/primaryLight" />
 
                     <TextView
                         android:id="@+id/list_costs_empty"
@@ -112,7 +130,7 @@
                         android:padding="@dimen/margin_medium"
                         android:elevation="2dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                        android:textStyle="italic"
+                        android:fontFamily="@font/lato_italic"
                         android:textColor="@color/grey"
                         android:background="@drawable/list_card"
                         android:visibility="invisible"/>
@@ -131,17 +149,10 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/current_date"
-                    android:text="@string/placeholder_current_date"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textAlignment="center"
-                    android:textStyle="italic"
-                    android:textColor="@color/grey"
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/margin_large"
-                    android:paddingBottom="@dimen/margin_large"
+                    android:layout_height="@dimen/appbar_padding_top"
+                    android:layout_marginTop="@dimen/margin_medium"
                     android:layout_marginBottom="@dimen/margin_large"/>
 
             </LinearLayout>
@@ -156,6 +167,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginEnd="@dimen/margin_small"
+            app:menu_labels_colorNormal="@color/secondaryDark"
             app:menu_showShadow="true"
             app:menu_shadowXOffset="0dp"
             app:menu_openDirection="up"

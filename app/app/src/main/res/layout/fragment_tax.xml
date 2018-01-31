@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="nl.lennartklein.uurtjefactuurtje.TaxFragment"
     android:orientation="vertical"
-    android:background="@color/greyLight">
+    android:background="@color/primaryDark">
 
     <LinearLayout
         android:id="@+id/form_tax"
@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_small"
+            android:textStyle="bold"
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <LinearLayout
@@ -68,7 +69,7 @@
                 android:id="@+id/form_tip"
                 android:text="@string/form_tax_tip"
                 android:textStyle="italic"
-                android:textColor="@color/grey"
+                android:textColor="@color/primaryLight"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -77,20 +78,135 @@
                 android:id="@+id/result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible">
+                android:layout_marginTop="@dimen/margin_small"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tax_tip"
+                    android:text="@string/result_tax_tip"
+                    android:textStyle="italic"
+                    android:textColor="@color/primaryLight"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/list_card"
                     android:elevation="2dp"
-                    android:padding="@dimen/margin_medium">
+                    android:padding="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium">
 
                     <TextView
                         android:id="@+id/result_title_pay"
                         android:text="@string/result_title_pay"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/margin_small"/>
+
+                    <LinearLayout
+                        android:id="@+id/labels_pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/result_title_pay"
+                        android:layout_marginBottom="@dimen/margin_small"
+                        android:baselineAligned="false">
+
+                        <TextView
+                            android:id="@+id/label_pay_price"
+                            android:text="@string/label_pay_price"
+                            android:layout_weight="0.6"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:textSize="@dimen/text_small"/>
+
+                        <TextView
+                            android:id="@+id/label_pay_tax"
+                            android:text="@string/label_pay_tax"
+                            android:layout_weight="0.4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:textSize="@dimen/text_small"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/fields_pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@id/labels_pay"
+                        android:baselineAligned="false"
+                        android:layout_marginBottom="@dimen/margin_medium">
+
+                        <TextView
+                            android:id="@+id/field_pay_price"
+                            android:text="@string/placeholder_currency"
+                            android:layout_weight="0.6"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:layout_gravity="bottom"/>
+
+                        <TextView
+                            android:id="@+id/field_pay_tax"
+                            android:text="@string/placeholder_currency"
+                            android:layout_weight="0.4"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:layout_gravity="bottom"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_out_primary_light" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/list_card"
+                    android:elevation="2dp"
+                    android:padding="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium">
+
+                    <TextView
+                        android:id="@+id/result_title_receive"
+                        android:text="@string/result_title_receive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="@dimen/margin_small"/>
+
+                    <TextView
+                        android:id="@+id/field_receive_tax"
+                        android:text="@string/placeholder_currency"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/result_title_receive"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        android:layout_gravity="bottom"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/ic_in_primary_light" />
 
                 </RelativeLayout>
 

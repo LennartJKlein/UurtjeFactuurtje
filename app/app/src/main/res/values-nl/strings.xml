@@ -16,7 +16,8 @@
     <string name="action_logout">Uitloggen</string>
     <string name="action_delete_project">Project verwijderen</string>
     <string name="note_work_added">Werk toegevoegd!</string>
-    <string name="note_verify_delete">Dit project verwijderen?</string>
+    <string name="note_verify_delete_project">Dit project verwijderen?</string>
+    <string name="note_verify_delete_cost">Deze aankoop verwijderen?</string>
     <string name="tab_project_work">Werk</string>
     <string name="tab_project_invoices">Facturen</string>
     <string name="error_no_permission">Mislukt. Geef toestemming om bestanden op te slaan.</string>
@@ -124,4 +125,5 @@
     <string name="menu_work">Werk</string>
     <string name="menu_cost">Aankoop</string>
     <string name="menu_project">Project</string>
+    <string name="result_tax_tip">Vul de onderstaande bedragen in in je belastingaangifte</string>
 </resources>

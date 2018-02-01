@@ -110,9 +110,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             firebaseAuthWithGoogle(account);
 
         } catch (ApiException e) {
-            // Google Sign In failed, update UI appropriately
+            // Google Sign In failed
             Log.d("Sign in", "Google sign in failed", e);
-            Toast.makeText(this, getResources().getString(R.string.error_no_login), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    getResources().getString(R.string.error_no_login),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -125,52 +127,64 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("Sign in", "signInWithCredential:success");
-                            saveUserData();
-                            enterApp(true);
+                            saveNewUserData();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("Sign in", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.error_no_login), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this,
+                                    getResources().getString(R.string.error_no_login),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private void saveUserData() {
+    private void saveNewUserData() {
         final String userId = mAuth.getCurrentUser().getUid();
         final String userMail = mAuth.getCurrentUser().getEmail();
 
-        // If new, save the user ID in the database
         dbUsers.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChild(userId)) {
+                    // User is new
                     User newUser = new User(
                             userMail,
-                            Calendar.getInstance().get(Calendar.YEAR) + "0001",
+                            0,
                             "14");
                     db.child("users").child(userId).setValue(newUser);
+
+                    enterApp(true);
+
+                } else {
+                    // User already exists in database
+                    enterApp(false);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Toast.makeText(mContext,
-                        getResources().getString(R.string.error_no_projects), Toast.LENGTH_SHORT).show();
+                        getResources().getString(R.string.error_no_data),
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void enterApp(boolean isLogged) {
-        if (isLogged) {
+    private void enterApp(boolean isNew) {
+        if (isNew) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        } else {
             startActivity(new Intent(this, MainActivity.class));
-            finish();
         }
+        finish();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, getResources().getString(R.string.error_no_login), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,
+                getResources().getString(R.string.error_no_login),
+                Toast.LENGTH_SHORT).show();
     }
 
 }

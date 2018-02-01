@@ -39,7 +39,7 @@
                     android:textColor="@color/primaryLight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/primary"
+                    android:background="@color/primaryDark"
                     android:paddingTop="@dimen/margin_small"
                     android:paddingBottom="@dimen/margin_small" />
 

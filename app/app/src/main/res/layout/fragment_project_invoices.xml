@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textStyle="italic"
+                android:fontFamily="@font/lato_italic"
                 android:visibility="invisible"
                 android:textColor="@color/grey" />
 

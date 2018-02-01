@@ -25,22 +25,22 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/invoice_nr"
-            android:text="@string/placeholder_invoice_nr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textStyle="bold"
-            android:textColor="@color/grey"
-            android:ellipsize="end" />
-
-        <TextView
             android:text="@string/placeholder_currency"
             android:id="@+id/invoice_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:fontFamily="@font/lato_bold"/>
+
+        <TextView
+            android:id="@+id/invoice_nr"
+            android:text="@string/placeholder_invoice_nr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/grey"
+            android:ellipsize="end" />
 
     </LinearLayout>
 

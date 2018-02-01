@@ -25,6 +25,7 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:fontFamily="@font/lato_bold"
                 android:textColor="@color/primary" />
 
             <ProgressBar
@@ -43,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:textStyle="italic"
+                android:fontFamily="@font/lato_italic"
                 android:layout_below="@id/list_title"
                 android:visibility="invisible"
                 android:textColor="@color/grey" />
@@ -76,6 +77,8 @@
                 android:drawableStart="@drawable/ic_attach_money"
                 android:drawableTint="@color/primary"
                 android:layout_marginEnd="@dimen/margin_medium"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
                 android:background="?selectableItemBackground"/>
 
             <Button
@@ -84,6 +87,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/action_add"
                 android:textColor="@color/white"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
                 android:backgroundTint="@color/primary"/>
 
         </LinearLayout>

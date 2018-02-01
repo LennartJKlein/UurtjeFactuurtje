@@ -1,8 +1,16 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        AddCompanyFragment
+// Parent       CompaniesFragment
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,8 +24,10 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
+/**
+ * A dialog with a form to add a company (relation)
+ */
 
 public class AddCompanyFragment extends DialogFragment implements View.OnClickListener {
 

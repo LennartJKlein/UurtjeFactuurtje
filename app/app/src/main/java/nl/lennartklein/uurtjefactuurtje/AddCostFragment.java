@@ -1,15 +1,20 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        AddCostFragment
+// Parent       OverviewFragment
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +37,10 @@ import com.weiwangcn.betterspinner.library.BetterSpinner;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+/**
+ * A dialog with a form to add a cost
+ */
 
 public class AddCostFragment extends DialogFragment implements View.OnClickListener {
 

@@ -168,7 +168,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
                         Invoice.class,
                         R.layout.list_item_invoice,
                         ProjectInvoicesFragment.InvoiceRow.class,
-                        dbInvoicesMe
+                        dbInvoicesThis
                 ) {
                     @Override
                     protected void populateViewHolder(final ProjectInvoicesFragment.InvoiceRow row,

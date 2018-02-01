@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -334,13 +335,16 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     public void createNewInvoice() {
         Toast.makeText(mContext, getString(R.string.generating_invoice), Toast.LENGTH_SHORT).show();
 
-        // Add 1 to invoiceNumber of user
-        long newInvoiceNumber = Long.valueOf(user.getInvoiceNumber()) + 1;
-        dbUsersMe.child("invoiceNumber").setValue(String.valueOf(newInvoiceNumber));
+        // Create invoiceNumber string
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        String invoiceNr = currentYear + String.format(
+                Locale.getDefault(),
+                "%03d",
+                user.getInvoiceNumber());
 
         // Create new invoice object
         Invoice invoice = new Invoice();
-        invoice.setInvoiceNr(user.getInvoiceNumber() );
+        invoice.setInvoiceNr(invoiceNr);
         invoice.setProjectId(project.getId());
         invoice.setDate(getDateToday(0));
         invoice.setEndDate(getDateToday(Integer.valueOf(user.getPayDue())));
@@ -354,6 +358,10 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         // Add the date of the invoice to the project
         project.setLastInvoice(invoice.getDate());
         dbProjectsMe.child(project.getId()).child("lastInvoice").setValue(invoice.getDate());
+
+        // Add 1 to invoiceNumber of user
+        int newInvoiceNumber = user.getInvoiceNumber() + 1;
+        dbUsersMe.child("invoiceNumber").setValue(newInvoiceNumber);
 
         // Calculate the totals of the invoice
         fetchData(invoice);

@@ -149,6 +149,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();

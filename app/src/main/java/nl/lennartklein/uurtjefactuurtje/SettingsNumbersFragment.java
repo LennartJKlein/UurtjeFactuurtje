@@ -77,6 +77,9 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
         return view;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -111,6 +114,9 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Validate fields and save them in the database
+     */
     private void saveFields() {
         String website = fieldWebsite.getText().toString();
         if (!website.equals("")) {

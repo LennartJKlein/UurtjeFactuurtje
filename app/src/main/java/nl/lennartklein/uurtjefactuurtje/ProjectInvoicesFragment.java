@@ -125,11 +125,17 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
 
+    /**
+     * Sets the database references
+     */
     private void setReferences() {
         db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
@@ -138,6 +144,9 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         dbWorkThis = db.child("work").child(currentUser.getUid()).child(project.getId());
     }
 
+    /**
+     * Get user data from database
+     */
     private void fetchUser() {
         dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -165,7 +174,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     }
 
     /**
-     * Fill the list with work
+     * Fills the list with work
      */
     private void populateInvoicesList() {
         inProgress(true);
@@ -254,6 +263,9 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
 
     }
 
+    /**
+     * Updates UI based on items in the list
+     */
     private void checkAmount(int amount) {
         if (amount == 0) {
             emptyInvoicesList.setVisibility(View.VISIBLE);
@@ -266,15 +278,14 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Show wheel when in progress
+     */
     private void inProgress(boolean loading) {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
-            invoicesList.setVisibility(View.INVISIBLE);
-            emptyInvoicesList.setVisibility(View.INVISIBLE);
-            newInvoice.setVisibility(View.INVISIBLE);
         } else {
             progressWheel.setVisibility(View.INVISIBLE);
-            invoicesList.setVisibility(View.VISIBLE);
         }
     }
 
@@ -308,6 +319,9 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    /**
+     * Fetches all data of this invoice
+     */
     private void fetchDataAndBuild(final Invoice invoice) {
         db.addValueEventListener(new ValueEventListener() {
             @Override

@@ -74,6 +74,9 @@ public class ProjectInfoFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();

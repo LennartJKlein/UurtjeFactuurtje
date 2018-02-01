@@ -103,11 +103,17 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         return view;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
 
+    /**
+     * Fetches all the relations of this user
+     */
     private void getRelations() {
         relations = new ArrayList<>();
         relationNames = new ArrayList<>();
@@ -160,6 +166,9 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Validates the user's input
+     */
     public void validateFields() {
 
         // Reset previous errors
@@ -198,6 +207,9 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Inserts a new project in the database
+     */
     public void insertInDatabase(String name, String companyName, String hourPrice) {
 
         DatabaseReference dbProjectNew = dbProjectsMe.push();
@@ -221,6 +233,9 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         closeFragment();
     }
 
+    /**
+     * Returns the company object for this name
+     */
     public Company fetchCompany(String companyName) {
         if (!companyName.equals("")) {
             int companyPosition = relationNames.indexOf(companyName);
@@ -230,12 +245,18 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Returns the current date
+     */
     public String getDateToday() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(c.getTime());
     }
 
+    /**
+     * Opens the activity of this project
+     */
     public void openProject() {
         Intent projectIntent = new Intent(mContext, ProjectActivity.class);
         projectIntent.putExtra("PROJECT_KEY", project.getId());
@@ -246,6 +267,9 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         dismiss();
     }
 
+    /**
+     * Opens a dialog fragment to add a company
+     */
     private void openAddCompanyFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddCompanyFragment dialog = new AddCompanyFragment();

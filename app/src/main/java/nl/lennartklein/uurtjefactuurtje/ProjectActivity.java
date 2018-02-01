@@ -382,6 +382,9 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         fetchData(invoice);
     }
 
+    /**
+     * Fetches all invoice information
+     */
     private void fetchData(final Invoice invoice) {
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

@@ -131,6 +131,9 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         });
     }
 
+    /**
+     * Opens a dialog fragment to add a company
+     */
     private void openCompanyFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddCompanyFragment dialog = new AddCompanyFragment();
@@ -138,7 +141,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     }
 
     /**
-     * Construct the list of companies
+     * Constructs the list of companies
      */
     private void initiateCompaniesList() {
         // Construct the list
@@ -147,7 +150,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     }
 
     /**
-     * Fill the list with companies
+     * Fills the list with companies
      */
     private void populateCompaniesList() {
         inProgress(true);
@@ -213,6 +216,9 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
 
     }
 
+    /**
+     * Updates UI based on items in the list
+     */
     private void checkAmount(int amount) {
         if (amount == 0) {
             emptyCompaniesList.setVisibility(View.VISIBLE);
@@ -223,16 +229,20 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    /**
+     * Show wheel when in progress
+     */
     private void inProgress(boolean loading) {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
-            companiesList.setVisibility(View.INVISIBLE);
         } else {
             progressWheel.setVisibility(View.INVISIBLE);
-            companiesList.setVisibility(View.VISIBLE);
         }
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();

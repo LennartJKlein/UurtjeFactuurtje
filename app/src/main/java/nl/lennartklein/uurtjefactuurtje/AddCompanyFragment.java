@@ -83,6 +83,9 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
         return v;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -100,6 +103,9 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Validates the user's input
+     */
     public void validateFields() {
 
         // Reset previous errors
@@ -167,6 +173,9 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
         }
     }
 
+    /**
+     * Inserts a new company in the database
+     */
     public void insertInDatabase(String city, String contact, String mail, String name,
                                  String postal, String street, String streetNr) {
 

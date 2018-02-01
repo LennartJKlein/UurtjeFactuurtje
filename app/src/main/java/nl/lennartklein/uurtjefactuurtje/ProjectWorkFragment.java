@@ -131,17 +131,26 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
 
+    /**
+     * Sets the database references
+     */
     private void setReferences() {
         db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbWorkMe = db.child("work").child(currentUser.getUid());
     }
 
+    /**
+     * Get user data from database
+     */
     private void fetchUser() {
         dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -169,7 +178,7 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     }
 
     /**
-     * Fill the list with work
+     * Fills the list with work
      */
     private void populateWorkList() {
         inProgress(true);
@@ -261,6 +270,9 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
 
     }
 
+    /**
+     * Updates UI based on items in the list
+     */
     private void checkAmount(int amount) {
         if (amount == 0) {
             emptyWorkList.setVisibility(View.VISIBLE);
@@ -273,6 +285,9 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * Show wheel when in progress
+     */
     private void inProgress(boolean loading) {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
@@ -285,6 +300,9 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * Open a dialog fragment to add work to this project
+     */
     private void openWorkFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddWorkFragment dialog = new AddWorkFragment();

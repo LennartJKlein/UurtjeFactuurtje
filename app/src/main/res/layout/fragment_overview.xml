@@ -60,18 +60,6 @@
                     android:fontFamily="@font/lato_bold"
                     android:textColor="@color/primaryLight"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_projects"
-                    android:scrollbars="none"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_below="@id/list_title"
-                    android:elevation="2dp"
-                    android:background="@drawable/list_card"
-                    tools:listitem="@layout/list_item_project"/>
-
                 <TextView
                     android:id="@+id/list_projects_empty"
                     android:text="@string/error_no_projects"
@@ -87,6 +75,18 @@
                     android:fontFamily="@font/lato_italic"
                     android:textColor="@color/grey"
                     android:background="@drawable/list_card"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_projects"
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_below="@id/list_title"
+                    android:elevation="2dp"
+                    android:background="@drawable/list_card"
+                    tools:listitem="@layout/list_item_project"/>
 
             </RelativeLayout>
 
@@ -113,18 +113,6 @@
                     android:fontFamily="@font/lato_bold"
                     android:textColor="@color/primaryLight" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_costs"
-                    android:scrollbars="none"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_below="@id/list_title_costs"
-                    android:elevation="2dp"
-                    android:background="@drawable/list_card"
-                    tools:listitem="@layout/list_item_cost"/>
-
                 <TextView
                     android:id="@+id/list_costs_empty"
                     android:text="@string/error_no_costs"
@@ -140,6 +128,18 @@
                     android:fontFamily="@font/lato_italic"
                     android:textColor="@color/grey"
                     android:background="@drawable/list_card"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_costs"
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_below="@id/list_title_costs"
+                    android:elevation="2dp"
+                    android:background="@drawable/list_card"
+                    tools:listitem="@layout/list_item_cost"/>
 
             </RelativeLayout>
 

@@ -49,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     /**
-     * Initiates Firebase authentication
+     * Sets the FireBase authentication and current user
      */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();

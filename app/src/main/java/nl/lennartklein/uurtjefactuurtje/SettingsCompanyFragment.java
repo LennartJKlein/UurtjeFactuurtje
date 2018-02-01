@@ -77,6 +77,9 @@ public class SettingsCompanyFragment extends Fragment implements View.OnClickLis
         return view;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();

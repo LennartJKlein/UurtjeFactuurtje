@@ -144,25 +144,34 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Sets the authentication variables
+     * Sets the FireBase authentication and current user
      */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
     }
 
+    /**
+     * Opens a dialog fragment to add work
+     */
     private void openWorkFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddWorkFragment dialog = new AddWorkFragment();
         dialog.show(transaction, "AddWork");
     }
 
+    /**
+     * Opens a dialog fragment to add a cost
+     */
     private void openCostFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddCostFragment dialog = new AddCostFragment();
         dialog.show(transaction, "AddCost");
     }
 
+    /**
+     * Opens a dialog fragment to add a project
+     */
     private void openProjectFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddProjectFragment dialog = new AddProjectFragment();
@@ -170,7 +179,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Construct the list of projects
+     * Constructs the list of projects
      */
     private void initiateProjectsList() {
         // Construct the list
@@ -186,7 +195,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Fill the list with projects
+     * Fills the list with projects
      */
     private void populateProjectsList() {
         inProgress(true);
@@ -290,7 +299,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     /**
-     * Fill the list with costs
+     * Fills the list with costs
      */
     private void populateCostsList() {
         inProgress(true);
@@ -392,6 +401,9 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * Updates UI based on items in the list
+     */
     private void checkAmountProjects(int amount) {
         if (amount == 0) {
             emptyProjectsList.setVisibility(View.VISIBLE);
@@ -402,6 +414,9 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Updates UI based on items in the list
+     */
     private void checkAmountCosts(int amount) {
         if (amount == 0) {
             emptyCostsList.setVisibility(View.VISIBLE);
@@ -412,23 +427,14 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Show wheel when in progress
+     */
     private void inProgress(boolean loading) {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
-
-            projectsList.setVisibility(View.GONE);
-            emptyProjectsList.setVisibility(View.GONE);
-
-            costsList.setVisibility(View.GONE);
-            emptyCostsList.setVisibility(View.GONE);
         } else {
             progressWheel.setVisibility(View.GONE);
-
-            projectsList.setVisibility(View.VISIBLE);
-            emptyProjectsList.setVisibility(View.VISIBLE);
-
-            costsList.setVisibility(View.VISIBLE);
-            emptyCostsList.setVisibility(View.VISIBLE);
         }
     }
 

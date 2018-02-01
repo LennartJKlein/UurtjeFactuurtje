@@ -302,6 +302,9 @@ public class GeneratePdf {
         return new Paragraph(content, font);
     }
 
+    /**
+     * Opens the file with a native chooser
+     */
     private void openFile() {
         if (filepath != null || !filepath.equals("")) {
 

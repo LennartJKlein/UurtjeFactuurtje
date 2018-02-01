@@ -115,6 +115,9 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         return view;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -135,6 +138,9 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
+    /**
+     * Fetches all relations of this user
+     */
     private void getRelations() {
         relations = new ArrayList<>();
         relationNames = new ArrayList<>();
@@ -201,8 +207,9 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         dismiss();
     }
 
-
-
+    /**
+     * Validates the user's input
+     */
     public void validateFields() {
 
         // Reset previous errors
@@ -251,6 +258,9 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
+    /**
+     * Inserts a new cost in the database
+     */
     public void insertInDatabase(String description, String companyName, String date,
                                  String invoiceNr, String price) {
 

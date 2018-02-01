@@ -108,6 +108,9 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         return view;
     }
 
+    /**
+     * Sets the FireBase authentication and current user
+     */
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
@@ -206,6 +209,9 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
+    /**
+     * Gets object of selected project
+     */
     public Project fetchProject() {
         String projectName = fieldProject.getText().toString();
         if (!projectName.equals("")) {
@@ -230,7 +236,9 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
-
+    /**
+     * Validates the user's input
+     */
     public void validateFields() {
 
         // Reset previous errors
@@ -283,6 +291,9 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         }
     }
 
+    /**
+     * Inserts new work in the database
+     */
     public void insertInDatabase(String price, String hours, String description, String date) {
 
         project = fetchProject();

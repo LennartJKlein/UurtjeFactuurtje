@@ -99,3 +99,8 @@ Vliegende start. Facturen jzijn gerepareerd, 'kosten' zijn toegevoegd en hebben 
 
 #### Design descisions
 * Het woord 'kost' en 'kosten' was verwarrend. Dit merkte ik bij het uitleggen van mijn voortgang aan mijn team. De nieuwe Nederlandse term wordt nu 'aankoop', 'aankopen', 'aanschaf'.
+
+### 1 februari
+
+#### Design descisions
+* De android projectbestanden heb ik toch maar in de hoofdmap gezet, in plaats van een aparte 'app' directory. Dit gaf bij het programma zelf al verwarring en daarnaast is het niet gebruikelijk.

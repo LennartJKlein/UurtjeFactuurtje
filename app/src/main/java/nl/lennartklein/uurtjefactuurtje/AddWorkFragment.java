@@ -69,7 +69,7 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
     private List<String> projectNames;
     private ArrayAdapter<String> projectsAdapter;
     private Project project;
-    private String givenProject;
+    private String givenProject = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

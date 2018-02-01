@@ -141,6 +141,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
         dbInvoicesThis = dbInvoicesMe.child(project.getId());
+        Log.d("Invoice", project.getId());
         dbWorkThis = db.child("work").child(currentUser.getUid()).child(project.getId());
     }
 

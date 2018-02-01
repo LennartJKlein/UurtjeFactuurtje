@@ -341,10 +341,10 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         // Set the adapter
         costsList.setAdapter(adapter);
 
-        inProgress(false);
-
         // Update amount in list
         checkAmountCosts(costsList.getAdapter().getItemCount());
+
+        inProgress(false);
 
     }
 
@@ -407,9 +407,9 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void checkAmountProjects(int amount) {
         if (amount == 0) {
             emptyProjectsList.setVisibility(View.VISIBLE);
-            projectsList.setVisibility(View.GONE);
+            projectsList.setVisibility(View.INVISIBLE);
         } else {
-            emptyProjectsList.setVisibility(View.GONE);
+            emptyProjectsList.setVisibility(View.INVISIBLE);
             projectsList.setVisibility(View.VISIBLE);
         }
     }
@@ -420,9 +420,9 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void checkAmountCosts(int amount) {
         if (amount == 0) {
             emptyCostsList.setVisibility(View.VISIBLE);
-            costsList.setVisibility(View.GONE);
+            costsList.setVisibility(View.INVISIBLE);
         } else {
-            emptyCostsList.setVisibility(View.GONE);
+            emptyCostsList.setVisibility(View.INVISIBLE);
             costsList.setVisibility(View.VISIBLE);
         }
     }
@@ -434,7 +434,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
         } else {
-            progressWheel.setVisibility(View.GONE);
+            progressWheel.setVisibility(View.INVISIBLE);
         }
     }
 

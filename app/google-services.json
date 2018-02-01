@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "51910065146",
+    "firebase_url": "https://uurtje-factuurtje-b209e.firebaseio.com",
+    "project_id": "uurtje-factuurtje-b209e",
+    "storage_bucket": "uurtje-factuurtje-b209e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51910065146:android:b75c63a70d251fc1",
+        "android_client_info": {
+          "package_name": "nl.lennartklein.uurtjefactuurtje"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51910065146-l95dqslfot5h9j7jsb9lrt8a6llv7k4o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nl.lennartklein.uurtjefactuurtje",
+            "certificate_hash": "f0983d01ad9f17fa6bb17d648b59b6a474c15c3c"
+          }
+        },
+        {
+          "client_id": "51910065146-tp1s18536jsd3fsc921ek2av1rkidu9s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmzP8tBoDX_-iYwCfjnOYxfnYjS8oOMGg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51910065146-tp1s18536jsd3fsc921ek2av1rkidu9s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

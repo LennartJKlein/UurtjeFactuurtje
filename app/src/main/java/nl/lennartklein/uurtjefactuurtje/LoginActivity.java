@@ -172,10 +172,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void enterApp(boolean isNew) {
+        startActivity(new Intent(this, MainActivity.class));
         if (isNew) {
             startActivity(new Intent(this, SettingsActivity.class));
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
         }
         finish();
     }

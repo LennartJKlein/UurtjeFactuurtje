@@ -170,8 +170,12 @@ public class GeneratePdf {
             User user = invoice.getUser();
             doc.add(createParagraph(user.getCompanyName(), 2));
             doc.add(createParagraph(user.getPostal() + "  " + user.getCity(), 2));
-            doc.add(createParagraph("KvK: " + user.getKvk(), 2));
-            doc.add(createParagraph("BTW: " + user.getBtw(), 2));
+            if (user.getKvk() != null) {
+                doc.add(createParagraph("KvK: " + user.getKvk(), 2));
+            }
+            if (user.getBtw() != null) {
+                doc.add(createParagraph("BTW: " + user.getBtw(), 2));
+            }
         } catch (DocumentException e) {
             e.printStackTrace();
         }

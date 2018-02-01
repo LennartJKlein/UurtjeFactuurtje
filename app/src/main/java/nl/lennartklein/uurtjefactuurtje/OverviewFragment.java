@@ -383,6 +383,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkAmountProjects(int amount) {
+        Log.d("amount", String.valueOf(amount));
         if (amount == 0) {
             emptyProjectsList.setVisibility(View.VISIBLE);
             projectsList.setVisibility(View.INVISIBLE);

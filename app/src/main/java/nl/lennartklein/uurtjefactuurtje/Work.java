@@ -1,9 +1,18 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        Work
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import java.io.Serializable;
 
 /**
- * A entry of work (hours or product)
+ * Work (man hours or a product)
  */
 public class Work implements Serializable {
 

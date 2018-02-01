@@ -104,3 +104,4 @@ Vliegende start. Facturen jzijn gerepareerd, 'kosten' zijn toegevoegd en hebben 
 
 #### Design descisions
 * De android projectbestanden heb ik toch maar in de hoofdmap gezet, in plaats van een aparte 'app' directory. Dit gaf bij het programma zelf al verwarring en daarnaast is het niet gebruikelijk.
+* In het scherm "project toevoegen" is nu een knop naast de spinner voor relaties. Met die knop kun je snel een relatie toevoegen, zonder de gegevens voor het aan te maken project te verliezen.

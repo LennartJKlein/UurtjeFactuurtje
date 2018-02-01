@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        GeneratePdf
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.ActivityNotFoundException;
@@ -9,11 +18,6 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -29,10 +33,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Creates a PDF for an invoice (containing necessary info for accountancy)

@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        OverviewFragment
+// Parent       MainActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.app.AlertDialog;
@@ -23,7 +33,6 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -221,10 +230,10 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         // Set the adapter
         projectsList.setAdapter(adapter);
 
+        inProgress(false);
+
         // Update amount in list
         checkAmountProjects(projectsList.getAdapter().getItemCount());
-
-        inProgress(false);
     }
 
     /**
@@ -323,10 +332,11 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         // Set the adapter
         costsList.setAdapter(adapter);
 
+        inProgress(false);
+
         // Update amount in list
         checkAmountCosts(costsList.getAdapter().getItemCount());
 
-        inProgress(false);
     }
 
     /**
@@ -383,12 +393,11 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkAmountProjects(int amount) {
-        Log.d("amount", String.valueOf(amount));
         if (amount == 0) {
             emptyProjectsList.setVisibility(View.VISIBLE);
-            projectsList.setVisibility(View.INVISIBLE);
+            projectsList.setVisibility(View.GONE);
         } else {
-            emptyProjectsList.setVisibility(View.INVISIBLE);
+            emptyProjectsList.setVisibility(View.GONE);
             projectsList.setVisibility(View.VISIBLE);
         }
     }
@@ -396,9 +405,9 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void checkAmountCosts(int amount) {
         if (amount == 0) {
             emptyCostsList.setVisibility(View.VISIBLE);
-            costsList.setVisibility(View.INVISIBLE);
+            costsList.setVisibility(View.GONE);
         } else {
-            emptyCostsList.setVisibility(View.INVISIBLE);
+            emptyCostsList.setVisibility(View.GONE);
             costsList.setVisibility(View.VISIBLE);
         }
     }
@@ -406,14 +415,20 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void inProgress(boolean loading) {
         if (loading) {
             progressWheel.setVisibility(View.VISIBLE);
-            projectsList.setVisibility(View.INVISIBLE);
-            emptyProjectsList.setVisibility(View.INVISIBLE);
-            costsList.setVisibility(View.INVISIBLE);
-            emptyCostsList.setVisibility(View.INVISIBLE);
+
+            projectsList.setVisibility(View.GONE);
+            emptyProjectsList.setVisibility(View.GONE);
+
+            costsList.setVisibility(View.GONE);
+            emptyCostsList.setVisibility(View.GONE);
         } else {
-            progressWheel.setVisibility(View.INVISIBLE);
+            progressWheel.setVisibility(View.GONE);
+
             projectsList.setVisibility(View.VISIBLE);
+            emptyProjectsList.setVisibility(View.VISIBLE);
+
             costsList.setVisibility(View.VISIBLE);
+            emptyCostsList.setVisibility(View.VISIBLE);
         }
     }
 

@@ -1,24 +1,31 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        ProjectInfoFragment
+// Parent       ProjectActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
+import java.util.Locale;
 
 /**
- * Settings page with explanation about the app
+ * Page with information about the project
  */
 public class ProjectInfoFragment extends Fragment {
 
@@ -60,7 +67,7 @@ public class ProjectInfoFragment extends Fragment {
 
         // Set data
         tvCompany.setText(project.getCompanyName());
-        String hourPrice = String.format("%.2f", project.getHourPrice());
+        String hourPrice = String.format(Locale.getDefault(), "%.2f", project.getHourPrice());
         tvHourPrice.setText(getResources().getString(R.string.placeholder_currency, hourPrice));
         tvDate.setText(project.getDate());
 

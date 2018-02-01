@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,6 +56,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
     private EditText fieldName;
     private BetterSpinner fieldRelations;
     private EditText fieldHourPrice;
+    private ImageButton actionAddCompany;
     private Button actionInsert;
     private Button actionCancel;
 
@@ -84,10 +87,13 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         fieldName = view.findViewById(R.id.field_name);
         fieldRelations = view.findViewById(R.id.field_company);
         fieldHourPrice = view.findViewById(R.id.field_hour_price);
+        actionAddCompany = view.findViewById(R.id.action_create_company);
         actionInsert = view.findViewById(R.id.action_create_project);
         actionCancel = view.findViewById(R.id.action_cancel);
 
         // Set click listeners
+        fieldRelations.setOnClickListener(this);
+        actionAddCompany.setOnClickListener(this);
         actionInsert.setOnClickListener(this);
         actionCancel.setOnClickListener(this);
 
@@ -139,6 +145,12 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.field_company:
+                getRelations();
+                break;
+            case R.id.action_create_company:
+                openAddCompanyFragment();
+                break;
             case R.id.action_create_project:
                 validateFields();
                 break;
@@ -232,5 +244,11 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
     public void closeFragment() {
         dismiss();
+    }
+
+    private void openAddCompanyFragment() {
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        AddCompanyFragment dialog = new AddCompanyFragment();
+        dialog.show(transaction, "AddCompany");
     }
 }

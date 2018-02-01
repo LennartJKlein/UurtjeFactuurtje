@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        MainActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Intent;
@@ -12,6 +21,10 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+/**
+ * Contains the main tabs of the app
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         initiateBottomNavigation();
 
-        getSupportActionBar().hide();
+        // Hide actionbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
     }
 
     @Override

@@ -1,3 +1,12 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        ProjectActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.app.AlertDialog;
@@ -35,6 +44,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
+
+/**
+ * Containing the tabbed pages (and global functions) for a project
+ */
 
 public class ProjectActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -220,7 +233,9 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     private void setBackButton() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     /**

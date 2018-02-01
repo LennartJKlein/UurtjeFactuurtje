@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        AddWorkProductFragment
+// Parent       AddWorkFragment
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.app.DatePickerDialog;
@@ -16,7 +26,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 
 /**
- * A form for adding sold products to a project
+ * A form for adding sold products to the work form
  */
 public class AddWorkProductFragment extends Fragment implements View.OnClickListener {
 

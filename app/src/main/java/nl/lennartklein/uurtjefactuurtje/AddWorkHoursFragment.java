@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        AddWorkHoursFragment
+// Parent       AddWorkFragment
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.app.DatePickerDialog;
@@ -17,9 +27,10 @@ import android.widget.TimePicker;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
- * A form for adding man hours to a project
+ * A form for adding man hours to the work form
  */
 public class AddWorkHoursFragment extends Fragment implements View.OnClickListener {
 
@@ -162,10 +173,12 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
     }
 
     private void setTimeFields() {
-        String startTime = String.format("%1$02d:%2$02d", startHour, startMinute);
+        String startTime = String.format(Locale.getDefault(),
+                "%1$02d:%2$02d", startHour, startMinute);
         fieldTimeStart.setText(startTime);
 
-        String endTime = String.format("%1$02d:%2$02d", endHour, endMinute);
+        String endTime = String.format(Locale.getDefault(),
+                "%1$02d:%2$02d", endHour, endMinute);
         fieldTimeEnd.setText(endTime);
 
         double deltaHours = (endHour - startHour);

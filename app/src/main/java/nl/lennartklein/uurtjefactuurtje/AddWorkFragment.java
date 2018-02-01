@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        AddWorkFragment
+// Parent       OverviewFragment / ProjectWorkFragment
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
@@ -24,12 +34,15 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * A form for adding work to a project
+ */
 
 public class AddWorkFragment extends DialogFragment implements View.OnClickListener {
 
@@ -56,6 +69,7 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
     private List<String> projectNames;
     private ArrayAdapter<String> projectsAdapter;
     private Project project;
+    private String givenProject;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +103,7 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
 
         // Get and set data
         getProjects();
+        setProject(givenProject);
 
         return view;
     }
@@ -195,17 +210,26 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         String projectName = fieldProject.getText().toString();
         if (!projectName.equals("")) {
             int projectPosition = projectNames.indexOf(projectName);
-            return projects.get(projectPosition);
+            if (projectPosition >= 0) {
+                return projects.get(projectPosition);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
     }
 
-    public void setProject(String project) {
-        if (fieldProject != null) {
-            fieldProject.setText(project);
+    public void setGivenProject(String project) {
+        givenProject = project;
+    }
+
+    private void setProject(String projectName) {
+        if (fieldProject != null && !projectName.equals("")) {
+            fieldProject.setText(projectName);
         }
     }
+
 
     public void validateFields() {
 

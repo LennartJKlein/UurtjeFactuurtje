@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        ProjectWorkFragment
+// Parent       ProjectActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
@@ -278,8 +288,8 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private void openWorkFragment() {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         AddWorkFragment dialog = new AddWorkFragment();
+        dialog.setGivenProject(project.getName());
         dialog.show(transaction, "AddWork");
-        dialog.setProject(project.getName());
     }
 
 }

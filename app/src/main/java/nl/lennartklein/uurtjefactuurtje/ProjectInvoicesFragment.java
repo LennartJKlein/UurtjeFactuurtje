@@ -1,3 +1,13 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        ProjectInvoicesFragment
+// Parent       ProjectActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.ActivityNotFoundException;
@@ -30,15 +40,13 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
 /**
- * A page of all the invoices of a project
+ * A page with all the invoices of a project
  */
 public class ProjectInvoicesFragment extends Fragment implements View.OnClickListener {
 

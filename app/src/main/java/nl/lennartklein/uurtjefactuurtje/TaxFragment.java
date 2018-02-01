@@ -1,11 +1,18 @@
+////////////////////////////////////////////////////////////////////////////////
+// Title        TaxFragment
+// Parent       MainActivity
+//
+// Date         February 1 2018
+// Author       Lennart J Klein  (info@lennartklein.nl)
+// Project      UurtjeFactuurtje
+// Assignment   App Studio, University of Amsterdam
+////////////////////////////////////////////////////////////////////////////////
+
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -248,11 +254,7 @@ public class TaxFragment extends Fragment {
 
     private boolean monthInQuarter(int month, int quarter) {
         int quarterOfMonth = (month / 3) + 1;
-        if (quarterOfMonth == quarter) {
-            return true;
-        } else {
-            return false;
-        }
+        return quarterOfMonth == quarter;
     }
 
     private void setTaxFields() {

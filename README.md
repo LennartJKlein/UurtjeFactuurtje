@@ -1,5 +1,6 @@
 # ![UurtjeFactuurtje - icon](/doc/app-icon.png?raw=true "UurtjeFactuurtje - icon") # UurtjeFactuurtje
 [![BCH compliance](https://bettercodehub.com/edge/badge/LennartJKlein/UurtjeFactuurtje?branch=master)](https://bettercodehub.com/)
+
 Boekhouden was nog nooit zo eenvoudig. Met deze android app kan elke ZZP'er zelf zijn boekhouding doen.
 
 De ZZP'er houdt zijn projecten bij. Werk wat hij heeft gedaan voegt hij toe aan het project. Wanneer de tijd rijp is, klikt hij eenvoudigweg op 'afrekenen' en de app maakt een PDF met zijn factuur. Volledig volgens de standaarden van de belastingdienst.

@@ -65,4 +65,8 @@ Om de pagina's van de app te ondersteunen, waren een aantal globale classes nodi
 * De bedrijfsgegevens toegevoegd aan het user-object.
 * De 'instellingen-pagina' is nu niet een tabblad, maar een onderdeel van 'Mijn bedrijf' in de `CompaniesFragment`
 
-Voor het invoeren van data worden altijd *dialogs* gebruikt. 
+## Descisions
+De genomen beslissingen sta ik allemaal achter. De meeste features die anders zijn geworden (of niet zijn gebouwd) zijn leuke extra's die bij verdere uitbreiding ontwikkeld kunnen worden. Opvallend is dat ik door het proces heen een betere en haalbaardere MVP heb gevonden: het product wat nu is opgeleverd.
+
+#### Usability
+De app moest extra oog hebben voor usability. Veel features die zijn komen te vervallen, zijn mede daardoor op de '*backlog*' gekomen. Een voorbeeld van doordachte usability is bijvoorbeeld dat het invoeren van data altijd via *dialogs* gebeurd. Daarnaast zijn de velden voorzien van een verklarend icoon en denkt op veel plekkem het systeem voor de gebruiker (bijv. btw percentages, data, gemiddeldes, rekensommen en verbanden). Dit scheelt de gebruiker invulwerk.

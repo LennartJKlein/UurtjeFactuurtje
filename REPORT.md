@@ -48,7 +48,7 @@ Om de pagina's van de app te ondersteunen, waren een aantal globale classes nodi
 * `PersistentDatabase` geeft een *singleton* instantie terug van Firebase Database. Dit is nodig om offline bewerkingen mogelijk te maken.
 
 ## Challenges and design descicions
-* Verkleinen van de functionaliteiten tot behapbare grote.
+* Verkleinen van de functionaliteiten tot behapbare grote voor een project van 4 weken.
 	* Daardoor is de pagina 'BTW' niet gekoppeld aan het belastingsysteem van de overheid.
 	* Daardoor worden straatnamen en woonplaatsen _niet_ automatisch ingeladen d.m.v. een API.
 	* Daardoor heeft de app geen pincode beveiliging
@@ -56,10 +56,16 @@ Om de pagina's van de app te ondersteunen, waren een aantal globale classes nodi
 	* Daardoor kan de gebruiker niet zijn bankrekeningstatus bijhouden
 	* Daardoor heeft de app geen overzicht van 'te betalen' en 'te ontvangen' facturen
 	* Daardoor zijn geëxporteerde PDF's niet aanpasbaar
-* Er moest meer focus komen op *usability* in de app (ivm veel gebruikersinvoer).
-	* Daardoor is er veel tijd gaan zitten in (opnieuw) vormgeven van schermen en invulvelden.
-* ListViews bleken beperkt voor mijn wensen.
+* De casing van variabelen en methods is nu consistenter dan ik voorheen zou doen.
+* Het opknippen van methods in meerdere kleine methods heb ik nu consistenter doorgevoerd dan ik voorheen zou doen.
+* Er moest meer focus komen op *usability* in de app (ivm het concept van de app: veel gebruikersinvoer).
+	* Daardoor is er veel tijd gaan zitten in steeds (opnieuw) vormgeven van schermen en invulvelden.
+* ListViews bleken te beperkt voor mijn wensen.
 	* Ik moest me verdiepen in RecyclerViews
+* De spinners bleken veel werk om te vullen, uit te lezen en vorm te geven.
+	* Ik moest gebruikmaken van een third party library: BetterSpinner
+* Er bestond geen *native* menu voor de floating action button.
+	* Ik moest gebruikmaken van een third party library: Floating Action Menu.
 * De eerste databasestructuur was niet bruikbaar. Je kunt geen *queries* maken met Firebase.
 	* De [web lesson van Jeff Daleney](https://angularfirebase.com/lessons/managing-firebase-user-relationships-to-database-records/) hielp om een betere structuur te vinden. Alles moest worden omgegooid.
 * De bedrijfsgegevens toegevoegd aan het user-object.

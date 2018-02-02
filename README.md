@@ -7,14 +7,14 @@ Boekhouden was nog nooit zo eenvoudig. Met deze android app kan elke ZZP'er zelf
 De ZZP'er houdt zijn projecten bij. Werk wat hij heeft gedaan voegt hij toe aan het project. Wanneer de tijd rijp is, klikt hij eenvoudigweg op 'afrekenen' en de app maakt een PDF met zijn factuur. Volledig volgens de standaarden van de belastingdienst.
 
 ## Screenshots
-![UurtjeFactuurtje -overview ](/docs/screenshot-overview.png?raw=true "UurtjeFactuurtje -overview ")  
-![UurtjeFactuurtje -btw ](/docs/screenshot-btw.png?raw=true "UurtjeFactuurtje -btw ")  
-![UurtjeFactuurtje -companies ](/docs/screenshot-companies.png?raw=true "UurtjeFactuurtje -companies ")   
-![UurtjeFactuurtje -work ](/docs/screenshot-work.png?raw=true "UurtjeFactuurtje -work ")   
-![UurtjeFactuurtje -work-product ](/docs/screenshot-work-product.png?raw=true "UurtjeFactuurtje -work-product ")   
-![UurtjeFactuurtje -work-hours ](/docs/screenshot-work-hours.png?raw=true "UurtjeFactuurtje -work-hours ")  
-![UurtjeFactuurtje -invoices ](/docs/screenshot-invoices.png?raw=true "UurtjeFactuurtje -invoices ")   
-![UurtjeFactuurtje -invoice](/docs/screenshot-invoice.png?raw=true "UurtjeFactuurtje -invoice")   
+![UurtjeFactuurtje -overview ](/docs/screenshot-overview.png?raw=true "UurtjeFactuurtje -overview ")
+![UurtjeFactuurtje -btw ](/docs/screenshot-btw.png?raw=true "UurtjeFactuurtje -btw ")
+![UurtjeFactuurtje -companies ](/docs/screenshot-companies.png?raw=true "UurtjeFactuurtje -companies ")
+![UurtjeFactuurtje -work ](/docs/screenshot-work.png?raw=true "UurtjeFactuurtje -work ")
+![UurtjeFactuurtje -work-product ](/docs/screenshot-work-product.png?raw=true "UurtjeFactuurtje -work-product ")
+![UurtjeFactuurtje -work-hours ](/docs/screenshot-work-hours.png?raw=true "UurtjeFactuurtje -work-hours ")
+![UurtjeFactuurtje -invoices ](/docs/screenshot-invoices.png?raw=true "UurtjeFactuurtje -invoices ")
+![UurtjeFactuurtje -invoice](/docs/screenshot-invoice.png?raw=true "UurtjeFactuurtje -invoice")
 
 ## Author
 Een Android App project van [Lennart Klein](http://www.lennartklein.nl), in opdracht van de Universiteit van Amsterdam.

@@ -6,6 +6,9 @@ Boekhouden was nog nooit zo eenvoudig. Met deze android app kan elke ZZP'er zelf
 
 De ZZP'er houdt zijn projecten bij. Werk wat hij heeft gedaan voegt hij toe aan het project. Wanneer de tijd rijp is, klikt hij eenvoudigweg op 'afrekenen' en de app maakt een PDF met zijn factuur. Volledig volgens de standaarden van de belastingdienst.
 
+## Demo
+[Demo video](https://youtu.be/sO_YnPoy8S4)
+
 ## Screenshots
 ![UurtjeFactuurtje -overview ](/docs/screenshot-overview.png?raw=true "UurtjeFactuurtje -overview ")
 ![UurtjeFactuurtje -btw ](/docs/screenshot-btw.png?raw=true "UurtjeFactuurtje -btw ")

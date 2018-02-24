@@ -183,13 +183,22 @@ public class TaxFragment extends Fragment {
             dbInvoicesMe.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot invoiceSnapshot : dataSnapshot.getChildren()) {
-                        Invoice invoice = invoiceSnapshot.getValue(Invoice.class);
+                    for (DataSnapshot invoicesSnapshot : dataSnapshot.getChildren()) {
+                        Log.d("Tax", invoicesSnapshot.getKey());
 
-                        if (invoice != null) {
-                            if (dateInRange(invoice.getDate(), quarter, year)) {
-                                pay += invoice.getBtw();
-                                services += (invoice.getTotalPrice() - invoice.getBtw());
+                        if (invoicesSnapshot.getChildrenCount() > 0) {
+                            for (DataSnapshot invoiceSnapshot : invoicesSnapshot.getChildren()) {
+                                Log.d("Tax", invoiceSnapshot.getKey());
+                                Invoice invoice = invoiceSnapshot.getValue(Invoice.class);
+
+                                if (invoice != null) {
+                                    Log.d("Tax", invoice.getDate());
+                                    if (dateInRange(invoice.getDate(), quarter, year)) {
+                                        Log.d("Tax", String.valueOf(invoice.getBtw()));
+                                        pay += invoice.getBtw();
+                                        services += (invoice.getTotalPrice() - invoice.getBtw());
+                                    }
+                                }
                             }
                         }
                     }
@@ -235,8 +244,10 @@ public class TaxFragment extends Fragment {
         Calendar calendar = new GregorianCalendar();
         Date date = null;
         try {
-            date = inputFormat.parse(dateString);
-            calendar.setTime(date);
+            if (dateString != null) {
+                date = inputFormat.parse(dateString);
+                calendar.setTime(date);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

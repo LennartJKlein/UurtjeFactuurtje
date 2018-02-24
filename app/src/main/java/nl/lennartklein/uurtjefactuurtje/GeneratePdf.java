@@ -9,12 +9,16 @@
 
 package nl.lennartklein.uurtjefactuurtje;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,6 +46,7 @@ public class GeneratePdf {
 
     // Data
     private Context mContext;
+    private Activity mActivity;
     private Invoice invoice;
     private String filepath;
 
@@ -60,8 +65,9 @@ public class GeneratePdf {
     private DecimalFormat currencyFormat = new DecimalFormat("0.00");
     private DecimalFormat timeFormat = new DecimalFormat("0.00");
 
-    public GeneratePdf(Context mContext, Invoice invoice) {
+    public GeneratePdf(Activity mActivity, Context mContext, Invoice invoice) {
         this.mContext = mContext;
+        this.mActivity = mActivity;
         this.invoice = invoice;
         this.res = mContext.getResources();
     }
@@ -117,6 +123,20 @@ public class GeneratePdf {
     }
 
     private boolean isExternalStorageWritable() {
+        if (ContextCompat.checkSelfPermission(mActivity,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(mActivity,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0x3);
+
+            } else {
+                ActivityCompat.requestPermissions(mActivity,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0x3);
+            }
+        }
+
         String state = Environment.getExternalStorageState();
         return Environment.MEDIA_MOUNTED.equals(state);
     }

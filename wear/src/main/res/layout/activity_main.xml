@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.wear.widget.BoxInsetLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryDarker"
+    android:padding="@dimen/box_inset_layout_padding"
+    tools:context="nl.lennartklein.uurtjefactuurtjewear.MainActivity"
+    tools:deviceIds="wear">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/list_projects_empty"
+            android:text="@string/error_no_projects"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Wearable.Medium"
+            android:textColor="@color/primaryLight"
+            android:padding="@dimen/margin_medium"
+            android:visibility="invisible" />
+
+        <android.support.wear.widget.WearableRecyclerView
+            android:id="@+id/list_projects"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+            android:clipToPadding="false"
+            tools:listitem="@layout/list_item_project"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    </RelativeLayout>
+</android.support.wear.widget.BoxInsetLayout>
+

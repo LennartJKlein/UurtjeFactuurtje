@@ -7,7 +7,7 @@
 // Assignment   App Studio, University of Amsterdam
 ////////////////////////////////////////////////////////////////////////////////
 
-package nl.lennartklein.uurtjefactuurtje;
+package nl.lennartklein.uurtjefactuurtjewear;
 
 import com.google.android.gms.wearable.DataMap;
 
@@ -119,5 +119,4 @@ public class Project implements Serializable {
 
         return map;
     }
-
 }

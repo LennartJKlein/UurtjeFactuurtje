@@ -124,6 +124,7 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
             case R.id.action_create_invoice:
                 ProjectActivity parent = (ProjectActivity) getActivity();
                 parent.createNewInvoice();
+                newInvoice.setVisibility(View.INVISIBLE);
                 break;
             case R.id.action_add_work:
                 openWorkFragment();

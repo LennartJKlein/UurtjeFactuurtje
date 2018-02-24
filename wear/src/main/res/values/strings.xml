@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">UurtjeFactuurtje</string>
+    <string name="placeholder_project_name">Description of this project…</string>
+    <string name="placeholder_company">Company Inc.</string>
+    <string name="error_no_projects">No active projects found.</string>
+    <string name="error_no_login">Could not log in.</string>
+</resources>

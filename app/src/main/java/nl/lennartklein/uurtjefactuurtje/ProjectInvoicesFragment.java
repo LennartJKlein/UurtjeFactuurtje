@@ -13,10 +13,13 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -324,7 +327,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
      * Fetches all data of this invoice
      */
     private void fetchDataAndBuild(final Invoice invoice) {
-        db.addValueEventListener(new ValueEventListener() {
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot data) {
                 // Get Id's for this invoice
@@ -360,7 +363,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
                 }
 
                 // Write PDF file
-                GeneratePdf writer = new GeneratePdf(mContext, invoice);
+                GeneratePdf writer = new GeneratePdf(getActivity(), mContext, invoice);
                 writer.createFile();
             }
 

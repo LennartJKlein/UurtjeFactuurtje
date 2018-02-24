@@ -168,7 +168,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 } else {
                     // User already exists in database
-                    enterApp(false);
+                    User user = dataSnapshot.child(userId).getValue(User.class);
+                    if (user.getCompanyName() == null || user.getCompanyName().equals("")) {
+                        enterApp(true);
+                    } else {
+                        enterApp(false);
+                    }
                 }
             }
 
@@ -182,9 +187,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void enterApp(boolean isNew) {
-        startActivity(new Intent(this, MainActivity.class));
         if (isNew) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
         }
         finish();
     }

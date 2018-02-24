@@ -12,10 +12,13 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,6 +89,8 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         toolbar = findViewById(R.id.toolbar);
         toolbar.setOnClickListener(this);
         setBackButton();
+
+        checkPermissions();
 
         // Get data for this project
         String projectKey = getIntent().getExtras().getString("PROJECT_KEY");
@@ -352,6 +357,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
      * Create an invoice for this project
      */
     public void createNewInvoice() {
+        checkPermissions();
         Toast.makeText(mContext, getString(R.string.generating_invoice), Toast.LENGTH_SHORT).show();
 
         // Create invoiceNumber string
@@ -457,7 +463,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
     private void writeInvoiceDocument(Invoice invoice) {
         // Generate file
-        GeneratePdf writer = new GeneratePdf(mContext, invoice);
+        GeneratePdf writer = new GeneratePdf(this, mContext, invoice);
         String writerPath = writer.createFile();
         invoice.setFilePath(writerPath);
 
@@ -478,7 +484,23 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
     public void insertPathIntoDatabase(Invoice invoice) {
         if (invoice.getFilePath() != null) {
-            dbInvoicesThis.child("filePath").setValue(invoice.getFilePath());
+            dbInvoicesThis.child(invoice.getKey()).child("filePath").setValue(invoice.getFilePath());
+        }
+    }
+
+    private void checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0x3);
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0x3);
+            }
         }
     }
 

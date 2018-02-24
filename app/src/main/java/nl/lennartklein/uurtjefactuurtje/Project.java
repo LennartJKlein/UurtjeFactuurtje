@@ -27,12 +27,13 @@ public class Project implements Serializable {
     private String date;
     private String lastInvoice;
     private double hourPrice;
+    private int status;
 
     // Empty constructor for FireBase
     public Project() {}
 
     public Project(String userId, String name, String companyId, String companyName,
-                   String date, String lastInvoice, double hourPrice) {
+                   String date, String lastInvoice, double hourPrice, int status) {
         this.userId = userId;
         this.name = name;
         this.companyId = companyId;
@@ -40,6 +41,7 @@ public class Project implements Serializable {
         this.date = date;
         this.lastInvoice = lastInvoice;
         this.hourPrice = hourPrice;
+        this.status = status;
     }
 
     public String getId() {
@@ -104,6 +106,14 @@ public class Project implements Serializable {
 
     public void setHourPrice(double hourPrice) {
         this.hourPrice = hourPrice;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public DataMap getDataMap() {

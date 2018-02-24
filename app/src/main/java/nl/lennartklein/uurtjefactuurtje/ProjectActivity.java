@@ -265,8 +265,8 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.menu_change_name:
                 changeProjectName();
                 break;
-            case R.id.menu_delete:
-                verifyDelete();
+            case R.id.menu_archive:
+                verifyArchive();
                 break;
             case android.R.id.home:
                 finish();
@@ -299,7 +299,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         linearLayout.setPadding(36, 0, 36, 0);
         alert.setView(linearLayout);
 
-        // Create a delete button
+        // Create a archive button
         alert.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // Save input to the database
@@ -324,15 +324,15 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     /**
      * Shows a dialog to verify the deletion of this project
      */
-    public void verifyDelete() {
+    public void verifyArchive() {
         // Set up dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-        alert.setTitle(getString(R.string.note_verify_delete_project));
+        alert.setTitle(getString(R.string.note_verify_archive_project));
 
-        // Create a delete button
-        alert.setPositiveButton(R.string.action_delete, new DialogInterface.OnClickListener() {
+        // Create a archive button
+        alert.setPositiveButton(R.string.action_archive, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                deleteProject();
+                archiveProject();
             }
         });
 
@@ -346,10 +346,10 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     /**
-     * Deletes the current project from the database
+     * Archives the current project from the database
      */
-    public void deleteProject() {
-        dbProjectsMe.child(project.getId()).setValue(null);
+    public void archiveProject() {
+        dbProjectsMe.child(project.getId()).child("status").setValue("0");
         finish();
     }
 

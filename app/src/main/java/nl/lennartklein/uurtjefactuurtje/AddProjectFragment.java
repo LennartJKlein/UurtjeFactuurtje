@@ -225,6 +225,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         project.setUserId(currentUser.getUid());
         project.setDate(getDateToday());
         project.setCompanyId(company.getId());
+        project.setStatus(1);
 
         dbProjectNew.setValue(project);
 

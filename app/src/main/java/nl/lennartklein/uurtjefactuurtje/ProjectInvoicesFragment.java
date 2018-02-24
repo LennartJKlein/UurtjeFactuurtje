@@ -184,15 +184,15 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         inProgress(true);
 
         // Create an adapter
-        FirebaseRecyclerAdapter<Invoice, ProjectInvoicesFragment.InvoiceRow> adapter =
-                new FirebaseRecyclerAdapter<Invoice, ProjectInvoicesFragment.InvoiceRow>(
+        FirebaseRecyclerAdapter<Invoice, InvoiceItem> adapter =
+                new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(
                         Invoice.class,
                         R.layout.list_item_invoice,
-                        ProjectInvoicesFragment.InvoiceRow.class,
+                        InvoiceItem.class,
                         dbInvoicesThis
                 ) {
                     @Override
-                    protected void populateViewHolder(final ProjectInvoicesFragment.InvoiceRow row,
+                    protected void populateViewHolder(final InvoiceItem row,
                                                       final Invoice invoice, int position) {
                         // Fill the row
                         row.setDate(invoice.getDate());
@@ -225,49 +225,6 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     }
 
     /**
-     * View holder for a project row
-     */
-    public static class InvoiceRow extends RecyclerView.ViewHolder {
-        View view;
-
-        public InvoiceRow(View view) {
-            super(view);
-            this.view = view;
-        }
-
-        public void setDate(String date) {
-            TextView tvDate = view.findViewById(R.id.invoice_date);
-
-            if (!date.equals("")) {
-                SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                SimpleDateFormat formatOut = new SimpleDateFormat("d MMM", Locale.getDefault());
-                try {
-                    Date convertedDate = formatIn.parse(date);
-                    date = formatOut.format(convertedDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                tvDate.setText(date);
-            } else {
-                tvDate.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        public void setInvoiceNr(String invoiceNr) {
-            TextView tvInvoiceNr = view.findViewById(R.id.invoice_nr);
-            tvInvoiceNr.setText("#" + invoiceNr);
-        }
-
-        public void setPrice(double price) {
-            TextView tvPrice = view.findViewById(R.id.invoice_price);
-            DecimalFormat currency = new DecimalFormat("0.00");
-            String convertedPrice = "€  " + currency.format(price);
-            tvPrice.setText(convertedPrice);
-        }
-
-    }
-
-    /**
      * Updates UI based on items in the list
      */
     private void checkAmount(int amount) {
@@ -293,7 +250,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    private void openFile(Invoice invoice) {
+    public void openFile(Invoice invoice) {
         String filepath = invoice.getFilePath();
 
         if (filepath == null) {
@@ -326,7 +283,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     /**
      * Fetches all data of this invoice
      */
-    private void fetchDataAndBuild(final Invoice invoice) {
+    public void fetchDataAndBuild(final Invoice invoice) {
         db.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot data) {

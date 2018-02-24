@@ -14,9 +14,7 @@
     <string name="tab_settings_numbers">Nummers</string>
     <string name="tab_settings_user">Account</string>
     <string name="action_logout">Uitloggen</string>
-    <string name="action_delete_project">Project verwijderen</string>
     <string name="note_work_added">Werk toegevoegd!</string>
-    <string name="note_verify_delete_project">Dit project verwijderen?</string>
     <string name="note_verify_delete_cost">Deze aankoop verwijderen?</string>
     <string name="tab_project_work">Werk</string>
     <string name="tab_project_invoices">Facturen</string>
@@ -81,7 +79,6 @@
     <string name="label_subtotal">Subtotaal</string>
     <string name="label_total_price">Totaal</string>
     <string name="label_date_start">Startdatum</string>
-    <string name="result_title_pay">Leveringen/diensten belast met hoog tarief</string>
     <string name="price">Bedrag</string>
     <string name="title_add_relation">Relatie toevoegen</string>
     <string name="title_chooser">Document openen</string>
@@ -116,7 +113,7 @@
     <string name="title_change_name">Nieuwe naam</string>
     <string name="action_ok">Ok</string>
     <string name="image_invoice">Factuur openen</string>
-    <string name="error_no_invoices">Er zijn nog geen facturen gemaakt voor dit project.</string>
+    <string name="error_no_invoices">Je hebt nog geen facturen.</string>
     <string name="field_invoice_nr">Factuurnummer</string>
     <string name="placeholder_cost">Een aankoop</string>
     <string name="heading_costs">Aankopen</string>
@@ -126,4 +123,8 @@
     <string name="menu_cost">Aankoop</string>
     <string name="menu_project">Project</string>
     <string name="result_tax_tip">Vul de onderstaande bedragen in in je belastingaangifte</string>
+    <string name="action_archive">Archiveren</string>
+    <string name="action_archive_project">Project archiveren</string>
+    <string name="note_verify_archive_project">Dit project archiveren?</string>
+    <string name="error_no_invoices_project">Er zijn nog geen facturen gemaakt voor dit project.</string>
 </resources>

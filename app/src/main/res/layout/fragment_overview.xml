@@ -107,7 +107,7 @@
                     android:layout_marginTop="@dimen/margin_medium"
                     android:layout_marginBottom="@dimen/margin_medium"
                     android:gravity="center_vertical"
-                    android:drawableStart="@drawable/ic_receipt_primary_light"
+                    android:drawableStart="@drawable/ic_local_grocery_store_primary_light"
                     android:drawablePadding="@dimen/margin_small"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     android:fontFamily="@font/lato_bold"
@@ -140,6 +140,60 @@
                     android:elevation="2dp"
                     android:background="@drawable/list_card"
                     tools:listitem="@layout/list_item_cost"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/margin_medium"
+                android:paddingBottom="@dimen/margin_large"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/list_title_invoices"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/heading_invoices"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_marginTop="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_receipt_primary_light"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:fontFamily="@font/lato_bold"
+                    android:textColor="@color/primaryLight" />
+
+                <TextView
+                    android:id="@+id/list_invoices_empty"
+                    android:text="@string/error_no_invoices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_marginBottom="@dimen/margin_medium"
+                    android:layout_below="@id/list_title_invoices"
+                    android:padding="@dimen/margin_medium"
+                    android:elevation="2dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                    android:fontFamily="@font/lato_italic"
+                    android:textColor="@color/grey"
+                    android:background="@drawable/list_card"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_invoices"
+                    android:scrollbars="none"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_medium"
+                    android:layout_marginEnd="@dimen/margin_medium"
+                    android:layout_below="@id/list_title_invoices"
+                    android:padding="@dimen/margin_medium"
+                    android:elevation="2dp"
+                    android:background="@drawable/list_card"
+                    tools:listitem="@layout/list_item_invoice"/>
 
             </RelativeLayout>
 
@@ -181,7 +235,7 @@
             android:id="@+id/action_add_cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_receipt_white"
+            android:src="@drawable/ic_local_grocery_store_white"
             android:layout_marginBottom="@dimen/margin_small"
             app:fab_colorNormal="@color/secondary"
             app:fab_size="mini"

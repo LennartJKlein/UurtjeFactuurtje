@@ -11,9 +11,12 @@
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -26,20 +29,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.content.ContentValues.TAG;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * An overview of projects and recent costs
@@ -52,18 +63,22 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
     // UI references
     private Context mContext;
+    private Resources res;
     private ProgressBar progressWheel;
     private FloatingActionMenu floatingMenu;
     private RecyclerView projectsList;
     private TextView emptyProjectsList;
     private RecyclerView costsList;
     private TextView emptyCostsList;
+    private RecyclerView invoicesList;
+    private TextView emptyInvoicesList;
     private TextView currentDate;
 
     // Database references
     private DatabaseReference db;
     private DatabaseReference dbProjectsMe;
     private DatabaseReference dbCostsMe;
+    private DatabaseReference dbInvoicesMe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,14 +90,18 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         db = PersistentDatabase.getReference();
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
         dbCostsMe = db.child("costs").child(currentUser.getUid());
+        dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
 
         // Set UI references
         mContext = getActivity().getApplicationContext();
+        res = mContext.getResources();
         progressWheel = view.findViewById(R.id.list_loader);
         projectsList = view.findViewById(R.id.list_projects);
         emptyProjectsList = view.findViewById(R.id.list_projects_empty);
         costsList = view.findViewById(R.id.list_costs);
         emptyCostsList = view.findViewById(R.id.list_costs_empty);
+        invoicesList = view.findViewById(R.id.list_invoices);
+        emptyInvoicesList = view.findViewById(R.id.list_invoices_empty);
         floatingMenu = view.findViewById(R.id.action_add_data);
         currentDate = view.findViewById(R.id.current_date);
         FloatingActionButton addWork = view.findViewById(R.id.action_add_work);
@@ -92,6 +111,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         // Populate lists
         initiateProjectsList();
         initiateCostsList();
+        initiateInvoicesList();
 
         // Set click listeners
         addWork.setOnClickListener(this);
@@ -116,6 +136,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         populateProjectsList();
         populateCostsList();
+        populateInvoicesList();
     }
 
     @Override
@@ -124,6 +145,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         populateProjectsList();
         populateCostsList();
+        populateInvoicesList();
     }
 
     @Override
@@ -201,38 +223,41 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         inProgress(true);
 
         // Create an adapter
-        FirebaseRecyclerAdapter<Project, ProjectRow> adapter =
-                new FirebaseRecyclerAdapter<Project, ProjectRow>(
+        FirebaseRecyclerAdapter<Project, ProjectItem> adapter =
+                new FirebaseRecyclerAdapter<Project, ProjectItem>(
                 Project.class,
                 R.layout.list_item_project,
-                ProjectRow.class,
+                ProjectItem.class,
                 dbProjectsMe
         ) {
             @Override
-            protected void populateViewHolder(final ProjectRow row, Project project, int position) {
-                // Fill the row
-                row.setName(project.getName());
-                row.setCompany(project.getCompanyName());
+            protected void populateViewHolder(final ProjectItem row, Project project, int position) {
+                if (project.getStatus() == 1) {
 
-                String invoiceDate = ((invoiceDate = project.getLastInvoice()) != null) ? invoiceDate : "-";
-                String format = getResources().getString(R.string.placeholder_date_invoice);
-                row.setInvoice(invoiceDate, format);
-                row.setKey(getRef(position).getKey());
+                    // Fill the row
+                    row.setName(project.getName());
+                    row.setCompany(project.getCompanyName());
 
-                // Set click listener
-                row.view.setOnClickListener(new View.OnClickListener(){
-                    @Override
-                    public void onClick(View view) {
-                        Intent projectIntent = new Intent(mContext, ProjectActivity.class);
-                        projectIntent.putExtra("PROJECT_KEY", row.getKey());
-                        startActivity(projectIntent);
-                    }
-                });
+                    String invoiceDate = ((invoiceDate = project.getLastInvoice()) != null) ? invoiceDate : "-";
+                    String format = getResources().getString(R.string.placeholder_date_invoice);
+                    row.setInvoice(invoiceDate, format);
+                    row.setKey(getRef(position).getKey());
 
-                inProgress(false);
+                    // Set click listener
+                    row.view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent projectIntent = new Intent(mContext, ProjectActivity.class);
+                            projectIntent.putExtra("PROJECT_KEY", row.getKey());
+                            startActivity(projectIntent);
+                        }
+                    });
 
-                // Update amount in list
-                checkAmountProjects(projectsList.getAdapter().getItemCount());
+                    inProgress(false);
+
+                    // Update amount in list
+                    checkAmountProjects(projectsList.getAdapter().getItemCount());
+                }
             }
         };
 
@@ -243,43 +268,6 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         // Update amount in list
         checkAmountProjects(projectsList.getAdapter().getItemCount());
-    }
-
-    /**
-     * View holder for a project row
-     */
-    public static class ProjectRow extends RecyclerView.ViewHolder {
-        View view;
-        String key;
-
-        public ProjectRow(View view) {
-            super(view);
-            this.view = view;
-        }
-
-        public void setKey(String key) {
-            this.key = key;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public void setName(String name) {
-            TextView tvName = view.findViewById(R.id.project_name);
-            tvName.setText(name);
-        }
-
-        public void setCompany(String company_name) {
-            TextView tvCompany = view.findViewById(R.id.project_company);
-            tvCompany.setText(company_name);
-        }
-
-        public void setInvoice(String last_invoice, String format) {
-            TextView tvInvoice = view.findViewById(R.id.project_last_invoice);
-            String formattedDate = String.format(format, last_invoice);
-            tvInvoice.setText(formattedDate);
-        }
     }
 
     /**
@@ -305,15 +293,15 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         inProgress(true);
 
         // Create an adapter
-        FirebaseRecyclerAdapter<Cost, CostRow> adapter =
-                new FirebaseRecyclerAdapter<Cost, CostRow>(
+        FirebaseRecyclerAdapter<Cost, CostItem> adapter =
+                new FirebaseRecyclerAdapter<Cost, CostItem>(
                         Cost.class,
                         R.layout.list_item_cost,
-                        CostRow.class,
+                        CostItem.class,
                         dbCostsMe.orderByChild("date")
                 ) {
                     @Override
-                    protected void populateViewHolder(final CostRow row, final Cost cost, int position) {
+                    protected void populateViewHolder(final CostItem row, final Cost cost, int position) {
                         // Fill the row
                         row.setDate(cost.getDate());
                         row.setDescription(cost.getDescription());
@@ -348,56 +336,81 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     /**
-     * View holder for a cost row
+     * Construct the list of invoices
      */
-    public static class CostRow extends RecyclerView.ViewHolder {
-        View view;
+    private void initiateInvoicesList() {
+        // Construct the list
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext,
+                LinearLayoutManager.VERTICAL, true);
+        invoicesList.setLayoutManager(manager);
 
-        public CostRow(View view) {
-            super(view);
-            this.view = view;
-        }
+        // Add divider line
+        DividerItemDecoration divider = new DividerItemDecoration(invoicesList.getContext(),1);
+        invoicesList.addItemDecoration(divider);
 
-        public void setDate(String date) {
-            TextView tvDate = view.findViewById(R.id.cost_date);
+        inProgress(true);
+    }
 
-            if (!date.equals("")) {
-                SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                SimpleDateFormat formatOut = new SimpleDateFormat("d MMM", Locale.getDefault());
-                try {
-                    Date convertedDate = formatIn.parse(date);
-                    date = formatOut.format(convertedDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                tvDate.setText(date);
-            } else {
-                tvDate.setVisibility(View.INVISIBLE);
-            }
-        }
+    /**
+     * Fills the list with invoices
+     */
+    private void populateInvoicesList() {
+        inProgress(true);
 
-        public void setDescription(String description) {
-            TextView tvDescription = view.findViewById(R.id.cost_description);
-            tvDescription.setText(description);
-        }
+        // Create an adapter
+        FirebaseRecyclerAdapter<Invoice, InvoiceItem> adapter =
+                new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(
+                        Invoice.class,
+                        R.layout.list_item_invoice,
+                        InvoiceItem.class,
+                        dbInvoicesMe
+                ) {
+                    @Override
+                    protected Invoice parseSnapshot(DataSnapshot snapshot) {
+                        DataSnapshot subSnapshot = null;
+                        for (DataSnapshot invoiceSnapshot: snapshot.getChildren()) {
+                            subSnapshot = invoiceSnapshot;
+                        }
+                        if (subSnapshot != null) {
+                            return super.parseSnapshot(subSnapshot);
+                        } else {
+                            return super.parseSnapshot(snapshot);
+                        }
+                    }
 
-        public void setCompany(String company) {
-            TextView tvCompany = view.findViewById(R.id.cost_company);
-            tvCompany.setText(company);
-        }
+                    @Override
+                    protected void populateViewHolder(final InvoiceItem row,
+                                                      final Invoice invoice, int position) {
+                        // Fill the row
+                        row.setDate(invoice.getDate());
+                        row.setInvoiceNr(invoice.getInvoiceNr());
+                        row.setPrice(invoice.getTotalPrice());
+                        invoice.setKey(getRef(position).getKey());
 
-        public void setInvoiceNr(String invoiceNr) {
-            TextView tvInvoiceNr = view.findViewById(R.id.cost_invoice_nr);
-            tvInvoiceNr.setText(invoiceNr);
-        }
+                        // Set click listener
+                        row.view.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view) {
+                                openFile(invoice);
+                            }
+                        });
 
-        public void setPrice(double price) {
-            TextView tvPrice = view.findViewById(R.id.cost_price);
-            DecimalFormat currency = new DecimalFormat("0.00");
-            String convertedPrice = "€  " + currency.format(price);
-            tvPrice.setText(convertedPrice);
-        }
+                        inProgress(false);
+
+                        // Update amount in list
+                        checkAmountInvoices(invoicesList.getAdapter().getItemCount());
+                    }
+                };
+
+        // Set the adapter
+        invoicesList.setAdapter(adapter);
+
+        // Update amount in list
+        checkAmountInvoices(invoicesList.getAdapter().getItemCount());
+
+        inProgress(false);
 
     }
 
@@ -424,6 +437,19 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         } else {
             emptyCostsList.setVisibility(View.INVISIBLE);
             costsList.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Updates UI based on items in the list
+     */
+    private void checkAmountInvoices(int amount) {
+        if (amount == 0) {
+            emptyInvoicesList.setVisibility(View.VISIBLE);
+            invoicesList.setVisibility(View.INVISIBLE);
+        } else {
+            emptyInvoicesList.setVisibility(View.INVISIBLE);
+            invoicesList.setVisibility(View.VISIBLE);
         }
     }
 
@@ -480,4 +506,89 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         currentDate.setText(formattedToday);
     }
 
+    /**
+     * Open an invoice document
+     */
+    private void openFile(Invoice invoice) {
+        String filepath = invoice.getFilePath();
+
+        if (filepath == null) {
+            // No file generated previously
+            fetchDataAndBuild(invoice);
+
+        } else {
+            File file = new File(filepath);
+            if (!file.exists()) {
+                // Document doesn't exist on device
+                fetchDataAndBuild(invoice);
+
+            } else {
+                // Open file at filepath
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setDataAndType(Uri.fromFile(new File(filepath)), "application/pdf");
+                target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                Intent intent = Intent.createChooser(target, res.getString(R.string.title_chooser));
+                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+
+                try {
+                    mContext.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(mContext, res.getString(R.string.error_no_reader),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Fetches all data of this invoice
+     */
+    public void fetchDataAndBuild(final Invoice invoice) {
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot data) {
+                // Get Id's for this invoice
+                String userId = invoice.getUserId();
+                String companyId = invoice.getCompanyId();
+                String projectId = invoice.getProjectId();
+
+                // Fetch project
+                Project project = data.child("projects").child(userId).child(projectId)
+                        .getValue(Project.class);
+                invoice.setProject(project);
+
+                // Fetch user
+                User user = data.child("users").child(userId)
+                        .getValue(User.class);
+                invoice.setUser(user);
+
+                // Fetch receiver company
+                Company company = data.child("companies").child(userId).child(companyId)
+                        .getValue(Company.class);
+                invoice.setCompany(company);
+
+                // Fetch work
+                DataSnapshot dataWorks = data.child("work").child(userId).child(projectId).child("paid");
+                for (DataSnapshot workSnapshot : dataWorks.getChildren()) {
+                    Work work = workSnapshot.getValue(Work.class);
+                    if (work != null) {
+                        if (work.getInvoiceId().equals(invoice.getKey())) {
+                            // Add this work to the invoice
+                            invoice.addWork(work);
+                        }
+                    }
+                }
+
+                // Write PDF file
+                GeneratePdf writer = new GeneratePdf(getActivity(), mContext, invoice);
+                writer.createFile();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
 }

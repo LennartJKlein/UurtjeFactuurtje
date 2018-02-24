@@ -218,6 +218,8 @@ public class GeneratePdf {
     private void writeWorkTable(Document doc) {
         try {
             PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.setWidths(new int[]{3, 1, 1});
 
             // Table - head
             table.addCell(createCellHeader(labelDescription, 0));

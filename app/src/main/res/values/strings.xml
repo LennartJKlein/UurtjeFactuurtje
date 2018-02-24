@@ -97,12 +97,13 @@
     <string name="action_create_company">add</string>
     <string name="action_logout">Log out</string>
     <string name="action_next">Next</string>
-    <string name="action_ok">Ok</string>
+    <string name="action_ok">OK</string>
     <string name="action_save">Save</string>
     <string name="action_save_continue">Save and continue</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
-    <string name="action_delete_project">Delete project</string>
+    <string name="action_archive">Archive</string>
+    <string name="action_archive_project">Archive project</string>
     <string name="action_save_close">Save and close</string>
     <string name="action_add">Add</string>
     <string name="action_pick_date">Add a date</string>
@@ -141,7 +142,7 @@
     <!-- Notifications -->
     <string name="note_saved">Saved!</string>
     <string name="note_work_added">Work added!</string>
-    <string name="note_verify_delete_project">Delete this project?</string>
+    <string name="note_verify_archive_project">Archive this project?</string>
     <string name="note_verify_delete_cost">Delete this cost?</string>
 
     <!-- Errors -->
@@ -157,7 +158,8 @@
     <string name="error_no_data" translatable="false">Failed to get data from Firebase.</string>
     <string name="error_no_permission">Failed to create invoice. No permission to write to storage.</string>
     <string name="error_no_work_unpaid">There is no unpaid work for this project.</string>
-    <string name="error_no_invoices">There are no invoices made for this project yet.</string>
+    <string name="error_no_invoices">You don\'t have any invoices yet.</string>
+    <string name="error_no_invoices_project">There are no invoices made for this project yet.</string>
 
     <string name="title_add_project">Start a new project…</string>
     <string name="title_relations">Companies</string>

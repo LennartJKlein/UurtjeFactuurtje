@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "51910065146-epmfu4iv9hrito62vuacmea3irp7a86p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nl.lennartklein.uurtjefactuurtje",
+            "certificate_hash": "690eb36ffdb290abdd6fe2eb0f7ddd28de3332b7"
+          }
+        },
+        {
           "client_id": "51910065146-l95dqslfot5h9j7jsb9lrt8a6llv7k4o.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

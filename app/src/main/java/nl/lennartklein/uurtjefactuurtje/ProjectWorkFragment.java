@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
@@ -29,12 +30,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
@@ -68,6 +71,7 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private DatabaseReference db;
     private DatabaseReference dbUsersMe;
     private DatabaseReference dbWorkMe;
+    private Query queryWork;
 
     // Data
     private Project project;
@@ -91,7 +95,6 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         addWork.setOnClickListener(this);
         newInvoice = view.findViewById(R.id.action_create_invoice);
         newInvoice.setOnClickListener(this);
-
 
         // Get data
         project = (Project) getArguments().getSerializable("PROJECT");
@@ -147,6 +150,7 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbWorkMe = db.child("work").child(currentUser.getUid());
+        queryWork = dbWorkMe.child(project.getId()).child("unpaid").orderByChild("date");
     }
 
     /**
@@ -184,17 +188,23 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private void populateWorkList() {
         inProgress(true);
 
-        // Create an adapter
-        FirebaseRecyclerAdapter<Work, WorkItem> adapter =
-                new FirebaseRecyclerAdapter<Work, WorkItem>(
-                        Work.class,
-                        R.layout.list_item_work,
-                        WorkItem.class,
-                        dbWorkMe.child(project.getId()).child("unpaid").orderByChild("date")
-                ) {
+        FirebaseRecyclerOptions<Work> options =
+                new FirebaseRecyclerOptions.Builder<Work>()
+                        .setQuery(queryWork, Work.class)
+                        .build();
+
+        FirebaseRecyclerAdapter adapter =
+                new FirebaseRecyclerAdapter<Work, WorkItem>(options) {
+
                     @Override
-                    protected void populateViewHolder(final WorkItem row, Work work, int position) {
-                        // Fill the row
+                    public WorkItem onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.list_item_work, parent, false);
+                        return new WorkItem(view);
+                    }
+
+                    @Override
+                    protected void onBindViewHolder(WorkItem row, int position, Work work) {
                         row.setDate(work.getDate());
                         row.setDescription(work.getDescription());
                         row.setHours(work.getHours(), mContext.getResources());

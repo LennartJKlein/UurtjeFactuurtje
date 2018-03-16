@@ -12,7 +12,9 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -35,8 +37,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -108,6 +116,28 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     private void setAuth() {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
+
+        if (currentUser != null) {
+            AuthCredential credential = null;
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(ProjectActivity.this);
+
+            if (acct != null) {
+                credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+            }
+
+            if (credential != null) {
+                currentUser.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d(TAG, "User re-authenticated.");
+                            }
+                        });
+            }
+
+        } else {
+            signOut();
+        }
     }
 
     /**
@@ -384,6 +414,10 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         project.setLastInvoice(invoice.getDate());
         dbProjectsMe.child(project.getId()).child("lastInvoice").setValue(invoice.getDate());
 
+        // Save activity on this project
+        project.setLastActivity(invoice.getDate());
+        dbProjectsMe.child(project.getId()).child("lastActivity").setValue(invoice.getDate());
+
         // Add 1 to invoiceNumber of user
         int newInvoiceNumber = user.getInvoiceNumber() + 1;
         dbUsersMe.child("invoiceNumber").setValue(newInvoiceNumber);
@@ -514,5 +548,10 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         c.add(Calendar.DATE, extraDays);
         return df.format(c.getTime());
+    }
+
+    public void signOut() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

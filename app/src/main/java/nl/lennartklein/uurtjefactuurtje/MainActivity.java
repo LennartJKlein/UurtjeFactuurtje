@@ -28,8 +28,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,12 +46,16 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Contains the main tabs of the app
@@ -103,6 +110,10 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
+
+
+        Log.d("Account", "checking logged in");
+        setAuth();
 
         // Resume at previous fragment
         resumeLastFragment();
@@ -203,8 +214,27 @@ public class MainActivity extends AppCompatActivity  {
         auth = FirebaseAuth.getInstance();
         currentUser = auth.getCurrentUser();
 
+        Log.d("Account", "checking logged in");
+
         if (currentUser != null) {
             Log.d("Account", currentUser.getEmail());
+
+            AuthCredential credential = null;
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
+
+            if (acct != null) {
+                credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+            }
+
+            if (credential != null) {
+                currentUser.reauthenticate(credential)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d(TAG, "User re-authenticated.");
+                            }
+                        });
+            }
 
         } else {
             signOut();

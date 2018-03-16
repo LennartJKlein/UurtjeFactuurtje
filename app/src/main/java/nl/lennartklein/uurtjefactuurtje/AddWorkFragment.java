@@ -312,6 +312,10 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
                 mContext.getResources().getString(R.string.note_work_added),
                 Toast.LENGTH_SHORT).show();
 
+        // Save activity on this project
+        project.setLastActivity(date);
+        dbProjectsMe.child(project.getId()).child("lastActivity").setValue(date);
+
         openProject();
 
         closeFragment();

@@ -1,15 +1,15 @@
-<FrameLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="nl.lennartklein.uurtjefactuurtje.ProjectWorkFragment"
-    android:paddingStart="@dimen/margin_medium"
-    android:paddingEnd="@dimen/margin_medium">
+    tools:context="nl.lennartklein.uurtjefactuurtje.ProjectWorkFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="@dimen/margin_medium"
+        android:paddingEnd="@dimen/margin_medium"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -79,7 +79,7 @@
                 android:layout_marginEnd="@dimen/margin_medium"
                 android:fontFamily="sans-serif"
                 android:textStyle="bold"
-                android:background="?selectableItemBackground"/>
+                android:background="?android:selectableItemBackground"/>
 
             <Button
                 android:id="@+id/action_add_work"
@@ -95,4 +95,4 @@
 
     </LinearLayout>
 
-</FrameLayout>
+</ScrollView>

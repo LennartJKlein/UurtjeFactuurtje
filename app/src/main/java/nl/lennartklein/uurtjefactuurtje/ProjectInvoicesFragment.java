@@ -17,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -32,11 +33,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
@@ -71,6 +75,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     private DatabaseReference dbInvoicesMe;
     private DatabaseReference dbInvoicesThis;
     private DatabaseReference dbWorkThis;
+    private Query queryInvoices;
 
     // Data
     private Project project;
@@ -144,8 +149,9 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
         dbInvoicesThis = dbInvoicesMe.child(project.getId());
-        Log.d("Invoice", project.getId());
+        queryInvoices = dbInvoicesThis;
         dbWorkThis = db.child("work").child(currentUser.getUid()).child(project.getId());
+        Log.d("Invoice", project.getId());
     }
 
     /**
@@ -183,18 +189,23 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     private void populateInvoicesList() {
         inProgress(true);
 
-        // Create an adapter
-        FirebaseRecyclerAdapter<Invoice, InvoiceItem> adapter =
-                new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(
-                        Invoice.class,
-                        R.layout.list_item_invoice,
-                        InvoiceItem.class,
-                        dbInvoicesThis
-                ) {
+        FirebaseRecyclerOptions<Invoice> options =
+                new FirebaseRecyclerOptions.Builder<Invoice>()
+                        .setQuery(queryInvoices, Invoice.class)
+                        .build();
+
+        FirebaseRecyclerAdapter adapter =
+                new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(options) {
+
                     @Override
-                    protected void populateViewHolder(final InvoiceItem row,
-                                                      final Invoice invoice, int position) {
-                        // Fill the row
+                    public InvoiceItem onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.list_item_invoice, parent, false);
+                        return new InvoiceItem(view);
+                    }
+
+                    @Override
+                    protected void onBindViewHolder(final InvoiceItem row, int position, final Invoice invoice) {
                         row.setDate(invoice.getDate());
                         row.setInvoiceNr(invoice.getInvoiceNr());
                         row.setPrice(invoice.getTotalPrice());

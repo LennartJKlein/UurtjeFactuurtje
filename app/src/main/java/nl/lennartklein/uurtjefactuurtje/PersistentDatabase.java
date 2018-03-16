@@ -11,6 +11,7 @@ package nl.lennartklein.uurtjefactuurtje;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
 
 /**
  * A singleton for a FireBase database
@@ -24,6 +25,7 @@ public class PersistentDatabase {
     public static DatabaseReference getReference() {
         if (db == null || dbReference == null) {
             db = FirebaseDatabase.getInstance();
+            db.setLogLevel(Logger.Level.DEBUG);
             db.setPersistenceEnabled(true);
             dbReference = db.getReference();
         }

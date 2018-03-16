@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
@@ -32,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.firebase.ui.database.SnapshotParser;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +42,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
@@ -79,6 +83,9 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference dbProjectsMe;
     private DatabaseReference dbCostsMe;
     private DatabaseReference dbInvoicesMe;
+    private Query queryProjects;
+    private Query queryCosts;
+    private Query queryInvoices;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,11 +93,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         setAuth();
 
-        // Set database references
-        db = PersistentDatabase.getReference();
-        dbProjectsMe = db.child("projects").child(currentUser.getUid());
-        dbCostsMe = db.child("costs").child(currentUser.getUid());
-        dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
+        setReferences();
 
         // Set UI references
         mContext = getActivity().getApplicationContext();
@@ -173,6 +176,16 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         currentUser = auth.getCurrentUser();
     }
 
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
+        dbCostsMe = db.child("costs").child(currentUser.getUid());
+        dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
+        queryProjects = dbProjectsMe.orderByChild("lastActivity");
+        queryCosts = dbCostsMe;
+        queryInvoices = dbInvoicesMe;
+    }
+
     /**
      * Opens a dialog fragment to add work
      */
@@ -222,44 +235,51 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void populateProjectsList() {
         inProgress(true);
 
-        // Create an adapter
-        FirebaseRecyclerAdapter<Project, ProjectItem> adapter =
-                new FirebaseRecyclerAdapter<Project, ProjectItem>(
-                Project.class,
-                R.layout.list_item_project,
-                ProjectItem.class,
-                dbProjectsMe
-        ) {
-            @Override
-            protected void populateViewHolder(final ProjectItem row, Project project, int position) {
-                if (project.getStatus() == 1) {
+        FirebaseRecyclerOptions<Project> options =
+                new FirebaseRecyclerOptions.Builder<Project>()
+                        .setQuery(queryProjects, Project.class)
+                        .build();
 
-                    // Fill the row
-                    row.setName(project.getName());
-                    row.setCompany(project.getCompanyName());
+        FirebaseRecyclerAdapter adapter =
+                new FirebaseRecyclerAdapter<Project, ProjectItem>(options) {
 
-                    String invoiceDate = ((invoiceDate = project.getLastInvoice()) != null) ? invoiceDate : "-";
-                    String format = getResources().getString(R.string.placeholder_date_invoice);
-                    row.setInvoice(invoiceDate, format);
-                    row.setKey(getRef(position).getKey());
+                    @Override
+                    public ProjectItem onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.list_item_project, parent, false);
+                        return new ProjectItem(view);
+                    }
 
-                    // Set click listener
-                    row.view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent projectIntent = new Intent(mContext, ProjectActivity.class);
-                            projectIntent.putExtra("PROJECT_KEY", row.getKey());
-                            startActivity(projectIntent);
+                    @Override
+                    protected void onBindViewHolder(final ProjectItem row, int position, Project project) {
+                        if (project.getStatus() == 1) {
+
+                            // Fill the row
+                            row.setName(project.getName());
+                            row.setCompany(project.getCompanyName());
+
+                            String invoiceDate = ((invoiceDate = project.getLastInvoice()) != null) ? invoiceDate : "-";
+                            String format = getResources().getString(R.string.placeholder_date_invoice);
+                            row.setInvoice(invoiceDate, format);
+                            row.setKey(getRef(position).getKey());
+
+                            // Set click listener
+                            row.view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent projectIntent = new Intent(mContext, ProjectActivity.class);
+                                    projectIntent.putExtra("PROJECT_KEY", row.getKey());
+                                    startActivity(projectIntent);
+                                }
+                            });
+
+                            inProgress(false);
+
+                            // Update amount in list
+                            checkAmountProjects(projectsList.getAdapter().getItemCount());
                         }
-                    });
-
-                    inProgress(false);
-
-                    // Update amount in list
-                    checkAmountProjects(projectsList.getAdapter().getItemCount());
-                }
-            }
-        };
+                    }
+                };
 
         // Set the adapter
         projectsList.setAdapter(adapter);
@@ -292,17 +312,23 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void populateCostsList() {
         inProgress(true);
 
-        // Create an adapter
-        FirebaseRecyclerAdapter<Cost, CostItem> adapter =
-                new FirebaseRecyclerAdapter<Cost, CostItem>(
-                        Cost.class,
-                        R.layout.list_item_cost,
-                        CostItem.class,
-                        dbCostsMe.orderByChild("date")
-                ) {
+        FirebaseRecyclerOptions<Cost> options =
+                new FirebaseRecyclerOptions.Builder<Cost>()
+                        .setQuery(queryCosts, Cost.class)
+                        .build();
+
+        FirebaseRecyclerAdapter adapter =
+                new FirebaseRecyclerAdapter<Cost, CostItem>(options) {
+
                     @Override
-                    protected void populateViewHolder(final CostItem row, final Cost cost, int position) {
-                        // Fill the row
+                    public CostItem onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.list_item_cost, parent, false);
+                        return new CostItem(view);
+                    }
+
+                    @Override
+                    protected void onBindViewHolder(final CostItem row, int position, final Cost cost) {
                         row.setDate(cost.getDate());
                         row.setDescription(cost.getDescription());
                         row.setCompany(cost.getCompanyName());
@@ -359,31 +385,36 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void populateInvoicesList() {
         inProgress(true);
 
-        // Create an adapter
-        FirebaseRecyclerAdapter<Invoice, InvoiceItem> adapter =
-                new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(
-                        Invoice.class,
-                        R.layout.list_item_invoice,
-                        InvoiceItem.class,
-                        dbInvoicesMe
-                ) {
+        FirebaseRecyclerOptions<Invoice> options =
+                new FirebaseRecyclerOptions.Builder<Invoice>()
+                        .setQuery(queryInvoices, new SnapshotParser<Invoice>(){
+                            @NonNull
+                            @Override
+                            public Invoice parseSnapshot(@NonNull DataSnapshot snapshot) {
+                                Invoice subInvoice = null;
+                                for (DataSnapshot invoiceSnapshot: snapshot.getChildren()) {
+                                    subInvoice = invoiceSnapshot.getValue(Invoice.class);
+                                }
+                                if (subInvoice != null) {
+                                    return subInvoice;
+                                }
+                                return snapshot.getValue(Invoice.class);
+                            }
+                        })
+                        .build();
+
+        FirebaseRecyclerAdapter adapter =
+                new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(options) {
+
                     @Override
-                    protected Invoice parseSnapshot(DataSnapshot snapshot) {
-                        DataSnapshot subSnapshot = null;
-                        for (DataSnapshot invoiceSnapshot: snapshot.getChildren()) {
-                            subSnapshot = invoiceSnapshot;
-                        }
-                        if (subSnapshot != null) {
-                            return super.parseSnapshot(subSnapshot);
-                        } else {
-                            return super.parseSnapshot(snapshot);
-                        }
+                    public InvoiceItem onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.list_item_invoice, parent, false);
+                        return new InvoiceItem(view);
                     }
 
                     @Override
-                    protected void populateViewHolder(final InvoiceItem row,
-                                                      final Invoice invoice, int position) {
-                        // Fill the row
+                    protected void onBindViewHolder(final InvoiceItem row, int position, final Invoice invoice) {
                         row.setDate(invoice.getDate());
                         row.setInvoiceNr(invoice.getInvoiceNr());
                         row.setPrice(invoice.getTotalPrice());

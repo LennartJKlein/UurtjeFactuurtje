@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +28,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 /**
@@ -47,6 +50,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     private DatabaseReference db;
     private DatabaseReference dbUsersMe;
     private DatabaseReference dbCompaniesMe;
+    private Query queryCompanies;
 
     // UI references
     private Context mContext;
@@ -64,10 +68,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
 
         setAuth();
 
-        // Set database references
-        db = PersistentDatabase.getReference();
-        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
-        dbUsersMe = db.child("users").child(currentUser.getUid());
+        setReferences();
 
         // Set UI references
         mContext = getActivity().getApplicationContext();
@@ -111,24 +112,20 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         }
     }
 
-    private void loadMyCompany() {
-        dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user != null) {
-                    String companyName = user.getCompanyName();
-                    if (!companyName.equals("")) {
-                        nameMyCompany.setText(user.getCompanyName());
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+    /**
+     * Sets the FireBase authentication and current user
+     */
+    private void setAuth() {
+        auth = FirebaseAuth.getInstance();
+        currentUser = auth.getCurrentUser();
+    }
 
-            }
-        });
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbUsersMe = db.child("users").child(currentUser.getUid());
+        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
+        queryCompanies = dbCompaniesMe;
     }
 
     /**
@@ -155,36 +152,38 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     private void populateCompaniesList() {
         inProgress(true);
 
-        // Create an adapter
-        FirebaseRecyclerAdapter<Company, CompanyRow> adapter =
-                new FirebaseRecyclerAdapter<Company, CompanyRow>(
-                Company.class,
-                R.layout.list_item_company,
-                CompaniesFragment.CompanyRow.class,
-                dbCompaniesMe
-        ) {
-            @Override
-            protected void populateViewHolder(CompanyRow row, Company company, final int position) {
+        FirebaseRecyclerOptions<Company> options =
+                new FirebaseRecyclerOptions.Builder<Company>()
+                        .setQuery(queryCompanies, Company.class)
+                        .build();
 
-                // Fill the row
-                row.setName(company.getName());
-                row.setButton();
+        FirebaseRecyclerAdapter adapter =
+                new FirebaseRecyclerAdapter<Company, CompanyItem>(options) {
 
-                // Set click listener
-                row.actionDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        dbCompaniesMe.child(getRef(position).getKey()).setValue(null);
+                    public CompanyItem onCreateViewHolder(ViewGroup parent, int viewType) {
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.list_item_company, parent, false);
+                        return new CompanyItem(view);
                     }
-                });
 
-                inProgress(false);
+                    @Override
+                    protected void onBindViewHolder(CompanyItem row, final int position, Company company) {
+                        row.setName(company.getName());
+                        row.setButton();
+                        row.actionDelete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dbCompaniesMe.child(getRef(position).getKey()).setValue(null);
+                            }
+                        });
 
-                // Update amount in list
-                checkAmount(companiesList.getAdapter().getItemCount());
+                        inProgress(false);
 
-            }
-        };
+                        // Update amount in list
+                        checkAmount(companiesList.getAdapter().getItemCount());
+                    }
+                };
 
         // Set the adapter
         companiesList.setAdapter(adapter);
@@ -196,11 +195,11 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     /**
      * View holder for a company row
      */
-    public static class CompanyRow extends RecyclerView.ViewHolder {
+    public static class CompanyItem extends RecyclerView.ViewHolder {
         View view;
         ImageButton actionDelete;
 
-        public CompanyRow(View view) {
+        public CompanyItem(View view) {
             super(view);
             this.view = view;
         }
@@ -229,6 +228,26 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         }
     }
 
+    private void loadMyCompany() {
+        dbUsersMe.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    String companyName = user.getCompanyName();
+                    if (!companyName.equals("")) {
+                        nameMyCompany.setText(user.getCompanyName());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("Firebase", String.valueOf(databaseError));
+            }
+        });
+    }
+
     /**
      * Show wheel when in progress
      */
@@ -238,13 +257,5 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
         } else {
             progressWheel.setVisibility(View.INVISIBLE);
         }
-    }
-
-    /**
-     * Sets the FireBase authentication and current user
-     */
-    private void setAuth() {
-        auth = FirebaseAuth.getInstance();
-        currentUser = auth.getCurrentUser();
     }
 }

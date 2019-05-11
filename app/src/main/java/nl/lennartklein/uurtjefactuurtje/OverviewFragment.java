@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -106,9 +107,21 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         FloatingActionButton addProject = view.findViewById(R.id.action_add_project);
 
         // Populate lists
-        initiateProjectsList();
-        initiateCostsList();
-        initiateInvoicesList();
+        new Thread(new Runnable() {
+            public void run() {
+                initiateProjectsList();
+            }
+        }).start();
+        new Thread(new Runnable() {
+            public void run() {
+                initiateCostsList();
+            }
+        }).start();
+        new Thread(new Runnable() {
+            public void run() {
+                initiateInvoicesList();
+            }
+        }).start();
 
         // Set click listeners
         addWork.setOnClickListener(this);
@@ -147,7 +160,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.action_add_work:
                 startWorkActivity();
                 break;
@@ -217,42 +230,45 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         // Create an adapter
         FirebaseRecyclerAdapter<Project, ProjectItem> adapter =
                 new FirebaseRecyclerAdapter<Project, ProjectItem>(
-                Project.class,
-                R.layout.list_item_project,
-                ProjectItem.class,
-                dbProjectsMe.orderByChild("lastInvoice")
-        ) {
-            @Override
-            protected void populateViewHolder(final ProjectItem row, Project project, int position) {
+                        Project.class,
+                        R.layout.list_item_project,
+                        ProjectItem.class,
+                        dbProjectsMe.orderByChild("lastInvoice")
+                ) {
+                    @Override
+                    protected void populateViewHolder(final ProjectItem row, Project project, int position) {
 
-                if (project.getStatus() == 1) {
+                        if (project.getStatus() == 1) {
 
-                    // Fill the row
-                    row.setName(project.getName());
-                    row.setCompany(project.getCompanyName());
+                            // Fill the row
+                            row.setName(project.getName());
+                            row.setCompany(project.getCompanyName());
 
-                    String invoiceDate = ((invoiceDate = project.getLastInvoice()) != null) ? invoiceDate : "-";
-                    String format = getResources().getString(R.string.placeholder_date_invoice);
-                    row.setInvoice(invoiceDate, format);
-                    row.setKey(getRef(position).getKey());
+                            String invoiceDate = ((invoiceDate = project.getLastInvoice()) != null) ? invoiceDate : "-";
+                            String format = getResources().getString(R.string.placeholder_date_invoice);
+                            row.setInvoice(invoiceDate, format);
+                            row.setKey(getRef(position).getKey());
 
-                    // Set click listener
-                    row.view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent projectIntent = new Intent(mContext, ProjectActivity.class);
-                            projectIntent.putExtra("PROJECT_KEY", row.getKey());
-                            startActivity(projectIntent);
+                            // Set click listener
+                            row.view.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent projectIntent = new Intent(mContext, ProjectActivity.class);
+                                    projectIntent.putExtra("PROJECT_KEY", row.getKey());
+                                    startActivity(projectIntent);
+                                }
+                            });
+
+                            // Hide loading symbol when this is the last item
+                            if (position == getItemCount() - 1) {
+                                inProgress(false);
+                            }
+
+                            // Update amount in list
+                            checkAmountProjects(projectsList.getAdapter().getItemCount());
                         }
-                    });
-
-                    inProgress(false);
-
-                    // Update amount in list
-                    checkAmountProjects(projectsList.getAdapter().getItemCount());
-                }
-            }
-        };
+                    }
+                };
 
         // Set the adapter
         projectsList.setAdapter(adapter);
@@ -273,7 +289,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         costsList.setLayoutManager(manager);
 
         // Add divider line
-        DividerItemDecoration divider = new DividerItemDecoration(costsList.getContext(),1);
+        DividerItemDecoration divider = new DividerItemDecoration(costsList.getContext(), 1);
         costsList.addItemDecoration(divider);
 
         inProgress(true);
@@ -304,7 +320,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                         cost.setKey(getRef(position).getKey());
 
                         // Set click listener
-                        row.view.setOnLongClickListener(new View.OnLongClickListener(){
+                        row.view.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
                             public boolean onLongClick(View view) {
                                 verifyDeleteCost(cost);
@@ -312,7 +328,10 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                             }
                         });
 
-                        inProgress(false);
+                        // Hide loading symbol when this is the last item
+                        if (position == getItemCount() - 1) {
+                            inProgress(false);
+                        }
 
                         // Update amount in list
                         checkAmountCosts(costsList.getAdapter().getItemCount());
@@ -340,7 +359,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         invoicesList.setLayoutManager(manager);
 
         // Add divider line
-        DividerItemDecoration divider = new DividerItemDecoration(invoicesList.getContext(),1);
+        DividerItemDecoration divider = new DividerItemDecoration(invoicesList.getContext(), 1);
         invoicesList.addItemDecoration(divider);
 
         inProgress(true);
@@ -368,20 +387,25 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                         // Fetch company info
                         dbCompaniesMe.child(invoice.getCompanyId()).addListenerForSingleValueEvent(
                                 new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                Company thisCompany = dataSnapshot.getValue(Company.class);
-                                if (thisCompany != null) {
-                                    invoice.setCompany(thisCompany);
-                                    fillInvoiceItem(row, invoice, position, key);
-                                }
-                            }
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Company thisCompany = dataSnapshot.getValue(Company.class);
+                                        if (thisCompany != null) {
+                                            invoice.setCompany(thisCompany);
+                                            fillInvoiceItem(row, invoice, position, key);
+                                        }
+                                    }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                fillInvoiceItem(row, invoice, position, key);
-                            }
-                        });
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        fillInvoiceItem(row, invoice, position, key);
+                                    }
+                                });
+
+                        // Hide loading symbol when this is the last item
+                        if (position == getItemCount() - 1) {
+                            inProgress(false);
+                        }
                     }
                 };
 
@@ -407,14 +431,12 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         invoice.setKey(key);
 
         // Set click listener
-        row.view.setOnClickListener(new View.OnClickListener(){
+        row.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openFile(invoice);
             }
         });
-
-        inProgress(false);
 
         // Update amount in list
         checkAmountInvoices(invoicesList.getAdapter().getItemCount());
@@ -530,7 +552,8 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
             } else {
                 // Open file at filepath
                 Intent target = new Intent(Intent.ACTION_VIEW);
-                target.setDataAndType(Uri.fromFile(new File(filepath)), "application/pdf");
+                Uri pdfUri = FileProvider.getUriForFile(mContext, "nl.lennartklein.fileprovider", file);
+                target.setDataAndType(pdfUri, "application/pdf");
                 target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 Intent intent = Intent.createChooser(target, res.getString(R.string.title_chooser));
                 intent.addFlags(FLAG_ACTIVITY_NEW_TASK);

@@ -42,8 +42,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
@@ -91,6 +94,13 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
         checkPermissions();
 
+        // Check if invoice index needs a reset (new year)
+        new Thread(new Runnable() {
+            public void run() {
+                checkInvoiceIndex();
+            }
+        }).start();
+
         // Get data for this project
         String projectKey = getIntent().getExtras().getString("PROJECT_KEY");
         if (projectKey != null) {
@@ -122,6 +132,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Gets the project from the database
+     *
      * @param key: the unique FireBase key of the project
      */
     private void fetchProject(final String key) {
@@ -221,6 +232,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Handles the onClicks in this activity
+     *
      * @param view: the clicked view
      */
     @Override
@@ -257,7 +269,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.menu_change_name:
                 changeProjectName();
                 break;
@@ -356,7 +368,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         checkPermissions();
         Toast.makeText(mContext, getString(R.string.generating_invoice), Toast.LENGTH_SHORT).show();
 
-        // Create invoiceNumber string
+        // Create invoiceNumber string of year and index
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         String invoiceNr = currentYear + String.format(
                 Locale.getDefault(),
@@ -381,8 +393,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         dbProjectsMe.child(project.getId()).child("lastInvoice").setValue(invoice.getDate());
 
         // Add 1 to invoiceNumber of user
-        int newInvoiceNumber = user.getInvoiceNumber() + 1;
-        dbUsersMe.child("invoiceNumber").setValue(newInvoiceNumber);
+        setInvoiceIndex(user.getInvoiceNumber() + 1);
 
         // Calculate the totals of the invoice
         fetchData(invoice);
@@ -468,6 +479,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
     /**
      * Inserts an invoice object to the database
+     *
      * @param invoice: Invoice object
      * @return key of the pushed object
      */
@@ -500,8 +512,42 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    private void checkInvoiceIndex() {
+        dbInvoicesMe.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // See if any invoice has been made this year. Otherwise, reset index to 0
+                boolean resetInvoiceIndex = true;
+                for (DataSnapshot invoiceSnapshot : dataSnapshot.getChildren()) {
+                    Invoice invoice = invoiceSnapshot.getValue(Invoice.class);
+                    if (invoice != null) {
+                        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                        if (isDateInYear(invoice.getDate(), currentYear)) {
+                            resetInvoiceIndex = false;
+                        }
+                    }
+                }
+
+                if (resetInvoiceIndex) {
+                    setInvoiceIndex(0);
+                    Log.d("Account", "InvoiceNr has been reset for this book year");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
+    private void setInvoiceIndex (int index) {
+        dbUsersMe.child("invoiceNumber").setValue(index);
+    }
+
     /**
      * Returns the date of today
+     *
      * @param extraDays: additional days to the future
      * @return formatted date
      */
@@ -510,5 +556,28 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         c.add(Calendar.DATE, extraDays);
         return df.format(c.getTime());
+    }
+
+    private boolean isDateInYear(String dateString, int year) {
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        Calendar calendar = new GregorianCalendar();
+        Date date = null;
+        try {
+            if (dateString != null) {
+                date = inputFormat.parse(dateString);
+                calendar.setTime(date);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date != null) {
+            if (calendar.get(Calendar.YEAR) == year) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

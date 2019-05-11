@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -384,7 +385,8 @@ public class GenerateInvoicePdf {
         if (filepath != null || !filepath.equals("")) {
 
             Intent target = new Intent(Intent.ACTION_VIEW);
-            target.setDataAndType(Uri.fromFile(new File(filepath)),"application/pdf");
+            Uri pdfUri = FileProvider.getUriForFile(mContext, "nl.lennartklein.fileprovider", new File(filepath));
+            target.setDataAndType(pdfUri,"application/pdf");
             target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             Intent intent = Intent.createChooser(target, res.getString(R.string.title_chooser));
 

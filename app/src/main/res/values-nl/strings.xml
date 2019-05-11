@@ -115,7 +115,7 @@
     <string name="action_ok">Ok</string>
     <string name="image_invoice">Factuur openen</string>
     <string name="error_no_invoices">Je hebt nog geen facturen.</string>
-    <string name="field_invoice_nr">Factuurnummer</string>
+    <string name="field_invoice_nr">Volgnummer van eerstvolgende factuur</string>
     <string name="placeholder_cost">Een aankoop</string>
     <string name="heading_costs">Aankopen</string>
     <string name="placeholder_current_date">Vandaag is het %1$s</string>

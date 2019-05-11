@@ -85,7 +85,11 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
 
         loadMyCompany();
 
-        initiateCompaniesList();
+        new Thread(new Runnable() {
+            public void run() {
+                initiateCompaniesList();
+            }
+        }).start();
 
         return view;
     }

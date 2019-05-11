@@ -95,7 +95,7 @@
     <string name="field_hours">Hours</string>
     <string name="field_hours_start">Start time</string>
     <string name="field_hours_end">End time</string>
-    <string name="field_invoice_nr">Invoice nr</string>
+    <string name="field_invoice_nr">Serial number of next invoice</string>
 
     <!-- Actions -->
     <string name="title_chooser">Open file</string>

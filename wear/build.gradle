@@ -29,7 +29,7 @@ dependencies {
     implementation 'com.android.support:animated-vector-drawable:26.1.0'
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.google.android.gms:play-services-wearable:11.8.0'
-    compileOnly 'com.google.android.wearable:wearable:2.2.0'
+    implementation 'com.google.android.wearable:wearable:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

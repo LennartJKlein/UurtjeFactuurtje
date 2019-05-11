@@ -9,46 +9,19 @@
 
 package nl.lennartklein.uurtjefactuurtje;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.provider.SyncStateContract;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataClient;
-import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.MessageClient;
-import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.PutDataMapRequest;
-import com.google.android.gms.wearable.PutDataRequest;
-import com.google.android.gms.wearable.Wearable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Contains the main tabs of the app
@@ -70,11 +43,6 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Register the local broadcast receiver
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
-
         setAuth();
 
         initiateBottomNavigation();
@@ -88,16 +56,20 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, "activeFragment", activeFragment);
-        outState.putInt("activeTab", activeItem);
+        if (activeFragment != null) {
+            getSupportFragmentManager().putFragment(outState, "activeFragment", activeFragment);
+            outState.putInt("activeTab", activeItem);
+        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle inState) {
         super.onRestoreInstanceState(inState);
-        showFragment(getSupportFragmentManager().getFragment(inState, "activeFragment"));
-        activeItem = inState.getInt("activeTab");
-        resumeLastFragment();
+        if (activeFragment != null) {
+            showFragment(getSupportFragmentManager().getFragment(inState, "activeFragment"));
+            activeItem = inState.getInt("activeTab");
+            resumeLastFragment();
+        }
     }
 
     @Override
@@ -106,21 +78,6 @@ public class MainActivity extends AppCompatActivity  {
 
         // Resume at previous fragment
         resumeLastFragment();
-    }
-
-    public class MessageReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            Log.d("DataLayer", "Main activity received message: " + message);
-
-            switch (message) {
-                case "send":
-                    new SendThread(getApplicationContext(), MainActivity.this,
-                            "/message", "projects send to wear").start();
-                    break;
-            }
-        }
     }
 
     /**
@@ -182,7 +139,7 @@ public class MainActivity extends AppCompatActivity  {
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        //ft.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         ft.replace(R.id.page, fragment);
         ft.commit();
 

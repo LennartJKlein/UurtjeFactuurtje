@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="@dimen/margin_small"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:paddingStart="@dimen/margin_medium"
+    android:paddingEnd="@dimen/margin_small">
+
+    <TextView
+        android:id="@+id/invoice_date"
+        android:text="@string/placeholder_date_short"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/invoice_date"
+        android:layout_toStartOf="@id/action_show_invoice"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:text="@string/placeholder_currency"
+            android:id="@+id/invoice_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:fontFamily="@font/lato_bold"/>
+
+        <TextView
+            android:id="@+id/invoice_nr"
+            android:text="@string/placeholder_invoice_nr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/grey"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/action_show_invoice"
+        android:src="@drawable/ic_receipt_primary"
+        android:layout_width="@dimen/list_button"
+        android:layout_height="@dimen/list_button"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_circle"
+        android:contentDescription="@string/image_invoice"
+        android:clickable="false"/>
+
+    <ProgressBar
+        android:id="@+id/loader_file"
+        android:layout_width="@dimen/list_button"
+        android:layout_height="@dimen/list_button"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/margin_medium"
+        style="?android:attr/progressBarStyleSmall"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/grey"
+        android:visibility="invisible" />
+
+</RelativeLayout>

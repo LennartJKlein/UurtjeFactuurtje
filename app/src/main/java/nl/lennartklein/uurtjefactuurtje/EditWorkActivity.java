@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        AddWorkFragment
+// Title        AddWorkActivity
 // Parent       OverviewFragment / ProjectWorkFragment
 //
 // Date         February 1 2018
@@ -11,40 +11,34 @@
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.weiwangcn.betterspinner.library.BetterSpinner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * A form for adding work to a project
+ * A form for editing work of a project
  */
 
-public class AddWorkFragment extends DialogFragment implements View.OnClickListener {
+public class EditWorkActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Authentication
     private FirebaseAuth auth;
@@ -57,55 +51,67 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
 
     // UI references
     private Context mContext;
+    private Resources res;
     private TabLayout tabs;
     private TabsAdapter tabsAdapter;
+    private TabItem tabHours;
+    private TabItem tabProduct;
     private ViewPager pageContainer;
-    private BetterSpinner fieldProject;
-    private Button actionInsert;
+    private TextView fieldProject;
+    private Button actionSave;
     private Button actionCancel;
+    private ImageButton actionDelete;
 
     // Data
-    private List<Project> projects;
-    private List<String> projectNames;
-    private ArrayAdapter<String> projectsAdapter;
+    private Work work;
     private Project project;
-    private String givenProject = "";
+    private boolean hoursSet;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        setContentView(R.layout.activity_edit_work);
 
         setAuth();
 
-        // Database references
-        db = PersistentDatabase.getReference();
-        dbProjectsMe = db.child("projects").child(currentUser.getUid());
-        dbWorkMe = db.child("work").child(currentUser.getUid());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_work, container, false);
+        setReferences();
 
         // Set UI references
-        tabs = view.findViewById(R.id.tabs);
-        pageContainer = view.findViewById(R.id.container);
-        fieldProject = view.findViewById(R.id.field_project);
-        actionInsert = view.findViewById(R.id.action_add_work);
-        actionCancel = view.findViewById(R.id.action_cancel);
+        mContext = this;
+        res = mContext.getResources();
+        tabs = findViewById(R.id.tabs);
+        tabHours = findViewById(R.id.tab_work_hours);
+        tabProduct = findViewById(R.id.tab_work_product);
+        pageContainer = findViewById(R.id.container);
+        fieldProject = findViewById(R.id.field_project);
+        actionSave = findViewById(R.id.action_save);
+        actionCancel = findViewById(R.id.action_cancel);
+        actionDelete = findViewById(R.id.action_delete);
 
         // Set click listeners
-        actionInsert.setOnClickListener(this);
+        actionSave.setOnClickListener(this);
         actionCancel.setOnClickListener(this);
+        actionDelete.setOnClickListener(this);
 
-        setTabs();
+        // Get information from intent
+        if (getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                project = (Project) bundle.getSerializable("PROJECT");
+                work = (Work) bundle.getSerializable("WORK");
+            }
+        }
 
-        // Get and set data
-        getProjects();
-        setProject(givenProject);
+        if (project != null) {
+            setProjectName(project.getName());
+        }
 
-        return view;
+        if (work != null) {
+            // Get boolean if hours are set in work
+            hoursSet = !(work.getHours() == 0);
+        }
+
+        setTabs(hoursSet);
     }
 
     /**
@@ -116,19 +122,26 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         currentUser = auth.getCurrentUser();
     }
 
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
+        dbWorkMe = db.child("work").child(currentUser.getUid());
+    }
+
     /**
      * Initiates the tabbed layout
      */
-    private void setTabs() {
+    private void setTabs(boolean hoursSet) {
         // Create the adapter that will return a fragment for each of the sections of the activity.
-        tabsAdapter = new TabsAdapter(getChildFragmentManager());
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        pageContainer.setAdapter(tabsAdapter);
+        if (pageContainer != null) {
+            pageContainer.setAdapter(tabsAdapter);
 
-        // Set on click listeners
-        pageContainer.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
-        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pageContainer));
+            // Hide tabs
+            tabs.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -144,57 +157,19 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    currentFragment = new AddWorkHoursFragment();
-                    return currentFragment;
-                case 1:
-                    currentFragment = new AddWorkProductFragment();
-                    return currentFragment;
+            if (hoursSet) {
+                currentFragment = new EditWorkHoursFragment();
+            } else {
+                currentFragment = new EditWorkProductFragment();
             }
-            currentFragment = new AddWorkHoursFragment();
             return currentFragment;
         }
 
         @Override
         public int getCount() {
-            // Show 2 total pages.
-            return 2;
+            // Show 1 total pages.
+            return 1;
         }
-    }
-
-    private void getProjects() {
-        projects = new ArrayList<>();
-        projectNames = new ArrayList<>();
-        projectsAdapter = new ArrayAdapter<>(mContext, R.layout.spinner_item, projectNames);
-        fieldProject.setAdapter(projectsAdapter);
-
-        dbProjectsMe.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot projectSnapshot: dataSnapshot.getChildren()) {
-                    Project project = projectSnapshot.getValue(Project.class);
-
-                    if (project != null) {
-                        project.setId(projectSnapshot.getKey());
-
-                        projects.add(project);
-
-                        if (project.getName() != null) {
-                            projectNames.add(project.getName());
-                        }
-                    }
-                }
-
-                projectsAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Data", String.valueOf(databaseError));
-            }
-        });
     }
 
     @Override
@@ -204,8 +179,17 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
                 validateFields();
                 break;
             case R.id.action_cancel:
-                closeFragment();
+                closeActivity();
                 break;
+            case R.id.action_delete:
+                deleteWork(work);
+                break;
+        }
+    }
+
+    private void setProjectName(String projectName) {
+        if (fieldProject != null && !projectName.equals("")) {
+            fieldProject.setText(projectName);
         }
     }
 
@@ -213,26 +197,21 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
      * Gets object of selected project
      */
     public Project fetchProject() {
-        String projectName = fieldProject.getText().toString();
-        if (!projectName.equals("")) {
-            int projectPosition = projectNames.indexOf(projectName);
-            if (projectPosition >= 0) {
-                return projects.get(projectPosition);
-            } else {
-                return null;
-            }
+        if (project != null) {
+            return project;
         } else {
             return null;
         }
     }
 
-    public void setGivenProject(String project) {
-        givenProject = project;
-    }
-
-    private void setProject(String projectName) {
-        if (fieldProject != null && !projectName.equals("")) {
-            fieldProject.setText(projectName);
+    /**
+     * Gets object of selected work
+     */
+    public Work fetchWork() {
+        if (work != null) {
+            return work;
+        } else {
+            return null;
         }
     }
 
@@ -250,16 +229,20 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         String projectName = fieldProject.getText().toString();
         String price = "0";
         String hours = "0";
+        String startTime = "";
+        String endTime = "";
         String description = "";
         String date = "";
 
         // Fetch values from sub forms
-        Fragment page = getChildFragmentManager().findFragmentByTag("android:switcher:" +
+        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" +
                 R.id.container + ":" + pageContainer.getCurrentItem());
         switch (pageContainer.getCurrentItem()) {
             case 0:
                 AddWorkHoursFragment hoursForm = (AddWorkHoursFragment) page;
                 hours = hoursForm.getHours();
+                startTime = hoursForm.getStartTime();
+                endTime = hoursForm.getEndTime();
                 date = hoursForm.getDate();
                 description = hoursForm.getDescription();
                 price = hoursForm.getPrice();
@@ -287,16 +270,15 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
         if (cancel) {
             focusView.requestFocus();
         } else {
-            insertInDatabase(price, hours, description, date);
+            updateToDatabase(price, hours, description, date, startTime, endTime);
         }
     }
 
     /**
      * Inserts new work in the database
      */
-    public void insertInDatabase(String price, String hours, String description, String date) {
-
-        project = fetchProject();
+    public void updateToDatabase(String price, String hours, String description, String date,
+                                 String startTime, String endTime) {
 
         Work work = new Work();
         work.setDescription(description);
@@ -312,18 +294,16 @@ public class AddWorkFragment extends DialogFragment implements View.OnClickListe
                 mContext.getResources().getString(R.string.note_work_added),
                 Toast.LENGTH_SHORT).show();
 
-        openProject();
-
-        closeFragment();
+        closeActivity();
     }
 
-    public void openProject() {
-        Intent projectIntent = new Intent(mContext, ProjectActivity.class);
-        projectIntent.putExtra("PROJECT_KEY", project.getId());
-        startActivity(projectIntent);
+    public void deleteWork(Work work) {
+        Log.d("Action", "delete");
+        // Todo
     }
 
-    public void closeFragment() {
-        dismiss();
+    public void closeActivity() {
+        Log.d("Action", "close");
+        finish();
     }
 }

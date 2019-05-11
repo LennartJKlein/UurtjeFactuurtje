@@ -7,62 +7,77 @@
     android:padding="@dimen/margin_medium"
     android:background="?selectableItemBackground">
 
-    <TextView
-        android:id="@+id/cost_date"
+    <RelativeLayout
+        android:id="@+id/cost_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:textColor="@color/greyDark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:text="@string/placeholder_date_short" />
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/cost_right">
 
-    <TextView
-        android:id="@+id/cost_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/cost_date"
-        android:layout_toStartOf="@id/cost_price"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textStyle="bold"
-        android:text="@string/placeholder_cost" />
+        <TextView
+            android:id="@+id/cost_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textStyle="bold"
+            android:text="@string/placeholder_cost" />
 
-    <TextView
-        android:id="@+id/cost_company"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/cost_date"
-        android:layout_toStartOf="@id/cost_price"
-        android:layout_below="@id/cost_description"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:textColor="@color/greyDark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textSize="@dimen/text_small"
-        android:text="@string/placeholder_company"/>
+        <TextView
+            android:id="@+id/cost_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/cost_description"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:textColor="@color/greyDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="@dimen/text_small"
+            android:text="@string/placeholder_company"/>
 
-    <TextView
-        android:id="@+id/cost_invoice_nr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/cost_date"
-        android:layout_toStartOf="@id/cost_price"
-        android:layout_below="@id/cost_company"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textSize="@dimen/text_tiny"
-        android:textColor="@color/grey"
-        android:text="@string/placeholder_invoice_nr"/>
+        <TextView
+            android:id="@+id/cost_invoice_nr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/cost_company"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="@dimen/text_tiny"
+            android:textColor="@color/grey"
+            android:text="@string/placeholder_invoice_nr"/>
 
-    <TextView
-        android:id="@+id/cost_price"
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/cost_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textStyle="bold"
-        android:text="@string/placeholder_currency" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/cost_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+            android:textAlignment="viewEnd"
+            android:textStyle="bold"
+            android:text="@string/placeholder_currency" />
+
+        <TextView
+            android:id="@+id/cost_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/greyDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="@dimen/text_small"
+            android:textAlignment="viewEnd"
+            android:text="@string/placeholder_date_short" />
+
+    </LinearLayout>
 
 </RelativeLayout>

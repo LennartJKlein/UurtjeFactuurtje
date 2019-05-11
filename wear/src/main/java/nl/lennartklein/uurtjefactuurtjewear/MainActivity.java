@@ -40,8 +40,6 @@ public class MainActivity extends WearableActivity {
     // Data
     private static final String KEY = "nl.lennartklein.uurtjefactuurtje.";
     private static final String PROJECTS_KEY = KEY + "projects";
-    private DataClient dataClient;
-    private int dataCounter = 0;
     private ArrayList<Project> projects;
     private ProjectsAdapter projectsAdapter;
 
@@ -49,13 +47,6 @@ public class MainActivity extends WearableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        dataClient = Wearable.getDataClient(this);
-
-        // Register the local broadcast receiver to receive messages from the listener.
-        IntentFilter messageFilter = new IntentFilter(Intent.ACTION_SEND);
-        MessageReceiver messageReceiver = new MessageReceiver();
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
 
         // Set UI references
         mContext = this;
@@ -68,24 +59,6 @@ public class MainActivity extends WearableActivity {
 
         // Enables Always-on
         setAmbientEnabled();
-    }
-
-    public class MessageReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("DataLayer", "Main activity wear received message");
-            String message = intent.getStringExtra("message");
-
-            switch (message) {
-                case "projects":
-                    Log.d("DataLayer", "Loop through projects and put in list");
-
-                    break;
-                default:
-                    Log.d("DataLayer", "Main activity received message: " + message);
-                    break;
-            }
-        }
     }
 
     /**
@@ -106,8 +79,6 @@ public class MainActivity extends WearableActivity {
      */
     private void populateProjectsList() {
 
-        new SendThread(getApplicationContext(), this, "/request", "projects").start();
-
         projects = new ArrayList<>();
         projectsAdapter = new ProjectsAdapter(projects);
         projectsList.setAdapter(projectsAdapter);
@@ -125,38 +96,6 @@ public class MainActivity extends WearableActivity {
 
         // Update amount in list
         checkAmountProjects(projectsList.getAdapter().getItemCount());
-    }
-
-    /**
-     * View item for a project row
-     */
-    public static class ProjectItem extends RecyclerView.ViewHolder {
-        View view;
-        String key;
-
-        public ProjectItem(View view) {
-            super(view);
-            this.view = view;
-        }
-
-        void setKey(String key) {
-            this.key = key;
-        }
-
-        String getKey() {
-            return key;
-        }
-
-        void setName(String name) {
-            TextView tvName = view.findViewById(R.id.project_name);
-            tvName.setText(name);
-        }
-
-        void setCompany(String company_name) {
-            TextView tvCompany = view.findViewById(R.id.project_company);
-            tvCompany.setText(company_name);
-        }
-
     }
 
     /**
@@ -199,9 +138,6 @@ public class MainActivity extends WearableActivity {
                 @Override
                 public void onClick(View view) {
                     populateProjectsList();
-                    /*Intent projectIntent = new Intent(mContext, ProjectActivity.class);
-                    projectIntent.putExtra("PROJECT_KEY", row.getKey());
-                    startActivity(projectIntent);*/
                 }
             });
         }

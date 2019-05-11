@@ -1,0 +1,107 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="nl.lennartklein.uurtjefactuurtje.AddWorkActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <com.weiwangcn.betterspinner.library.BetterSpinner
+            android:id="@+id/field_project"
+            android:hint="@string/field_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/margin_medium"
+            android:paddingEnd="@dimen/margin_medium"
+            android:paddingTop="@dimen/margin_medium"
+            android:paddingBottom="@dimen/margin_medium"
+            android:background="@color/secondary"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondaryLight"
+            android:drawableTint="@color/white"
+            android:textCursorDrawable="@color/primary"
+            android:textColorHighlight="@color/secondaryLight"/>
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            android:layout_below="@id/field_project"
+            android:backgroundTint="@color/secondary">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabSelectedTextColor="@color/white"
+                app:tabIndicatorColor="@color/white"
+                app:tabTextColor="@color/secondaryLight">
+
+                <android.support.design.widget.TabItem
+                    android:id="@+id/tab_work_hours"
+                    android:text="@string/tab_work_hours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <android.support.design.widget.TabItem
+                    android:id="@+id/tab_work_product"
+                    android:text="@string/tab_work_product"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </android.support.design.widget.TabLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appbar"
+            android:layout_above="@id/actions"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <LinearLayout
+            android:id="@+id/actions"
+            android:gravity="end"
+            android:padding="@dimen/margin_small"
+            android:background="@color/white"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            style="?android:attr/buttonBarStyle">
+
+            <Button
+                android:id="@+id/action_cancel"
+                android:text="@string/action_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_small"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                style="?android:attr/buttonBarNegativeButtonStyle"/>
+
+            <Button
+                android:id="@+id/action_add_work"
+                android:text="@string/action_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:backgroundTint="@color/secondary"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

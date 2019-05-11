@@ -94,114 +94,122 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/margin_large"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/list_title_costs"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/heading_costs"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:layout_marginBottom="@dimen/margin_medium"
-                    android:gravity="center_vertical"
-                    android:drawableStart="@drawable/ic_local_grocery_store_primary_light"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:fontFamily="@font/lato_bold"
-                    android:textColor="@color/primaryLight" />
+                    android:layout_weight="1"
+                    android:paddingBottom="@dimen/margin_large"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/list_costs_empty"
-                    android:text="@string/error_no_costs"
-                    android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/list_title_costs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/heading_costs"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_local_grocery_store_primary_light"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/primaryLight" />
+
+                    <TextView
+                        android:id="@+id/list_costs_empty"
+                        android:text="@string/error_no_costs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_below="@id/list_title_costs"
+                        android:padding="@dimen/margin_medium"
+                        android:elevation="2dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:fontFamily="@font/lato_italic"
+                        android:textColor="@color/grey"
+                        android:background="@drawable/list_card"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_costs"
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_below="@id/list_title_costs"
+                        android:elevation="2dp"
+                        android:background="@drawable/list_card"
+                        android:orientation="vertical"
+                        tools:listitem="@layout/list_item_cost"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginBottom="@dimen/margin_medium"
-                    android:layout_below="@id/list_title_costs"
-                    android:padding="@dimen/margin_medium"
-                    android:elevation="2dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:fontFamily="@font/lato_italic"
-                    android:textColor="@color/grey"
-                    android:background="@drawable/list_card"/>
+                    android:layout_weight="1"
+                    android:paddingBottom="@dimen/margin_large"
+                    android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_costs"
-                    android:scrollbars="none"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_below="@id/list_title_costs"
-                    android:elevation="2dp"
-                    android:background="@drawable/list_card"
-                    android:orientation="vertical"
-                    tools:listitem="@layout/list_item_cost"/>
+                    <TextView
+                        android:id="@+id/list_title_invoices"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/heading_all_invoices"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:gravity="center_vertical"
+                        android:drawableStart="@drawable/ic_receipt_primary_light"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/primaryLight" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/list_invoices_empty"
+                        android:text="@string/error_no_invoices"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:layout_below="@id/list_title_invoices"
+                        android:padding="@dimen/margin_medium"
+                        android:elevation="2dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:fontFamily="@font/lato_italic"
+                        android:textColor="@color/grey"
+                        android:background="@drawable/list_card"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/margin_medium"
-                android:paddingBottom="@dimen/margin_large"
-                android:orientation="vertical">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_invoices"
+                        android:scrollbars="none"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginEnd="@dimen/margin_medium"
+                        android:layout_below="@id/list_title_invoices"
+                        android:elevation="2dp"
+                        android:background="@drawable/list_card"
+                        android:orientation="vertical"
+                        tools:listitem="@layout/list_item_invoice"/>
 
-                <TextView
-                    android:id="@+id/list_title_invoices"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/heading_invoices"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginTop="@dimen/margin_medium"
-                    android:layout_marginBottom="@dimen/margin_medium"
-                    android:gravity="center_vertical"
-                    android:drawableStart="@drawable/ic_receipt_primary_light"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:fontFamily="@font/lato_bold"
-                    android:textColor="@color/primaryLight" />
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/list_invoices_empty"
-                    android:text="@string/error_no_invoices"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_marginBottom="@dimen/margin_medium"
-                    android:layout_below="@id/list_title_invoices"
-                    android:padding="@dimen/margin_medium"
-                    android:elevation="2dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                    android:fontFamily="@font/lato_italic"
-                    android:textColor="@color/grey"
-                    android:background="@drawable/list_card"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_invoices"
-                    android:scrollbars="none"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_medium"
-                    android:layout_marginEnd="@dimen/margin_medium"
-                    android:layout_below="@id/list_title_invoices"
-                    android:elevation="2dp"
-                    android:background="@drawable/list_card"
-                    android:orientation="vertical"
-                    tools:listitem="@layout/list_item_invoice_project"/>
-
-            </RelativeLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"

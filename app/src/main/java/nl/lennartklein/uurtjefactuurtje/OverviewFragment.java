@@ -19,7 +19,6 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -42,12 +41,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
-import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
@@ -79,6 +74,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private DatabaseReference dbProjectsMe;
     private DatabaseReference dbCostsMe;
     private DatabaseReference dbInvoicesMe;
+    private DatabaseReference dbCompaniesMe;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,6 +87,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
         dbCostsMe = db.child("costs").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
+        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
 
         // Set UI references
         mContext = getActivity().getApplicationContext();
@@ -152,13 +149,13 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.action_add_work:
-                openWorkFragment();
+                startWorkActivity();
                 break;
             case R.id.action_add_cost:
-                openCostFragment();
+                startCostActivity();
                 break;
             case R.id.action_add_project:
-                openProjectFragment();
+                startProjectActivity();
                 break;
         }
 
@@ -176,28 +173,25 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     /**
      * Opens a dialog fragment to add work
      */
-    private void openWorkFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        AddWorkFragment dialog = new AddWorkFragment();
-        dialog.show(transaction, "AddWork");
+    private void startWorkActivity() {
+        Intent addWorkIntent = new Intent(mContext, AddWorkActivity.class);
+        startActivity(addWorkIntent);
     }
 
     /**
-     * Opens a dialog fragment to add a cost
+     * Opens an activity to add a cost
      */
-    private void openCostFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        AddCostFragment dialog = new AddCostFragment();
-        dialog.show(transaction, "AddCost");
+    private void startCostActivity() {
+        Intent addCostIntent = new Intent(mContext, AddCostActivity.class);
+        startActivity(addCostIntent);
     }
 
     /**
      * Opens a dialog fragment to add a project
      */
-    private void openProjectFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        AddProjectFragment dialog = new AddProjectFragment();
-        dialog.show(transaction, "AddProject");
+    private void startProjectActivity() {
+        Intent addProjectIntent = new Intent(mContext, AddProjectActivity.class);
+        startActivity(addProjectIntent);
     }
 
     /**
@@ -206,12 +200,10 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
     private void initiateProjectsList() {
         // Construct the list
         RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext,
-                LinearLayoutManager.VERTICAL, true);
+                LinearLayoutManager.HORIZONTAL, false);
+        ((LinearLayoutManager) manager).setReverseLayout(true);
+        ((LinearLayoutManager) manager).setStackFromEnd(true);
         projectsList.setLayoutManager(manager);
-
-        // Add divider line
-        DividerItemDecoration divider = new DividerItemDecoration(projectsList.getContext(),1);
-        projectsList.addItemDecoration(divider);
 
         inProgress(true);
     }
@@ -228,10 +220,11 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                 Project.class,
                 R.layout.list_item_project,
                 ProjectItem.class,
-                dbProjectsMe
+                dbProjectsMe.orderByChild("lastInvoice")
         ) {
             @Override
             protected void populateViewHolder(final ProjectItem row, Project project, int position) {
+
                 if (project.getStatus() == 1) {
 
                     // Fill the row
@@ -367,40 +360,28 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                         InvoiceItem.class,
                         dbInvoicesMe
                 ) {
-                    @Override
-                    protected Invoice parseSnapshot(DataSnapshot snapshot) {
-                        DataSnapshot subSnapshot = null;
-                        for (DataSnapshot invoiceSnapshot: snapshot.getChildren()) {
-                            subSnapshot = invoiceSnapshot;
-                        }
-                        if (subSnapshot != null) {
-                            return super.parseSnapshot(subSnapshot);
-                        } else {
-                            return super.parseSnapshot(snapshot);
-                        }
-                    }
 
                     @Override
-                    protected void populateViewHolder(final InvoiceItem row,
-                                                      final Invoice invoice, int position) {
-                        // Fill the row
-                        row.setDate(invoice.getDate());
-                        row.setInvoiceNr(invoice.getInvoiceNr());
-                        row.setPrice(invoice.getTotalPrice());
-                        invoice.setKey(getRef(position).getKey());
+                    protected void populateViewHolder(final InvoiceItem row, final Invoice invoice, final int position) {
+                        final String key = getRef(position).getKey();
 
-                        // Set click listener
-                        row.view.setOnClickListener(new View.OnClickListener(){
+                        // Fetch company info
+                        dbCompaniesMe.child(invoice.getCompanyId()).addListenerForSingleValueEvent(
+                                new ValueEventListener() {
                             @Override
-                            public void onClick(View view) {
-                                openFile(invoice);
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Company thisCompany = dataSnapshot.getValue(Company.class);
+                                if (thisCompany != null) {
+                                    invoice.setCompany(thisCompany);
+                                    fillInvoiceItem(row, invoice, position, key);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                fillInvoiceItem(row, invoice, position, key);
                             }
                         });
-
-                        inProgress(false);
-
-                        // Update amount in list
-                        checkAmountInvoices(invoicesList.getAdapter().getItemCount());
                     }
                 };
 
@@ -412,6 +393,31 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
 
         inProgress(false);
 
+    }
+
+    private void fillInvoiceItem(InvoiceItem row, final Invoice invoice, int position, String key) {
+        row.setDate(invoice.getDate());
+        row.setInvoiceNr(invoice.getInvoiceNr());
+        if (invoice.getCompany() != null) {
+            row.setCompany(invoice.getCompany().getName());
+        } else {
+            row.setCompany(getResources().getString(R.string.invoice));
+        }
+        row.setPrice(invoice.getTotalPrice());
+        invoice.setKey(key);
+
+        // Set click listener
+        row.view.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                openFile(invoice);
+            }
+        });
+
+        inProgress(false);
+
+        // Update amount in list
+        checkAmountInvoices(invoicesList.getAdapter().getItemCount());
     }
 
     /**
@@ -468,7 +474,6 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
      * Shows a dialog to verify the deletion of a cost
      */
     private void verifyDeleteCost(final Cost cost) {
-        Log.d("Cost", "Clicked");
         // Set up dialog
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
         alert.setTitle(getString(R.string.note_verify_delete_cost));
@@ -581,7 +586,7 @@ public class OverviewFragment extends Fragment implements View.OnClickListener {
                 }
 
                 // Write PDF file
-                GeneratePdf writer = new GeneratePdf(getActivity(), mContext, invoice);
+                GenerateInvoicePdf writer = new GenerateInvoicePdf(getActivity(), mContext, invoice);
                 writer.createFile();
             }
 

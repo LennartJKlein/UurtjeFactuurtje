@@ -1,46 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
+    android:id="@+id/container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_medium">
-
-    <TextView
-        android:id="@+id/invoice_date"
-        android:text="@string/placeholder_date_short"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+    android:paddingStart="@dimen/margin_medium"
+    android:paddingTop="@dimen/margin_medium"
+    android:paddingBottom="@dimen/margin_medium"
+    android:background="?selectableItemBackground">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/invoice_date"
+        android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/action_show_invoice"
         android:layout_marginEnd="@dimen/margin_medium"
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
         <TextView
-            android:text="@string/placeholder_currency"
-            android:id="@+id/invoice_price"
+            android:text="@string/placeholder_company"
+            android:id="@+id/invoice_company"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
+            android:paddingBottom="@dimen/margin_small"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:fontFamily="@font/lato_bold"/>
 
-        <TextView
-            android:id="@+id/invoice_nr"
-            android:text="@string/placeholder_invoice_nr"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="@color/grey"
-            android:ellipsize="end" />
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/invoice_date"
+                android:text="@string/placeholder_date_short"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_tiny"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/grey" />
+
+            <TextView
+                android:id="@+id/invoice_price"
+                android:text="@string/placeholder_currency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/black"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/invoice_nr"
+                android:text="@string/placeholder_invoice_nr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/grey"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:ellipsize="end" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

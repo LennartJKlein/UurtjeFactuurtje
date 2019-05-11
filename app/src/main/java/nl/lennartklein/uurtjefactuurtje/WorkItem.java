@@ -3,6 +3,7 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -16,10 +17,12 @@ import java.util.Locale;
  */
 public class WorkItem extends RecyclerView.ViewHolder {
     View view;
+    ImageButton actionEdit;
 
     public WorkItem(View view) {
         super(view);
         this.view = view;
+        this.actionEdit = view.findViewById(R.id.action_edit);
     }
 
     public void setDate(String date) {

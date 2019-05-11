@@ -6,7 +6,6 @@
     tools:context="nl.lennartklein.uurtjefactuurtje.ProjectInvoicesFragment">
 
         <RelativeLayout
-            android:padding="@dimen/margin_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -15,16 +14,18 @@
                 style="?android:attr/progressBarStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_medium"
+                android:layout_margin="@dimen/margin_large"
                 android:layout_centerHorizontal="true"
                 android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/list_invoices_empty"
-                android:text="@string/error_no_invoices"
+                android:text="@string/error_no_invoices_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_medium"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_large"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:fontFamily="@font/lato_italic"
                 android:visibility="invisible"
@@ -36,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_above="@id/actions"
-                tools:listitem="@layout/list_item_invoice"
+                tools:listitem="@layout/list_item_invoice_project"
                 android:scrollbars="none" />
 
             <LinearLayout

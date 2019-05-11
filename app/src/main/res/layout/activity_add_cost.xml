@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="nl.lennartklein.uurtjefactuurtje.AddCostFragment">
+    tools:context="nl.lennartklein.uurtjefactuurtje.AddCostActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -58,19 +58,37 @@
                 android:orientation="vertical"
                 android:padding="@dimen/margin_medium">
 
-                <com.weiwangcn.betterspinner.library.BetterSpinner
-                    android:id="@+id/field_company"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margin_large"
-                    android:paddingTop="@dimen/margin_tiny"
-                    android:paddingBottom="@dimen/margin_medium"
-                    android:drawablePadding="@dimen/margin_small"
-                    android:drawableTint="@color/greyDark"
-                    android:drawableStart="@drawable/ic_business_grey_dark"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textSize="18sp"
-                    android:hint="@string/field_company" />
+                    android:layout_marginBottom="@dimen/margin_small"
+                    android:orientation="horizontal">
+
+                    <com.weiwangcn.betterspinner.library.BetterSpinner
+                        android:id="@+id/field_company"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginBottom="@dimen/margin_medium"
+                        android:drawablePadding="@dimen/margin_small"
+                        android:drawableTint="@color/greyDark"
+                        android:drawableStart="@drawable/ic_business_grey_dark"
+                        android:hint="@string/field_company" />
+
+                    <ImageButton
+                        android:id="@+id/action_create_company"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_add_white"
+                        android:layout_marginStart="@dimen/margin_medium"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:backgroundTint="@color/secondary"
+                        android:background="@drawable/button_circle_fill"
+                        android:elevation="2dp"
+                        android:padding="@dimen/margin_small"/>
+
+                </LinearLayout>
 
                 <EditText
                     android:id="@+id/field_date"
@@ -118,7 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_tiny"
-                    android:layout_marginBottom="@dimen/margin_large"
+                    android:layout_marginBottom="@dimen/margin_medium"
                     android:orientation="horizontal">
 
                     <TextView
@@ -174,6 +192,24 @@
                         android:inputType="number|numberSigned" />
 
                 </LinearLayout>
+
+                <EditText
+                    android:id="@+id/field_file"
+                    android:hint="@string/field_file"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginBottom="@dimen/margin_large"
+                    android:paddingTop="@dimen/margin_tiny"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:singleLine="true"
+                    android:focusable="false"
+                    android:drawablePadding="@dimen/margin_small"
+                    android:drawableTint="@color/greyDark"
+                    android:drawableStart="@drawable/ic_attach_file_grey_dark"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    android:inputType="text"/>
 
             </LinearLayout>
 

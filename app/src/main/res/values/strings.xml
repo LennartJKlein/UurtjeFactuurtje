@@ -13,6 +13,7 @@
     <!-- Overview -->
     <string name="heading_projects">Projects</string>
     <string name="heading_costs">Costs</string>
+    <string name="heading_all_invoices">All invoices</string>
     <string name="menu_work">Work</string>
     <string name="menu_cost">Cost</string>
     <string name="menu_project">Project</string>
@@ -26,10 +27,18 @@
     <string name="generating_invoice">Generating invoice…</string>
     <string name="title_change_name">New name</string>
     <string name="label_date_start">Start date</string>
+    <string name="label_totals">Totals</string>
 
     <!-- Add work -->
+    <string name="title_add_work">Add your work</string>
     <string name="tab_work_hours">Man hours</string>
     <string name="tab_work_product">Product</string>
+
+    <!-- Edit work -->
+    <string name="title_edit_work">Edit this work</string>
+
+    <!-- Add cost -->
+    <string name="title_pick_file">Pick a file</string>
 
     <!-- TaxActivity -->
     <string name="title_tax_page">Calculate your tax</string>
@@ -160,8 +169,10 @@
     <string name="error_no_work_unpaid">There is no unpaid work for this project.</string>
     <string name="error_no_invoices">You don\'t have any invoices yet.</string>
     <string name="error_no_invoices_project">There are no invoices made for this project yet.</string>
+    <string name="error_no_upload">The attachment couldn\'t be uploaded.</string>
 
     <string name="title_add_project">Start a new project…</string>
+    <string name="title_add_cost">Add a cost</string>
     <string name="title_relations">Companies</string>
     <string name="heading_relations">Companies</string>
     <string name="title_add_relation">Add a relation</string>
@@ -169,5 +180,6 @@
     <string name="image_arrow">To</string>
     <string name="image_time">Time lapse</string>
     <string name="image_invoice">Show invoice</string>
+    <string name="field_file">Attach file</string>
 
 </resources>

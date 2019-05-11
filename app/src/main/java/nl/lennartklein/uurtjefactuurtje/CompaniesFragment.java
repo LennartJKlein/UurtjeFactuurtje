@@ -102,7 +102,7 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.action_add_company:
-                openCompanyFragment();
+                startAddCompanyActivity();
                 break;
             case R.id.my_company:
                 buttonMyCompany.performClick();
@@ -134,10 +134,9 @@ public class CompaniesFragment extends Fragment implements View.OnClickListener 
     /**
      * Opens a dialog fragment to add a company
      */
-    private void openCompanyFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        AddCompanyFragment dialog = new AddCompanyFragment();
-        dialog.show(transaction, "AddCompany");
+    private void startAddCompanyActivity() {
+        Intent addCompanyIntent = new Intent(mContext, AddCompanyActivity.class);
+        startActivity(addCompanyIntent);
     }
 
     /**

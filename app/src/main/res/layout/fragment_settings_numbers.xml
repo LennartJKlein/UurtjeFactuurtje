@@ -33,18 +33,16 @@
             android:layout_marginBottom="@dimen/margin_small">
 
             <EditText
-                android:id="@+id/field_bank"
-                android:hint="@string/field_bank"
+                android:id="@+id/field_invoice_nr"
+                android:hint="@string/field_invoice_nr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nextFocusUp="@id/field_bank"
-                android:nextFocusLeft="@id/field_bank"
+                android:singleLine="true"
                 android:imeActionId="6"
                 android:imeActionLabel="@string/action_save"
                 android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:ems="10"
-                android:inputType="text|textCapWords" />
+                android:inputType="numberSigned" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -64,6 +62,27 @@
                 android:imeOptions="actionNext"
                 android:ems="10"
                 android:inputType="numberSigned" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_small">
+
+            <EditText
+                android:id="@+id/field_bank"
+                android:hint="@string/field_bank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nextFocusUp="@id/field_bank"
+                android:nextFocusLeft="@id/field_bank"
+                android:imeActionId="6"
+                android:imeActionLabel="@string/action_save"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:ems="10"
+                android:inputType="text|textCapWords" />
 
         </android.support.design.widget.TextInputLayout>
 

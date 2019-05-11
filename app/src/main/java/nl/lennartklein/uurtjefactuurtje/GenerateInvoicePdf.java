@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        GeneratePdf
+// Title        GenerateInvoicePdf
 //
 // Date         February 1 2018
 // Author       Lennart J Klein  (info@lennartklein.nl)
@@ -29,6 +29,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -42,7 +43,7 @@ import java.text.DecimalFormat;
  * Creates a PDF for an invoice (containing necessary info for accountancy)
  */
 
-public class GeneratePdf {
+public class GenerateInvoicePdf {
 
     // Data
     private Context mContext;
@@ -65,7 +66,7 @@ public class GeneratePdf {
     private DecimalFormat currencyFormat = new DecimalFormat("0.00");
     private DecimalFormat timeFormat = new DecimalFormat("0.00");
 
-    public GeneratePdf(Activity mActivity, Context mContext, Invoice invoice) {
+    public GenerateInvoicePdf(Activity mActivity, Context mContext, Invoice invoice) {
         this.mContext = mContext;
         this.mActivity = mActivity;
         this.invoice = invoice;
@@ -100,12 +101,16 @@ public class GeneratePdf {
 
         // Generate the document
         Document doc = new Document();
+        PdfPTable addressTable = new PdfPTable(2);
+        addressTable.setWidthPercentage(100);
+
         try {
             PdfWriter.getInstance(doc, new FileOutputStream(filepath));
 
             doc.open();
-            writeSalutation(doc);
-            writeSender(doc);
+            writeSalutation(doc, addressTable);
+            writeSender(doc, addressTable);
+            doc.add(addressTable);
             writeInvoiceDetails(doc);
             writeWorkTable(doc);
             writeFooter(doc);
@@ -173,32 +178,29 @@ public class GeneratePdf {
         );
     }
 
-    private void writeSalutation(Document doc) {
-        try {
-            Company company = invoice.getCompany();
-            doc.add(new Paragraph(company.getName()));
-            doc.add(new Paragraph("T.a.v. " + company.getContact()));
-            doc.add(new Paragraph(company.getStreet() + " " + company.getStreetNr()));
-            doc.add(new Paragraph(company.getPostal() + "  " + company.getCity()));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
+    private void writeSalutation(Document doc, PdfPTable addressTable) {
+        Company company = invoice.getCompany();
+
+        String salutation = company.getName() + "\n";
+        salutation += "T.a.v. " + company.getContact() + "\n";
+        salutation += company.getStreet() + " " + company.getStreetNr() + "\n";
+        salutation += company.getPostal() + "  " + company.getCity();
+        addressTable.addCell(createCellNoPadding(salutation, 0, 0));
     }
 
-    private void writeSender(Document doc) {
-        try {
-            User user = invoice.getUser();
-            doc.add(createParagraph(user.getCompanyName(), 2));
-            doc.add(createParagraph(user.getPostal() + "  " + user.getCity(), 2));
-            if (user.getKvk() != null) {
-                doc.add(createParagraph("KvK: " + user.getKvk(), 2));
-            }
-            if (user.getBtw() != null) {
-                doc.add(createParagraph("BTW: " + user.getBtw(), 2));
-            }
-        } catch (DocumentException e) {
-            e.printStackTrace();
+    private void writeSender(Document doc, PdfPTable addressTable) {
+        User user = invoice.getUser();
+
+        String sender = user.getCompanyName() + "\n";
+        sender += user.getStreet() + " " + user.getStreetNr() + "\n";
+        sender += user.getPostal() + "  " + user.getCity() + "\n";
+        if (user.getKvk() != null) {
+            sender += "KvK: " + user.getKvk() + "\n";
         }
+        if (user.getBtw() != null) {
+            sender +="BTW: " + user.getBtw();
+        }
+        addressTable.addCell(createCellNoPadding(sender, 2, 0));
     }
 
     private void writeInvoiceDetails(Document doc) {
@@ -208,8 +210,9 @@ public class GeneratePdf {
             doc.add(new Paragraph(labelDate + ": " + invoice.getDate()));
             doc.add(new Paragraph(labelInvoiceNr + ": #" + invoice.getInvoiceNr()));
             doc.add(Chunk.NEWLINE);
-            doc.add(new Paragraph(project.getName()));
-            doc.add(Chunk.NEWLINE);
+            Paragraph projectName = new Paragraph(project.getName());
+            projectName.setSpacingAfter(10);
+            doc.add(projectName);
         } catch (DocumentException e) {
             e.printStackTrace();
         }
@@ -219,7 +222,7 @@ public class GeneratePdf {
         try {
             PdfPTable table = new PdfPTable(3);
             table.setWidthPercentage(100);
-            table.setWidths(new int[]{3, 1, 1});
+            table.setWidths(new int[]{4, 1, 1});
 
             // Table - head
             table.addCell(createCellHeader(labelDescription, 0));
@@ -246,7 +249,7 @@ public class GeneratePdf {
             String subtotal = currencyFormat.format(invoice.getTotalPrice() - invoice.getBtw());
             table.addCell(createCell("", 0, 0));
             table.addCell(createCell(labelSubtotal, 2, 700));
-            table.addCell(createCell("€  " + subtotal, 2, 400));
+            table.addCell(createCellBorderTop("€  " + subtotal, 2, 400));
 
             table.addCell(createCell("", 0, 0));
             table.addCell(createCell(labelBtw, 2, 700));
@@ -254,7 +257,7 @@ public class GeneratePdf {
 
             table.addCell(createCell("", 0, 0));
             table.addCell(createCell(labelTotalPrice, 2, 700));
-            table.addCell(createCell("€  " + currencyFormat.format(invoice.getTotalPrice()), 2, 700));
+            table.addCell(createCellBorderTopBottom("€  " + currencyFormat.format(invoice.getTotalPrice()), 2, 700));
 
             doc.add(table);
 
@@ -298,6 +301,56 @@ public class GeneratePdf {
         PdfPCell cell = new PdfPCell(new Phrase(content, font));
         cell.setHorizontalAlignment(align);
         cell.setBorder(PdfPCell.NO_BORDER);
+        cell.setPadding(8);
+
+        return cell;
+    }
+
+    private PdfPCell createCellNoPadding(String content, int align, int weight) {
+        Font font;
+        if (weight > 400) {
+            font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        } else {
+            font = new Font(Font.FontFamily.HELVETICA, 12);
+        }
+
+        PdfPCell cell = new PdfPCell(new Phrase(content, font));
+        cell.setHorizontalAlignment(align);
+        cell.setBorder(PdfPCell.NO_BORDER);
+        cell.setPadding(0);
+
+        return cell;
+    }
+
+    private PdfPCell createCellBorderTop(String content, int align, int weight) {
+        Font font;
+        if (weight > 400) {
+            font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        } else {
+            font = new Font(Font.FontFamily.HELVETICA, 12);
+        }
+
+        PdfPCell cell = new PdfPCell(new Phrase(content, font));
+        cell.setHorizontalAlignment(align);
+        cell.setBorder(Rectangle.TOP);
+        cell.setPadding(8);
+
+        return cell;
+    }
+
+
+    private PdfPCell createCellBorderTopBottom(String content, int align, int weight) {
+        Font font;
+        if (weight > 400) {
+            font = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+        } else {
+            font = new Font(Font.FontFamily.HELVETICA, 12);
+        }
+
+        PdfPCell cell = new PdfPCell(new Phrase(content, font));
+        cell.setHorizontalAlignment(align);
+        cell.setBorderWidthBottom(2);
+        cell.setBorder(Rectangle.TOP | Rectangle.BOTTOM);
         cell.setPadding(8);
 
         return cell;

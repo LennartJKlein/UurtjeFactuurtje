@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        AddCompanyFragment
+// Title        AddCompanyActivity
 // Parent       CompaniesFragment
 //
 // Date         February 1 2018
@@ -11,9 +11,11 @@
 package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +31,11 @@ import com.google.firebase.database.DatabaseReference;
  * A dialog with a form to add a company (relation)
  */
 
-public class AddCompanyFragment extends DialogFragment implements View.OnClickListener {
+public class AddCompanyActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Global references
     private Context mContext;
+    private Resources res;
     private EditText fieldName;
     private EditText fieldContact;
     private EditText fieldMail;
@@ -52,35 +55,33 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        setContentView(R.layout.activity_add_company);
 
         setAuth();
 
-        // Database references
-        db = PersistentDatabase.getReference();
-        dbCompanies = db.child("companies");
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_company, container, false);
+        setReferences();
 
         // UI references
-        fieldName = v.findViewById(R.id.field_name);
-        fieldContact = v.findViewById(R.id.field_contact);
-        fieldMail = v.findViewById(R.id.field_mail);
-        fieldPostal = v.findViewById(R.id.field_postal);
-        fieldStreet = v.findViewById(R.id.field_street);
-        fieldStreetNr = v.findViewById(R.id.field_street_nr);
-        fieldCity = v.findViewById(R.id.field_city);
-        actionInsert = v.findViewById(R.id.action_create_company);
-        actionCancel = v.findViewById(R.id.action_cancel);
+        mContext = this;
+        res = mContext.getResources();
+        fieldName = findViewById(R.id.field_name);
+        fieldContact = findViewById(R.id.field_contact);
+        fieldMail = findViewById(R.id.field_mail);
+        fieldPostal = findViewById(R.id.field_postal);
+        fieldStreet = findViewById(R.id.field_street);
+        fieldStreetNr = findViewById(R.id.field_street_nr);
+        fieldCity = findViewById(R.id.field_city);
+        actionInsert = findViewById(R.id.action_create_company);
+        actionCancel = findViewById(R.id.action_cancel);
 
         // Click listeners
         actionInsert.setOnClickListener(this);
         actionCancel.setOnClickListener(this);
+    }
 
-        return v;
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbCompanies = db.child("companies");
     }
 
     /**
@@ -98,7 +99,7 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
                 validateFields();
                 break;
             case R.id.action_cancel:
-                closeFragment();
+                closeActivity();
                 break;
         }
     }
@@ -191,11 +192,11 @@ public class AddCompanyFragment extends DialogFragment implements View.OnClickLi
 
         dbCompanies.child(currentUser.getUid()).push().setValue(company);
 
-        closeFragment();
+        closeActivity();
     }
 
-    public void closeFragment() {
-        dismiss();
+    public void closeActivity() {
+        finish();
     }
 
 }

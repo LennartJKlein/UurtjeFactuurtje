@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        AddWorkProductFragment
-// Parent       AddWorkActivity
+// Title        EditWorkProductFragment
+// Parent       EditWorkActivity
 //
 // Date         February 1 2018
 // Author       Lennart J Klein  (info@lennartklein.nl)
@@ -28,7 +28,7 @@ import java.util.Calendar;
 /**
  * A form for adding sold products to the work form
  */
-public class AddWorkProductFragment extends Fragment implements View.OnClickListener {
+public class EditWorkProductFragment extends Fragment implements View.OnClickListener {
 
     // UI references
     private Context mContext;
@@ -55,7 +55,7 @@ public class AddWorkProductFragment extends Fragment implements View.OnClickList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_work_product, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_work_product, container, false);
 
         // Set UI references
         fieldDate = view.findViewById(R.id.field_date);

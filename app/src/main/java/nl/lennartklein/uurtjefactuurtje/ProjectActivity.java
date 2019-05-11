@@ -64,7 +64,6 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
     private DatabaseReference dbWorkMe;
     private DatabaseReference dbProjectsMe;
     private DatabaseReference dbInvoicesMe;
-    private DatabaseReference dbInvoicesThis;
 
     // Data
     private User user;
@@ -119,7 +118,6 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
         dbProjectsMe = db.child("projects").child(currentUser.getUid());
         dbWorkMe = db.child("work").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
-        dbInvoicesThis = dbInvoicesMe;
     }
 
     /**
@@ -134,8 +132,6 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
                 project.setId(key);
 
                 toolbar.setTitle(project.getName());
-
-                dbInvoicesThis = dbInvoicesMe.child(project.getId());
 
                 initiatePager();
             }
@@ -349,7 +345,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
      * Archives the current project from the database
      */
     public void archiveProject() {
-        dbProjectsMe.child(project.getId()).child("status").setValue("0");
+        dbProjectsMe.child(project.getId()).child("status").setValue(0);
         finish();
     }
 
@@ -455,15 +451,15 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
         invoice.setBtw(btw);
         invoice.setTotalPrice(totalPrice);
-        dbInvoicesThis.child(invoice.getKey()).child("btw").setValue(btw);
-        dbInvoicesThis.child(invoice.getKey()).child("totalPrice").setValue(totalPrice);
+        dbInvoicesMe.child(invoice.getKey()).child("btw").setValue(btw);
+        dbInvoicesMe.child(invoice.getKey()).child("totalPrice").setValue(totalPrice);
 
         writeInvoiceDocument(invoice);
     }
 
     private void writeInvoiceDocument(Invoice invoice) {
         // Generate file
-        GeneratePdf writer = new GeneratePdf(this, mContext, invoice);
+        GenerateInvoicePdf writer = new GenerateInvoicePdf(this, mContext, invoice);
         String writerPath = writer.createFile();
         invoice.setFilePath(writerPath);
 
@@ -476,7 +472,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
      * @return key of the pushed object
      */
     public String insertIntoDatabase(Invoice invoice) {
-        DatabaseReference dbInvoiceNew = dbInvoicesThis.push();
+        DatabaseReference dbInvoiceNew = dbInvoicesMe.push();
         dbInvoiceNew.setValue(invoice);
 
         return dbInvoiceNew.getKey();
@@ -484,7 +480,7 @@ public class ProjectActivity extends AppCompatActivity implements View.OnClickLi
 
     public void insertPathIntoDatabase(Invoice invoice) {
         if (invoice.getFilePath() != null) {
-            dbInvoicesThis.child(invoice.getKey()).child("filePath").setValue(invoice.getFilePath());
+            dbInvoicesMe.child(invoice.getKey()).child("filePath").setValue(invoice.getFilePath());
         }
     }
 

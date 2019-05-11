@@ -16,7 +16,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,17 +34,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * A page of all the unpaid work of a project
@@ -61,6 +53,9 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private ProgressBar progressWheel;
     private RecyclerView workList;
     private TextView emptyWorkList;
+    private RelativeLayout listTotals;
+    private TextView tvTotalHours;
+    private TextView tvTotalPrice;
     private Button newInvoice;
     private Button addWork;
 
@@ -72,6 +67,8 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     // Data
     private Project project;
     private User user;
+    private double totalHours;
+    private double totalPrice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,11 +84,13 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         progressWheel = view.findViewById(R.id.list_loader);
         workList = view.findViewById(R.id.list_work);
         emptyWorkList = view.findViewById(R.id.list_work_empty);
+        listTotals = view.findViewById(R.id.list_totals);
+        tvTotalHours = view.findViewById(R.id.list_totals_hours);
+        tvTotalPrice = view.findViewById(R.id.list_totals_price);
         addWork = view.findViewById(R.id.action_add_work);
         addWork.setOnClickListener(this);
         newInvoice = view.findViewById(R.id.action_create_invoice);
         newInvoice.setOnClickListener(this);
-
 
         // Get data
         project = (Project) getArguments().getSerializable("PROJECT");
@@ -127,7 +126,7 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
                 newInvoice.setVisibility(View.INVISIBLE);
                 break;
             case R.id.action_add_work:
-                openWorkFragment();
+                startWorkActivity();
                 break;
         }
     }
@@ -184,6 +183,8 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     private void populateWorkList() {
         inProgress(true);
 
+        resetTotals();
+
         // Create an adapter
         FirebaseRecyclerAdapter<Work, WorkItem> adapter =
                 new FirebaseRecyclerAdapter<Work, WorkItem>(
@@ -193,17 +194,30 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
                         dbWorkMe.child(project.getId()).child("unpaid").orderByChild("date")
                 ) {
                     @Override
-                    protected void populateViewHolder(final WorkItem row, Work work, int position) {
+                    protected void populateViewHolder(final WorkItem row, final Work work, int position) {
                         // Fill the row
                         row.setDate(work.getDate());
                         row.setDescription(work.getDescription());
                         row.setHours(work.getHours(), mContext.getResources());
                         row.setPrice(work.getPrice());
+                        work.setId(getRef(position).getKey());
+                        row.actionEdit.setOnClickListener(new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view) {
+                               startEditActivity(work);
+                            }
+                        });
 
                         inProgress(false);
 
+                        totalHours += work.getHours();
+                        totalPrice += work.getPrice();
+
                         // Update amount in list
                         checkAmount(workList.getAdapter().getItemCount());
+
+                        // Set totals on bottom of list
+                        setTotals(totalHours, totalPrice);
                     }
                 };
 
@@ -216,6 +230,22 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
         inProgress(false);
     }
 
+    private void setTotals(double totalHours, double totalPrice) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+        String convertedHours = String.valueOf(decimalFormat.format(totalHours));
+        convertedHours = res.getString(R.string.placeholder_hours, convertedHours);
+        tvTotalHours.setText(convertedHours);
+
+        String convertedPrice = "€  " + decimalFormat.format(totalPrice);
+        tvTotalPrice.setText(convertedPrice);
+    }
+
+    private void resetTotals() {
+        totalHours = 0;
+        totalPrice = 0;
+    }
+
     /**
      * Updates UI based on items in the list
      */
@@ -224,10 +254,12 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
             emptyWorkList.setVisibility(View.VISIBLE);
             workList.setVisibility(View.INVISIBLE);
             newInvoice.setVisibility(View.GONE);
+            listTotals.setVisibility(View.INVISIBLE);
         } else {
             emptyWorkList.setVisibility(View.INVISIBLE);
             workList.setVisibility(View.VISIBLE);
             newInvoice.setVisibility(View.VISIBLE);
+            listTotals.setVisibility(View.VISIBLE);
         }
     }
 
@@ -247,13 +279,27 @@ public class ProjectWorkFragment extends Fragment implements View.OnClickListene
     }
 
     /**
+     * Open a screen to edit work of this project
+     */
+    private void startEditActivity(Work work) {
+        if (project != null && work != null) {
+            Intent editWorkIntent = new Intent(mContext, EditWorkActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("PROJECT", project);
+            bundle.putSerializable("WORK", work);
+            editWorkIntent.putExtras(bundle);
+            startActivity(editWorkIntent);
+        }
+    }
+
+    /**
      * Open a dialog fragment to add work to this project
      */
-    private void openWorkFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        AddWorkFragment dialog = new AddWorkFragment();
-        dialog.setGivenProject(project.getName());
-        dialog.show(transaction, "AddWork");
+    private void startWorkActivity() {
+        Intent addWorkIntent = new Intent(mContext, AddWorkActivity.class);
+        addWorkIntent.putExtra("PROJECT_NAME", project.getName());
+        startActivity(addWorkIntent);
+
     }
 
 }

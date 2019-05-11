@@ -1,0 +1,179 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="nl.lennartklein.uurtjefactuurtje.EditWorkHoursFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pale">
+
+    <LinearLayout
+        android:id="@+id/form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_medium">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_tiny"/>
+
+            <TextView
+                android:text="@string/field_hours_start"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_small"
+                android:paddingStart="@dimen/margin_tiny"
+                android:paddingEnd="@dimen/margin_tiny"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"/>
+
+            <TextView
+                android:text="@string/field_hours_end"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:textColor="@color/grey"
+                android:textSize="@dimen/text_small"
+                android:paddingStart="@dimen/margin_tiny"
+                android:paddingEnd="@dimen/margin_tiny"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/margin_tiny"
+                android:src="@drawable/ic_timelapse_grey_dark"
+                android:contentDescription="@string/image_time" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/field_time_start"
+                    android:hint="@string/action_pick_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/margin_small"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_tiny"
+                    android:paddingEnd="@dimen/margin_tiny"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    android:singleLine="true"
+                    android:focusable="false"
+                    android:imeActionLabel="@string/action_next"
+                    android:imeOptions="actionNext"
+                    android:inputType="time"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:src="@drawable/ic_chevron_right_grey_dark"
+                android:contentDescription="@string/image_arrow"
+                android:layout_gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/field_time_end"
+                    android:hint="@string/action_pick_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/margin_small"
+                    android:paddingBottom="@dimen/margin_medium"
+                    android:paddingStart="@dimen/margin_tiny"
+                    android:paddingEnd="@dimen/margin_tiny"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="18sp"
+                    android:singleLine="true"
+                    android:focusable="false"
+                    android:imeActionLabel="@string/action_next"
+                    android:imeOptions="actionNext"
+                    android:inputType="time"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/field_date"
+            android:hint="@string/action_pick_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:paddingTop="@dimen/margin_tiny"
+            android:paddingBottom="@dimen/margin_medium"
+            android:singleLine="true"
+            android:focusable="false"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableTint="@color/greyDark"
+            android:drawableStart="@drawable/ic_event_grey_dark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textSize="18sp"
+            android:inputType="date"/>
+
+        <EditText
+            android:id="@+id/field_description"
+            android:hint="@string/field_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:paddingTop="@dimen/margin_tiny"
+            android:paddingBottom="@dimen/margin_medium"
+            android:singleLine="true"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableTint="@color/greyDark"
+            android:drawableStart="@drawable/ic_short_text_grey_dark"
+            android:imeActionLabel="@string/action_save"
+            android:imeOptions="actionDone"
+            android:inputType="text|textMultiLine|textCapSentences"/>
+
+        <TextView
+            android:text="@string/field_total_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/text_small"
+            android:paddingStart="@dimen/margin_tiny"
+            android:paddingEnd="@dimen/margin_tiny"/>
+
+        <TextView
+            android:id="@+id/field_price"
+            android:text="@string/placeholder_currency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_tiny"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -9,8 +9,6 @@
 
 package nl.lennartklein.uurtjefactuurtje;
 
-import com.google.android.gms.wearable.DataMap;
-
 import java.io.Serializable;
 
 /**
@@ -26,6 +24,7 @@ public class Project implements Serializable {
     private String companyName;
     private String date;
     private String lastInvoice;
+    private String lastActivity;
     private double hourPrice;
     private int status;
 
@@ -33,13 +32,14 @@ public class Project implements Serializable {
     public Project() {}
 
     public Project(String userId, String name, String companyId, String companyName,
-                   String date, String lastInvoice, double hourPrice, int status) {
+                   String date, String lastInvoice, String lastActivity, double hourPrice, int status) {
         this.userId = userId;
         this.name = name;
         this.companyId = companyId;
         this.companyName = companyName;
         this.date = date;
         this.lastInvoice = lastInvoice;
+        this.lastActivity = lastActivity;
         this.hourPrice = hourPrice;
         this.status = status;
     }
@@ -100,6 +100,14 @@ public class Project implements Serializable {
         this.lastInvoice = lastInvoice;
     }
 
+    public String getLastActivity() {
+        return lastActivity;
+    }
+
+    public void setLastActivity(String lastActivity) {
+        this.lastActivity = lastActivity;
+    }
+
     public double getHourPrice() {
         return hourPrice;
     }
@@ -114,20 +122,6 @@ public class Project implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public DataMap getDataMap() {
-        DataMap map = new DataMap();
-        map.putString("id", id);
-        map.putString("userId", userId);
-        map.putString("name", name);
-        map.putString("companyId", companyId);
-        map.putString("companyName", companyName);
-        map.putString("date", date);
-        map.putString("lastInvoice", lastInvoice);
-        map.putDouble("hourPrice", hourPrice);
-
-        return map;
     }
 
 }

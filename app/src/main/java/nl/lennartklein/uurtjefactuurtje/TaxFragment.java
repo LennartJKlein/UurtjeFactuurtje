@@ -183,22 +183,17 @@ public class TaxFragment extends Fragment {
             dbInvoicesMe.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot invoicesSnapshot : dataSnapshot.getChildren()) {
-                        Log.d("Tax", invoicesSnapshot.getKey());
+                    for (DataSnapshot invoiceSnapshot : dataSnapshot.getChildren()) {
+                        Log.d("Tax", invoiceSnapshot.getKey());
 
-                        if (invoicesSnapshot.getChildrenCount() > 0) {
-                            for (DataSnapshot invoiceSnapshot : invoicesSnapshot.getChildren()) {
-                                Log.d("Tax", invoiceSnapshot.getKey());
-                                Invoice invoice = invoiceSnapshot.getValue(Invoice.class);
+                        Invoice invoice = invoiceSnapshot.getValue(Invoice.class);
 
-                                if (invoice != null) {
-                                    Log.d("Tax", invoice.getDate());
-                                    if (dateInRange(invoice.getDate(), quarter, year)) {
-                                        Log.d("Tax", String.valueOf(invoice.getBtw()));
-                                        pay += invoice.getBtw();
-                                        services += (invoice.getTotalPrice() - invoice.getBtw());
-                                    }
-                                }
+                        if (invoice != null) {
+                            Log.d("Tax", invoice.getDate());
+                            if (dateInRange(invoice.getDate(), quarter, year)) {
+                                Log.d("Tax", String.valueOf(invoice.getBtw()));
+                                pay += invoice.getBtw();
+                                services += (invoice.getTotalPrice() - invoice.getBtw());
                             }
                         }
                     }

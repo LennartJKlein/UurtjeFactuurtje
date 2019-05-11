@@ -27,7 +27,7 @@ public class CostItem extends RecyclerView.ViewHolder {
 
         if (!date.equals("")) {
             SimpleDateFormat formatIn = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-            SimpleDateFormat formatOut = new SimpleDateFormat("d MMM", Locale.getDefault());
+            SimpleDateFormat formatOut = new SimpleDateFormat("dd MMM", Locale.getDefault());
             try {
                 Date convertedDate = formatIn.parse(date);
                 date = formatOut.format(convertedDate);

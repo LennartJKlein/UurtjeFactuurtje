@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        AddWorkHoursFragment
-// Parent       AddWorkActivity
+// Title        EditWorkHoursFragment
+// Parent       EditWorkActivity
 //
 // Date         February 1 2018
 // Author       Lennart J Klein  (info@lennartklein.nl)
@@ -32,7 +32,7 @@ import java.util.Locale;
 /**
  * A form for adding man hours to the work form
  */
-public class AddWorkHoursFragment extends Fragment implements View.OnClickListener {
+public class EditWorkHoursFragment extends Fragment implements View.OnClickListener {
 
     // UI references
     private Context mContext;
@@ -43,6 +43,10 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
     private TextView fieldPrice;
     private Button actionInsert;
     private Button actionCancel;
+
+    // Parent data
+    private Project project;
+    private Work work;
 
     // Data
     private String date;
@@ -68,7 +72,7 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_work_hours, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_work_hours, container, false);
 
         // Set UI references
         fieldTimeStart = view.findViewById(R.id.field_time_start);
@@ -86,9 +90,15 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         fieldPrice.setOnClickListener(this);
         fieldDescription.setOnClickListener(this);
 
-        initiatePickerData();
+        EditWorkActivity parent = (EditWorkActivity) getActivity();
+        if (parent != null) {
+            project = parent.fetchProject();
+            work = parent.fetchWork();
+        }
 
-        setPriceField();
+        setDateAndTimes(work.getDate(), work.getHours(), work.getStartTime(), work.getEndTime());
+        initiatePriceField(work.getPrice());
+        setDescription(work.getDescription());
 
         return view;
     }
@@ -110,16 +120,56 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void initiatePickerData() {
-        Calendar cal = Calendar.getInstance();
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-        day = cal.get(Calendar.DAY_OF_MONTH);
+    private void setDescription(String description) {
+        fieldDescription.setText(description);
+    }
 
-        startHour = cal.get(Calendar.HOUR_OF_DAY);
-        startMinute = cal.get(Calendar.MINUTE);
-        endHour = cal.get(Calendar.HOUR_OF_DAY);
-        endMinute = cal.get(Calendar.MINUTE);
+    private void setDateAndTimes(String date, double hours, String startTime, String endTime) {
+        Calendar cal = Calendar.getInstance();
+
+        if (date == null) {
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+        } else {
+            String dateSplit[] = date.split("-");
+            year = Integer.parseInt(dateSplit[0]);
+            month = Integer.parseInt(dateSplit[1]) - 1;
+            day = Integer.parseInt(dateSplit[2]);
+        }
+
+        setDateField();
+
+        if (startTime != null && endTime != null) {
+            String startTimeSplit[] = startTime.split(":");
+            startHour = Integer.parseInt(startTimeSplit[0]);
+            startMinute = Integer.parseInt(startTimeSplit[1]);
+
+            String endTimeSplit[] = endTime.split(":");
+            endHour = Integer.parseInt(endTimeSplit[0]);
+            endMinute = Integer.parseInt(endTimeSplit[1]);
+
+        } else if (startTime == null && hours != 0) {
+            startHour = cal.get(Calendar.HOUR_OF_DAY);
+            startMinute = cal.get(Calendar.MINUTE);
+
+            Double hoursDouble = Double.valueOf(hours);
+            cal.add(Calendar.HOUR, hoursDouble.intValue());
+            int minutes = (int) ((hoursDouble - hoursDouble.intValue()) * 60);
+            cal.add(Calendar.MINUTE, minutes);
+
+            endHour = cal.get(Calendar.HOUR_OF_DAY);
+            endMinute = cal.get(Calendar.MINUTE);
+
+        } else {
+            startHour = cal.get(Calendar.HOUR_OF_DAY);
+            startMinute = cal.get(Calendar.MINUTE);
+            endHour = cal.get(Calendar.HOUR_OF_DAY);
+            endMinute = cal.get(Calendar.MINUTE);
+        }
+
+        setTimeFields();
+
     }
 
     private void showStartTimePicker() {
@@ -186,13 +236,12 @@ public class AddWorkHoursFragment extends Fragment implements View.OnClickListen
         hours = deltaHours + deltaMinutes;
     }
 
-    private void setPriceField() {
-        AddWorkActivity parent = (AddWorkActivity) getActivity();
-        Project project = null;
-        if (parent != null) {
-            project = parent.fetchProject();
-        }
+    private void initiatePriceField(double fetchedPrice) {
+        price = fetchedPrice;
+        setPriceField();
+    }
 
+    private void setPriceField() {
         if (project != null) {
             price = hours * project.getHourPrice();
         } else {

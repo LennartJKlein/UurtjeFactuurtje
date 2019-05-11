@@ -8,6 +8,7 @@
     <string name="title_settings">Instellingen</string>
     <string name="title_overview">Overzicht</string>
     <string name="heading_projects">Projecten</string>
+    <string name="heading_all_invoices">Alle facturen</string>
     <string name="title_activity_settings">Mijn bedrijf</string>
     <string name="tab_settings_tutorial">Uitleg</string>
     <string name="tab_settings_company">Bedrijf</string>
@@ -127,4 +128,8 @@
     <string name="action_archive_project">Project archiveren</string>
     <string name="note_verify_archive_project">Dit project archiveren?</string>
     <string name="error_no_invoices_project">Er zijn nog geen facturen gemaakt voor dit project.</string>
+    <string name="field_file">Bestand bijvoegen</string>
+    <string name="error_no_upload">De bijlage kon niet worden opgeslagen.</string>
+    <string name="label_totals">Totaal</string>
+    <string name="title_pick_file">Kies een bestand</string>
 </resources>

@@ -23,12 +23,13 @@ public class Cost {
     private String invoiceNr;
     private double price;
     private String userId;
+    private String filePath;
 
     // Empty constructor for FireBase
     public Cost() {}
 
     public Cost(double btw, String companyId, String companyName, String date, String description,
-                String invoiceNr,double price, String userId) {
+                String invoiceNr,double price, String userId, String filePath) {
         this.btw = btw;
         this.companyId = companyId;
         this.companyName = companyName;
@@ -37,6 +38,7 @@ public class Cost {
         this.invoiceNr = invoiceNr;
         this.price = price;
         this.userId = userId;
+        this.filePath = filePath;
     }
 
     public String getKey() {
@@ -109,5 +111,13 @@ public class Cost {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

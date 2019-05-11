@@ -49,6 +49,7 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
     private EditText fieldPayDue;
     private EditText fieldBtw;
     private EditText fieldKvk;
+    private EditText fieldInvoiceNr;
     private Button buttonSave;
 
     @Override
@@ -68,6 +69,7 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
         fieldPayDue = view.findViewById(R.id.field_pay_due);
         fieldBtw = view.findViewById(R.id.field_btw);
         fieldKvk = view.findViewById(R.id.field_kvk);
+        fieldInvoiceNr = view.findViewById(R.id.field_invoice_nr);
         buttonSave = view.findViewById(R.id.action_save_continue);
 
         presetFields();
@@ -93,6 +95,7 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
                 if (user != null) {
                     setTextIfEmpty(fieldWebsite, user.getWebsite());
                     setTextIfEmpty(fieldBank, user.getBank());
+                    setTextIfEmpty(fieldInvoiceNr, String.valueOf(user.getInvoiceNumber()));
                     setTextIfEmpty(fieldPayDue, user.getPayDue());
                     setTextIfEmpty(fieldBtw, user.getBtw());
                     setTextIfEmpty(fieldKvk, user.getKvk());
@@ -127,6 +130,9 @@ public class SettingsNumbersFragment extends Fragment implements View.OnClickLis
         if (!bank.equals("")) {
             dbUsersMe.child("bank").setValue(bank);
         }
+
+        int invoiceNr = Integer.valueOf(fieldInvoiceNr.getText().toString());
+        dbUsersMe.child("invoiceNumber").setValue(invoiceNr);
 
         String payDue = fieldPayDue.getText().toString();
         if (!payDue.equals("")) {

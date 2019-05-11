@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        AddCompanyFragment
+// Title        AddCompanyActivity
 // Parent       CompaniesFragment
 //
 // Date         February 1 2018
@@ -12,15 +12,14 @@ package nl.lennartklein.uurtjefactuurtje;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,7 +30,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
@@ -40,7 +38,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddProjectFragment extends DialogFragment implements View.OnClickListener {
+/**
+ * A dialog with a form to add a project
+ */
+
+public class AddProjectActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Authentication
     private FirebaseAuth auth;
@@ -53,6 +55,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
     // UI references
     private Context mContext;
+    private Resources res;
     private EditText fieldName;
     private BetterSpinner fieldRelations;
     private EditText fieldHourPrice;
@@ -69,27 +72,21 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        setContentView(R.layout.activity_add_project);
 
         setAuth();
 
-        // Database references
-        db = PersistentDatabase.getReference();
-        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
-        dbProjectsMe = db.child("projects").child(currentUser.getUid());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_project, container, false);
+        setReferences();
 
         // Set UI references
-        fieldName = view.findViewById(R.id.field_name);
-        fieldRelations = view.findViewById(R.id.field_company);
-        fieldHourPrice = view.findViewById(R.id.field_hour_price);
-        actionAddCompany = view.findViewById(R.id.action_create_company);
-        actionInsert = view.findViewById(R.id.action_create_project);
-        actionCancel = view.findViewById(R.id.action_cancel);
+        mContext = this;
+        res = mContext.getResources();
+        fieldName = findViewById(R.id.field_name);
+        fieldRelations = findViewById(R.id.field_company);
+        fieldHourPrice = findViewById(R.id.field_hour_price);
+        actionAddCompany = findViewById(R.id.action_create_company);
+        actionInsert = findViewById(R.id.action_create_project);
+        actionCancel = findViewById(R.id.action_cancel);
 
         // Set click listeners
         fieldRelations.setOnClickListener(this);
@@ -97,10 +94,13 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         actionInsert.setOnClickListener(this);
         actionCancel.setOnClickListener(this);
 
-        // Get and set data
         getRelations();
+    }
 
-        return view;
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
+        dbProjectsMe = db.child("projects").child(currentUser.getUid());
     }
 
     /**
@@ -155,13 +155,13 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
                 getRelations();
                 break;
             case R.id.action_create_company:
-                openAddCompanyFragment();
+                startAddCompanyActivity();
                 break;
             case R.id.action_create_project:
                 validateFields();
                 break;
             case R.id.action_cancel:
-                closeFragment();
+                closeActivity();
                 break;
         }
     }
@@ -231,7 +231,7 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
 
         openProject();
 
-        closeFragment();
+        closeActivity();
     }
 
     /**
@@ -264,16 +264,15 @@ public class AddProjectFragment extends DialogFragment implements View.OnClickLi
         startActivity(projectIntent);
     }
 
-    public void closeFragment() {
-        dismiss();
+    public void closeActivity() {
+        finish();
     }
 
     /**
      * Opens a dialog fragment to add a company
      */
-    private void openAddCompanyFragment() {
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        AddCompanyFragment dialog = new AddCompanyFragment();
-        dialog.show(transaction, "AddCompany");
+    private void startAddCompanyActivity() {
+        Intent addCompanyIntent = new Intent(mContext, AddCompanyActivity.class);
+        startActivity(addCompanyIntent);
     }
 }

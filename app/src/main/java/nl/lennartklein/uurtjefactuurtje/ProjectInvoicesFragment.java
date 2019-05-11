@@ -13,13 +13,10 @@ package nl.lennartklein.uurtjefactuurtje;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,14 +34,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -68,9 +61,9 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     // Database references
     private DatabaseReference db;
     private DatabaseReference dbUsersMe;
-    private DatabaseReference dbInvoicesMe;
-    private DatabaseReference dbInvoicesThis;
     private DatabaseReference dbWorkThis;
+    private DatabaseReference dbInvoicesMe;
+    private Query dbInvoicesThis;
 
     // Data
     private Project project;
@@ -143,8 +136,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         db = PersistentDatabase.getReference();
         dbUsersMe = db.child("users").child(currentUser.getUid());
         dbInvoicesMe = db.child("invoices").child(currentUser.getUid());
-        dbInvoicesThis = dbInvoicesMe.child(project.getId());
-        Log.d("Invoice", project.getId());
+        dbInvoicesThis = dbInvoicesMe.orderByChild("projectId").equalTo(project.getId());
         dbWorkThis = db.child("work").child(currentUser.getUid()).child(project.getId());
     }
 
@@ -172,6 +164,8 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
     private void initiateInvoicesList() {
         // Construct the list
         RecyclerView.LayoutManager manager = new LinearLayoutManager(mContext);
+        ((LinearLayoutManager) manager).setReverseLayout(true);
+        ((LinearLayoutManager) manager).setStackFromEnd(true);
         invoicesList.setLayoutManager(manager);
 
         inProgress(true);
@@ -187,7 +181,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         FirebaseRecyclerAdapter<Invoice, InvoiceItem> adapter =
                 new FirebaseRecyclerAdapter<Invoice, InvoiceItem>(
                         Invoice.class,
-                        R.layout.list_item_invoice,
+                        R.layout.list_item_invoice_project,
                         InvoiceItem.class,
                         dbInvoicesThis
                 ) {
@@ -204,7 +198,8 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
                         row.view.setOnClickListener(new View.OnClickListener(){
                             @Override
                             public void onClick(View view) {
-                                openFile(invoice);
+                                openFile(invoice, row);
+                                openingInProgress(true, row);
                             }
                         });
 
@@ -250,7 +245,21 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
         }
     }
 
-    public void openFile(Invoice invoice) {
+    /**
+     * Show wheel when in progress
+     */
+    private void openingInProgress(boolean loading, InvoiceItem invoiceRow) {
+        if (loading) {
+            invoiceRow.progressWheel.setVisibility(View.VISIBLE);
+            invoiceRow.actionOpen.setVisibility(View.INVISIBLE);
+        } else {
+            invoiceRow.progressWheel.setVisibility(View.INVISIBLE);
+            invoiceRow.actionOpen.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    public void openFile(Invoice invoice, InvoiceItem row) {
         String filepath = invoice.getFilePath();
 
         if (filepath == null) {
@@ -272,6 +281,8 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
 
                 try {
                     mContext.startActivity(intent);
+                    openingInProgress(false, row);
+
                 } catch (ActivityNotFoundException e) {
                     Toast.makeText(mContext, res.getString(R.string.error_no_reader),
                             Toast.LENGTH_LONG).show();
@@ -320,7 +331,7 @@ public class ProjectInvoicesFragment extends Fragment implements View.OnClickLis
                 }
 
                 // Write PDF file
-                GeneratePdf writer = new GeneratePdf(getActivity(), mContext, invoice);
+                GenerateInvoicePdf writer = new GenerateInvoicePdf(getActivity(), mContext, invoice);
                 writer.createFile();
             }
 

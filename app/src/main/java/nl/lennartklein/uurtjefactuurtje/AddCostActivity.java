@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Title        AddCostFragment
+// Title        AddCostActivity
 // Parent       OverviewFragment
 //
 // Date         February 1 2018
@@ -10,30 +10,48 @@
 
 package nl.lennartklein.uurtjefactuurtje;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.angads25.filepicker.controller.DialogSelectionListener;
+import com.github.angads25.filepicker.model.DialogConfigs;
+import com.github.angads25.filepicker.model.DialogProperties;
+import com.github.angads25.filepicker.view.FilePickerDialog;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.weiwangcn.betterspinner.library.BetterSpinner;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -42,7 +60,7 @@ import java.util.List;
  * A dialog with a form to add a cost
  */
 
-public class AddCostFragment extends DialogFragment implements View.OnClickListener {
+public class AddCostActivity extends AppCompatActivity implements View.OnClickListener {
 
     // Authentication
     private FirebaseAuth auth;
@@ -52,15 +70,20 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
     private DatabaseReference db;
     private DatabaseReference dbCostsMe;
     private DatabaseReference dbCompaniesMe;
+    private StorageReference sb;
+    private StorageReference sbCostsMe;
 
     // UI references
     private Context mContext;
+    private Resources res;
     private EditText fieldDescription;
     private BetterSpinner fieldRelations;
     private EditText fieldInvoiceNr;
     private TextView fieldDate;
     private EditText fieldEuros;
     private EditText fieldCents;
+    private EditText fieldFile;
+    private ImageButton actionAddCompany;
     private Button actionAdd;
     private Button actionCancel;
 
@@ -68,51 +91,54 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
     private List<Company> relations;
     private List<String> relationNames;
     private ArrayAdapter<String> relationsAdapter;
-    private Project project;
     private String date;
     private int year;
     private int month;
     private int day;
     final private double TAX_RATE = 0.21;
+    private FilePickerDialog filePicker;
+    private String[] filePaths;
+    private String filePath;
 
+    // Constants
+    public static final int PERMISSIONS_REQUEST_CODE = 0;
+    DialogProperties fileProperties = new DialogProperties();
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
+        setContentView(R.layout.activity_add_cost);
 
         setAuth();
 
-        // Database references
-        db = PersistentDatabase.getReference();
-        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
-        dbCostsMe = db.child("costs").child(currentUser.getUid());
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_cost, container, false);
+        setReferences();
 
         // Set UI references
-        fieldDescription = view.findViewById(R.id.field_description);
-        fieldRelations = view.findViewById(R.id.field_company);
-        fieldDate = view.findViewById(R.id.field_date);
-        fieldInvoiceNr = view.findViewById(R.id.field_invoice_nr);
-        fieldEuros = view.findViewById(R.id.field_price_euros);
-        fieldCents = view.findViewById(R.id.field_price_cents);
-        actionAdd = view.findViewById(R.id.action_add);
-        actionCancel = view.findViewById(R.id.action_cancel);
+        mContext = this;
+        res = mContext.getResources();
+        fieldDescription = findViewById(R.id.field_description);
+        fieldRelations = findViewById(R.id.field_company);
+        fieldDate = findViewById(R.id.field_date);
+        fieldInvoiceNr = findViewById(R.id.field_invoice_nr);
+        fieldEuros = findViewById(R.id.field_price_euros);
+        fieldCents = findViewById(R.id.field_price_cents);
+        fieldFile = findViewById(R.id.field_file);
+        actionAddCompany = findViewById(R.id.action_create_company);
+        actionAdd = findViewById(R.id.action_add);
+        actionCancel = findViewById(R.id.action_cancel);
 
         // Set click listeners
         fieldDate.setOnClickListener(this);
+        fieldFile.setOnClickListener(this);
+        actionAddCompany.setOnClickListener(this);
         actionAdd.setOnClickListener(this);
         actionCancel.setOnClickListener(this);
 
         initiateDatePicker();
 
-        getRelations();
+        initiateFilePicker();
 
-        return view;
+        getRelations();
     }
 
     /**
@@ -123,17 +149,34 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         currentUser = auth.getCurrentUser();
     }
 
+    /**
+     * Sets the FireBase references
+     */
+    private void setReferences() {
+        db = PersistentDatabase.getReference();
+        dbCompaniesMe = db.child("companies").child(currentUser.getUid());
+        dbCostsMe = db.child("costs").child(currentUser.getUid());
+        sb = FirebaseStorage.getInstance().getReference();
+        sbCostsMe = sb.child("costs").child(currentUser.getUid());
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.field_date:
                 showDatePicker();
                 break;
+            case R.id.field_file:
+                checkPermissionsAndOpenFilePicker();
+                break;
+            case R.id.action_create_company:
+                startAddCompanyActivity();
+                break;
             case R.id.action_add:
                 validateFields();
                 break;
             case R.id.action_cancel:
-                closeFragment();
+                closeActivity();
                 break;
         }
     }
@@ -199,13 +242,76 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
     }
 
     private void setDateField() {
-        date = year + "-" + (month + 1) + "-" + day;
+        date = year + "-" + String.format("%02d", (month + 1)) + "-" + String.format("%02d", day);
         fieldDate.setText(date);
     }
 
-    public void closeFragment() {
-        dismiss();
+    private void initiateFilePicker() {
+        fileProperties.selection_mode = DialogConfigs.SINGLE_MODE;
+        fileProperties.selection_type = DialogConfigs.FILE_SELECT;
+        fileProperties.root = new File(Environment.getExternalStorageDirectory().getPath());
+        fileProperties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+        fileProperties.offset = new File(DialogConfigs.DEFAULT_DIR);
+        fileProperties.extensions = new String[]{"pdf", "doc", "docx", "xls", "xlsx", "csv"};
+
+        filePicker = new FilePickerDialog(this, fileProperties);
+        filePicker.setTitle(R.string.title_pick_file);
     }
+
+    private void checkPermissionsAndOpenFilePicker() {
+        String permission = android.Manifest.permission.READ_EXTERNAL_STORAGE;
+
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                Toast.makeText(mContext, res.getString(R.string.error_no_permission),
+                        Toast.LENGTH_LONG).show();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSIONS_REQUEST_CODE);
+            }
+        } else {
+            showFilePicker();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showFilePicker();
+                } else {
+                    Toast.makeText(mContext, res.getString(R.string.error_no_permission),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private void showFilePicker() {
+        filePicker.setDialogSelectionListener(new DialogSelectionListener() {
+            @Override
+            public void onSelectedFilePaths(String[] files) {
+                filePaths = files;
+                filePath = files[0];
+                setFileField(filePath);
+            }
+        });
+        filePicker.show();
+    }
+
+    private void setFileField(String filePath) {
+        String filename = filePath.substring(filePath.lastIndexOf("/")+1);
+        fieldFile.setText(filename);
+    }
+
+    public void closeActivity() {
+        finish();
+    }
+
 
     /**
      * Validates the user's input
@@ -254,7 +360,7 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         if (cancel) {
             focusView.requestFocus();
         } else {
-            insertInDatabase(description, companyName, date, invoiceNr, price);
+            insertInDatabase(description, companyName, date, invoiceNr, price, filePath);
         }
     }
 
@@ -262,13 +368,13 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
      * Inserts a new cost in the database
      */
     public void insertInDatabase(String description, String companyName, String date,
-                                 String invoiceNr, String price) {
+                                 String invoiceNr, String price, String filePath) {
 
-        DatabaseReference dbCostNew = dbCostsMe.push();
+        final DatabaseReference dbCostNew = dbCostsMe.push();
 
         Company company = fetchCompany(companyName);
 
-        // Build the project object
+        // Build the cost object
         Cost cost = new Cost();
         cost.setPrice(Double.parseDouble(price));
         cost.setBtw(Math.round((cost.getPrice() * TAX_RATE) * 100.0) / 100.0);
@@ -282,7 +388,10 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
 
         dbCostNew.setValue(cost);
 
-        closeFragment();
+        // Upload the attachment
+        uploadFile(filePath, dbCostNew);
+
+        closeActivity();
     }
 
     public Company fetchCompany(String companyName) {
@@ -292,5 +401,39 @@ public class AddCostFragment extends DialogFragment implements View.OnClickListe
         } else {
             return null;
         }
+    }
+
+    public void uploadFile(String filePath, final DatabaseReference dbEntity) {
+        Log.d("attachment", filePath);
+
+        if (filePath != null && !filePath.equals("")) {
+            Uri file = Uri.fromFile(new File(filePath));
+            Log.d("attachment", dbEntity.getKey());
+            UploadTask uploadTask = sbCostsMe.child(dbEntity.getKey()).putFile(file);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    dbEntity.child("filePath").setValue(downloadUrl);
+                    Log.d("downloadUrl", "" + downloadUrl);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(mContext, res.getString(R.string.error_no_upload)  + exception,
+                            Toast.LENGTH_LONG).show();
+                    Log.d("attachment", res.getString(R.string.error_no_upload)  + exception);
+                }
+            });
+        }
+    }
+
+    /**
+     * Opens a dialog fragment to add a company
+     */
+    private void startAddCompanyActivity() {
+        Intent addCompanyIntent = new Intent(mContext, AddCompanyActivity.class);
+        startActivity(addCompanyIntent);
     }
 }
